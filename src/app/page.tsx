@@ -1,3 +1,9 @@
+import DeployableCreator from "../components/DeployableCreator";
+
 export default function Home() {
-  return <main>My App is sick</main>;
+  return (
+    <main>
+      <DeployableCreator />
+    </main>
+  );
 }
