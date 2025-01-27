@@ -1,8 +1,11 @@
 "use client";
 
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { Process } from "../types/process";
 import { downloadExecutable } from "../service/downloadService";
+import Button from "./Button";
+import Input from "./Input";
+import Select from "./Select";
 
 const createProcess = (): Process => {
   return {
@@ -13,6 +16,10 @@ const createProcess = (): Process => {
 
 export default function DeployableCreator() {
   const [processes, setProcesses] = useState<Process[]>([]);
+
+  useEffect(() => {
+    addProcess();
+  }, []);
 
   function handleInputChange(
     e: ChangeEvent<HTMLInputElement>,
@@ -48,6 +55,10 @@ export default function DeployableCreator() {
     }
   }
 
+  function addProcess() {
+    setProcesses((prev) => [...prev, createProcess()]);
+  }
+
   function removeProcess(
     e: MouseEvent<HTMLButtonElement>,
     proc: Process
@@ -62,36 +73,26 @@ export default function DeployableCreator() {
     }
   }
 
-  const buttonsoInterface = () => {
+  const controlInterface = () => {
     return (
       <div className="flex gap-4">
-        <button onClick={async () => await downloadExecutable(processes)}>
+        <Button onClick={async () => await downloadExecutable(processes)}>
           Create Executable
-        </button>
-        <button
-          onClick={() => setProcesses((prev) => [...prev, createProcess()])}
-        >
-          Add Process
-        </button>
-        <button
-          onClick={() => {
-            console.log(processes);
-          }}
-        >
-          Extract
-        </button>
+        </Button>
+        <Button onClick={addProcess}>Add Process</Button>
+        <Button onClick={() => console.log(processes)}>Extract</Button>
       </div>
     );
   };
 
   return (
-    <div>
-      {buttonsoInterface()}
-      <div>
+    <div className="w-[80%] flex flex-col gap-5 justify-center items-center">
+      {controlInterface()}
+      <div className="flex flex-col gap-5 w-full">
         {processes.map((proc, i) => {
           return (
-            <div key={proc.type + proc.type + i} className="text-red-600">
-              <select
+            <div key={proc.type + proc.type + i} className="flex gap-5 items-center align-middle justify-center">
+              <Select
                 value={proc.type}
                 onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                   handleSelectChange(e, proc)
@@ -99,15 +100,15 @@ export default function DeployableCreator() {
               >
                 <option value={"path"}>Path</option>
                 <option value={"cmd"}>Command</option>
-              </select>
-              <input
+              </Select>
+              <Input
                 value={proc.arg}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   handleInputChange(e, proc)
                 }
                 type="text"
               />
-              <button onClick={(e) => removeProcess(e, proc)}>Remove</button>
+              <Button onClick={(e) => removeProcess(e, proc)}>Remove</Button>
             </div>
           );
         })}
