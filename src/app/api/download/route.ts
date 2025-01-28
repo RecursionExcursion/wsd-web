@@ -9,6 +9,9 @@ if (!apiPath || !apiKey) {
 }
 
 export async function POST(req: NextRequest) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
   try {
     const processes = (await req.json()) as Process[];
 
@@ -26,7 +29,10 @@ export async function POST(req: NextRequest) {
         "Content-Type": "application/json",
         authorization: `Bearer ${apiKey}`,
       },
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     const { readable, writable } = new TransformStream();
 
@@ -48,6 +54,10 @@ export async function POST(req: NextRequest) {
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
+    if (error.name === "AbortError") {
+      throw new Error("Fetch request timed out");
+    }
+
     return NextResponse.json(
       { message: "Error fetching the file", error: error.message },
       { status: 500 }
