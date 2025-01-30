@@ -33,6 +33,7 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
     condition: showHowToUse,
     content: ":(",
   });
+  const [targetOs, setTargetOs] = useState(props.supportedOs[0]);
 
   useEffect(() => {
     addProcess();
@@ -40,6 +41,7 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
 
     const updateContent = (data: { content: LS_Deployable }) => {
       setProcesses(data.content.processes);
+      setTargetOs(data.content.os);
     };
 
     emitter.on(eventKeys.updateDeployable, updateContent);
@@ -108,19 +110,22 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
 
     if (saveProcess) {
       lazyLocalStorage.default.save("saved", {
+        os: targetOs,
         timestamp: Date.now(),
         processes,
-        saved: false,
       });
     }
 
     lazyLocalStorage.default.save("last", {
+      os: targetOs,
       timestamp: Date.now(),
       processes,
-      saved: false,
     });
 
-    const success = await downloadExecutable(processes);
+    const success = await downloadExecutable({
+      target: targetOs,
+      processes: processes,
+    });
     console.log({ success });
 
     setLoading(false);
@@ -166,9 +171,16 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
             </div>
           </div>
         </Button>
-        <div className="flex justify-center items-center gap-2 relative text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl rounded-lg">
+        <div className="flex justify-center items-center gap-1 relative text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl rounded-lg">
           <label>OS:</label>
-          <Select styleKey="transparent">
+
+          <Select
+            styleKey="transparent"
+            value={targetOs}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+              setTargetOs(e.target.value)
+            }
+          >
             {props.supportedOs.map((sos) => (
               <option key={sos} value={sos}>
                 {sos}

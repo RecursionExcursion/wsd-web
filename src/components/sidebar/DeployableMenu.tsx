@@ -9,6 +9,7 @@ import { iconServer } from "../../assets/icons";
 import { emitter } from "../../lib/events/EventEmittor";
 import { eventKeys } from "../../lib/events/events";
 import Button from "../base/Button";
+import { uppercaseFirstLetter } from "../../lib/util";
 
 type DeployableMenuProps = {
   type: LocalStorageKey;
@@ -82,13 +83,14 @@ const ItemDisplay = (props: ItemDisplayProps) => {
       {showProcesses && (
         <>
           <div className="flex flex-col px-2">
+            <span>OS: {item.os}</span>
             {item.processes.map((p, i) => {
               return (
                 <span
                   className="text-ellipsis text-nowrap overflow-x-hidden"
                   key={i + p.type + p.arg}
                 >
-                  {p.arg}
+                  {uppercaseFirstLetter(p.type)}: {p.arg}
                 </span>
               );
             })}
