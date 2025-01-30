@@ -1,8 +1,9 @@
+import { headers } from "next/headers";
 import MainAnimation from "../components/animations/MainAni";
 import DeployableCreator from "../components/DeployableCreator";
 import SideBar from "../components/sidebar/SideBar";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main className="w-full h-full relative flex">
       <SideBar />
@@ -24,8 +25,25 @@ export default function Home() {
           </h1>
         </div>
         <MainAnimation />
-        <DeployableCreator />
+        <DeployableCreator supportedOs={await getSupportedOs()} />
       </div>
     </main>
   );
 }
+
+const getSupportedOs = async () => {
+  const host = (await headers()).get("host");
+
+  // console.log({ url: });
+
+  const protocol = process.env.ENV === "DEV" ? "http" : "https";
+
+  const res = await fetch(`${protocol}://${host}/api/os`);
+
+  if (!res.ok) {
+    return [];
+  }
+
+  return (await res.json()) as string[];
+  // return [];
+};

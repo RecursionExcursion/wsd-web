@@ -10,8 +10,10 @@ export async function downloadExecutable(
       cache: "no-store",
     });
 
+    console.log(res);
+
     if (!res.ok) {
-      throw new Error("Failed to download the file");
+      return false;
     }
 
     const contentDis = res.headers.get("content-disposition");

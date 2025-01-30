@@ -13,7 +13,6 @@ const styles = {
 
 type ButtonProps = {
   children: ReactNode;
-  //   attributes:;
   styleKey?: keyof typeof styles;
 } & ComponentPropsWithoutRef<"button">;
 

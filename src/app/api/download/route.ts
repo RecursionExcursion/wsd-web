@@ -20,9 +20,7 @@ export async function POST(req: NextRequest) {
       processes,
     };
 
-    const definedPath = apiPath as string;
-
-    const externalApiResponse = await fetch(definedPath, {
+    const externalApiResponse = await fetch(apiPath as string, {
       method: "POST",
       body: JSON.stringify(processObj),
       headers: {
@@ -38,12 +36,15 @@ export async function POST(req: NextRequest) {
     const { readable, writable } = new TransformStream();
 
     if (!externalApiResponse.body) {
-      return NextResponse.json({});
+      return new Response(null, {
+        status: 500,
+      });
     }
 
     externalApiResponse.body.pipeTo(writable);
 
     return new Response(readable, {
+      status: externalApiResponse.status,
       headers: {
         "Content-Type":
           externalApiResponse.headers.get("Content-Type") ||

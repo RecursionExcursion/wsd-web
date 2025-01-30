@@ -10,7 +10,7 @@ import Spinner from "./base/Spinner";
 import { emitter } from "../lib/events/EventEmittor";
 import { LS_Deployable } from "../service/localStorageService";
 import { eventKeys } from "../lib/events/events";
-import { createPortal } from "react-dom";
+import { useModal } from "../hooks/useBodyMdoal";
 
 const createProcess = (): Process => {
   return {
@@ -19,12 +19,20 @@ const createProcess = (): Process => {
   };
 };
 
-export default function DeployableCreator() {
+type DeployableCreatorProps = {
+  supportedOs: string[];
+};
+
+export default function DeployableCreator(props: DeployableCreatorProps) {
   const [processes, setProcesses] = useState<Process[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saveProcess, setSaveProcesss] = useState(false);
   const [showHowToUse, setShowHowToUse] = useState(false);
+  const { modal } = useModal({
+    condition: showHowToUse,
+    content: ":(",
+  });
 
   useEffect(() => {
     addProcess();
@@ -122,18 +130,30 @@ export default function DeployableCreator() {
 
   const controlInterface = () => {
     return (
-      <div className="flex justify-between w-full">
-        <div className="flex gap-2">
-          <Button disabled={loading} onClick={createExecutable}>
-            {loading ? Spinner() : "Create Executable"}
-          </Button>
-          <Button
-            onClick={() => {
-              console.log("click");
-              setSaveProcesss(!saveProcess);
-            }}
-          >
-            <div className="flex items-center gap-3 cursor-pointer">
+      <div
+        className="w-full"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(10rem, 1fr))",
+          gridAutoRows: "minmax(3rem, auto)",
+          gap: "1rem",
+        }}
+      >
+        <Button disabled={loading} onClick={createExecutable}>
+          {loading ? Spinner() : "Create Executable"}
+        </Button>
+        <Button onClick={addProcess}>Add Process</Button>
+        <Button onClick={() => setShowHowToUse(!showHowToUse)}>
+          How to use
+        </Button>
+        <Button
+          onClick={() => {
+            console.log("click");
+            setSaveProcesss(!saveProcess);
+          }}
+        >
+          <div className="flex items-center justify-center cursor-pointer">
+            <div className="flex gap-3">
               <label className="cursor-pointer">Save</label>
               <Input
                 style={{
@@ -144,13 +164,17 @@ export default function DeployableCreator() {
                 readOnly
               />
             </div>
-          </Button>
-          <Button onClick={addProcess}>Add Process</Button>
-        </div>
-        <div>
-          <Button onClick={() => setShowHowToUse(!showHowToUse)}>
-            How to use
-          </Button>
+          </div>
+        </Button>
+        <div className="flex justify-center items-center gap-2 relative text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl rounded-lg">
+          <label>OS:</label>
+          <Select styleKey="transparent">
+            {props.supportedOs.map((sos) => (
+              <option key={sos} value={sos}>
+                {sos}
+              </option>
+            ))}
+          </Select>
         </div>
       </div>
     );
@@ -188,13 +212,7 @@ export default function DeployableCreator() {
             );
           })}
         </div>
-        {showHowToUse &&
-          createPortal(
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              HI
-            </div>,
-            document.body
-          )}
+        {modal()}
       </div>
     )
   );

@@ -95,12 +95,9 @@ const ItemDisplay = (props: ItemDisplayProps) => {
           </div>
           {type === "saved" && (
             <Button
-              style={
-                {
-                  color: "#ee3939"
-                  // padding: ".25rem",
-                }
-              }
+              style={{
+                color: "#ee3939",
+              }}
               onClick={() => {
                 LocalStorageService.remove(type, item.id);
                 emitter.emit(eventKeys.updateSideBar);
@@ -108,7 +105,6 @@ const ItemDisplay = (props: ItemDisplayProps) => {
               styleKey="none"
             >
               {iconServer({ iconKey: "trashCan", size: 24 })}
-              {/* Remove */}
             </Button>
           )}
         </>
