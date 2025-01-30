@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
         authorization: `Bearer ${apiKey}`,
       },
       signal: controller.signal,
+      cache: "no-store",
     });
 
     clearTimeout(timeoutId);

@@ -6,11 +6,11 @@ import { downloadExecutable } from "../service/downloadService";
 import Button from "./base/Button";
 import Input from "./base/Input";
 import Select from "./base/Select";
-// import { LocalStorageService } from "../service/localStorageService";
 import Spinner from "./base/Spinner";
 import { emitter } from "../lib/events/EventEmittor";
 import { LS_Deployable } from "../service/localStorageService";
 import { eventKeys } from "../lib/events/events";
+import { createPortal } from "react-dom";
 
 const createProcess = (): Process => {
   return {
@@ -24,6 +24,7 @@ export default function DeployableCreator() {
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saveProcess, setSaveProcesss] = useState(false);
+  const [showHowToUse, setShowHowToUse] = useState(false);
 
   useEffect(() => {
     addProcess();
@@ -121,29 +122,36 @@ export default function DeployableCreator() {
 
   const controlInterface = () => {
     return (
-      <div className="flex gap-4">
-        <Button disabled={loading} onClick={createExecutable}>
-          {loading ? Spinner() : "Create Executable"}
-        </Button>
-        <Button onClick={addProcess}>Add Process</Button>
-        <Button
-          onClick={() => {
-            console.log("click");
-            setSaveProcesss(!saveProcess);
-          }}
-        >
-          <div className="flex items-center gap-3 cursor-pointer">
-            <label className="cursor-pointer">Save</label>
-            <Input
-              style={{
-                cursor: "pointer",
-              }}
-              type="checkbox"
-              checked={saveProcess}
-              readOnly
-            />
-          </div>
-        </Button>
+      <div className="flex justify-between w-full">
+        <div className="flex gap-2">
+          <Button disabled={loading} onClick={createExecutable}>
+            {loading ? Spinner() : "Create Executable"}
+          </Button>
+          <Button
+            onClick={() => {
+              console.log("click");
+              setSaveProcesss(!saveProcess);
+            }}
+          >
+            <div className="flex items-center gap-3 cursor-pointer">
+              <label className="cursor-pointer">Save</label>
+              <Input
+                style={{
+                  cursor: "pointer",
+                }}
+                type="checkbox"
+                checked={saveProcess}
+                readOnly
+              />
+            </div>
+          </Button>
+          <Button onClick={addProcess}>Add Process</Button>
+        </div>
+        <div>
+          <Button onClick={() => setShowHowToUse(!showHowToUse)}>
+            How to use
+          </Button>
+        </div>
       </div>
     );
   };
@@ -180,6 +188,13 @@ export default function DeployableCreator() {
             );
           })}
         </div>
+        {showHowToUse &&
+          createPortal(
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              HI
+            </div>,
+            document.body
+          )}
       </div>
     )
   );

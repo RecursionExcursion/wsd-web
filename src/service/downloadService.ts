@@ -7,6 +7,7 @@ export async function downloadExecutable(
     const res = await fetch("/api/download", {
       method: "POST",
       body: JSON.stringify(processes),
+      cache: "no-store",
     });
 
     if (!res.ok) {

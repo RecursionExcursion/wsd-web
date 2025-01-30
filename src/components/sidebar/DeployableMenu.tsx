@@ -30,11 +30,12 @@ export default function DeployableMenu(props: DeployableMenuProps) {
   }, [props.type]);
 
   const title = (() => {
+    const l = items.length;
     switch (props.type) {
       case "saved":
-        return "SAVED";
+        return `SAVED (${l})`;
       case "last":
-        return "LAST (5)";
+        return `LAST (${l})`;
     }
   })();
 
@@ -94,16 +95,20 @@ const ItemDisplay = (props: ItemDisplayProps) => {
           </div>
           {type === "saved" && (
             <Button
-              style={{
-                padding: ".25rem",
-              }}
+              style={
+                {
+                  color: "#ee3939"
+                  // padding: ".25rem",
+                }
+              }
               onClick={() => {
                 LocalStorageService.remove(type, item.id);
                 emitter.emit(eventKeys.updateSideBar);
               }}
-              styleKey="danger"
+              styleKey="none"
             >
-              Remove
+              {iconServer({ iconKey: "trashCan", size: 24 })}
+              {/* Remove */}
             </Button>
           )}
         </>
