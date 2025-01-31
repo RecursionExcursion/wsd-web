@@ -5,7 +5,8 @@ import { Process } from "../types/process";
 export type LS_Deployable = {
   id: string;
   timestamp: number;
-  saved: boolean;
+  name: string | undefined;
+  os: string;
   processes: Process[];
 };
 

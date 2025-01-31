@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Process } from "../../../types/process";
+// import { Process } from "../../../types/process";
+import { DownloadExecutablePayload } from "../../../service/downloadService";
 
 const apiPath = process.env.BUNDLING_API;
 const apiKey = process.env.API_KEY;
@@ -13,23 +14,17 @@ export async function POST(req: NextRequest) {
   const timeoutId = setTimeout(() => controller.abort(), 10000);
 
   try {
-    const processes = (await req.json()) as Process[];
+    const payload = (await req.json()) as DownloadExecutablePayload;
 
-    const processObj = {
-      os: "win",
-      processes,
-    };
-
-    const definedPath = apiPath as string;
-
-    const externalApiResponse = await fetch(definedPath, {
+    const externalApiResponse = await fetch(apiPath as string, {
       method: "POST",
-      body: JSON.stringify(processObj),
+      body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
         authorization: `Bearer ${apiKey}`,
       },
       signal: controller.signal,
+      cache: "no-store",
     });
 
     clearTimeout(timeoutId);
@@ -37,12 +32,15 @@ export async function POST(req: NextRequest) {
     const { readable, writable } = new TransformStream();
 
     if (!externalApiResponse.body) {
-      return NextResponse.json({});
+      return new Response(null, {
+        status: 500,
+      });
     }
 
     externalApiResponse.body.pipeTo(writable);
 
     return new Response(readable, {
+      status: externalApiResponse.status,
       headers: {
         "Content-Type":
           externalApiResponse.headers.get("Content-Type") ||

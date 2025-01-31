@@ -1,16 +1,25 @@
 import { Process } from "../types/process";
 
+export type DownloadExecutablePayload = {
+  name: string | undefined;
+  target: string;
+  processes: Process[];
+};
+
 export async function downloadExecutable(
-  processes: Process[]
+  payload: DownloadExecutablePayload
 ): Promise<boolean> {
   try {
     const res = await fetch("/api/download", {
       method: "POST",
-      body: JSON.stringify(processes),
+      body: JSON.stringify(payload),
+      cache: "no-store",
     });
 
+    console.log(res);
+
     if (!res.ok) {
-      throw new Error("Failed to download the file");
+      return false;
     }
 
     const contentDis = res.headers.get("content-disposition");

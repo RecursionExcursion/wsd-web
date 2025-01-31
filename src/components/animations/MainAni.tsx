@@ -14,6 +14,28 @@ export default function MainAnimation() {
   const monitorRef = useRef<HTMLDivElement>(null);
   const [monitorI, setMonitorI] = useState(monitorIcon);
 
+  const animationFrameRef = useRef<number | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [windowSize, setWindowSize] = useState<{
+    width: number;
+    height: number;
+  }>();
+
+  useEffect(() => {
+    if (window) {
+      const handleResize = () => {
+        setWindowSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      };
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
   useEffect(() => {
     const msgEl = messageRef.current;
     const serverEl = serverRef.current;
@@ -52,11 +74,11 @@ export default function MainAnimation() {
       msgEl.style.transform = `translateX(${currentX - startX}px)`;
 
       if (currentX + startX < endX) {
-        requestAnimationFrame(animate);
+        animationFrameRef.current = requestAnimationFrame(animate);
       } else {
-          msgEl.hidden = true;
+        msgEl.hidden = true;
         setMonitorI(monitorPlay);
-        setTimeout(() => {
+        timeoutRef.current = setTimeout(() => {
           //reset animation
           setMsgStartParams();
           animate();
@@ -65,7 +87,14 @@ export default function MainAnimation() {
     };
 
     animate();
-  }, []);
+
+    return () => {
+      if (animationFrameRef.current)
+        cancelAnimationFrame(animationFrameRef.current);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [windowSize]);
 
   return (
     <div className="w-[80%] flex justify-between relative">

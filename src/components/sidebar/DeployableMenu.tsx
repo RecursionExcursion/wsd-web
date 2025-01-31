@@ -9,6 +9,7 @@ import { iconServer } from "../../assets/icons";
 import { emitter } from "../../lib/events/EventEmittor";
 import { eventKeys } from "../../lib/events/events";
 import Button from "../base/Button";
+import { uppercaseFirstLetter } from "../../lib/util";
 
 type DeployableMenuProps = {
   type: LocalStorageKey;
@@ -30,11 +31,12 @@ export default function DeployableMenu(props: DeployableMenuProps) {
   }, [props.type]);
 
   const title = (() => {
+    const l = items.length;
     switch (props.type) {
       case "saved":
-        return "SAVED";
+        return `SAVED (${l})`;
       case "last":
-        return "LAST (5)";
+        return `LAST (${l})`;
     }
   })();
 
@@ -81,13 +83,15 @@ const ItemDisplay = (props: ItemDisplayProps) => {
       {showProcesses && (
         <>
           <div className="flex flex-col px-2">
+           {item.name && <span>{item.name}</span>}
+            <span>OS: {item.os}</span>
             {item.processes.map((p, i) => {
               return (
                 <span
                   className="text-ellipsis text-nowrap overflow-x-hidden"
                   key={i + p.type + p.arg}
                 >
-                  {p.arg}
+                  {uppercaseFirstLetter(p.type)}: {p.arg}
                 </span>
               );
             })}
@@ -95,15 +99,15 @@ const ItemDisplay = (props: ItemDisplayProps) => {
           {type === "saved" && (
             <Button
               style={{
-                padding: ".25rem",
+                color: "#ee3939",
               }}
               onClick={() => {
                 LocalStorageService.remove(type, item.id);
                 emitter.emit(eventKeys.updateSideBar);
               }}
-              styleKey="danger"
+              styleKey="none"
             >
-              Remove
+              {iconServer({ iconKey: "trashCan", size: 24 })}
             </Button>
           )}
         </>
