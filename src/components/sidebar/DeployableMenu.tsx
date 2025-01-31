@@ -83,6 +83,7 @@ const ItemDisplay = (props: ItemDisplayProps) => {
       {showProcesses && (
         <>
           <div className="flex flex-col px-2">
+           {item.name && <span>{item.name}</span>}
             <span>OS: {item.os}</span>
             {item.processes.map((p, i) => {
               return (

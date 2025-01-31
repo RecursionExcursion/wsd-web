@@ -13,7 +13,15 @@ export function useModal(props: UseBodyModalProps) {
     return (
       props.condition &&
       createPortal(
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: "1000",
+          }}
+        >
           {props.content}
         </div>,
         document.body

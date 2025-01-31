@@ -10,7 +10,8 @@ import Spinner from "./base/Spinner";
 import { emitter } from "../lib/events/EventEmittor";
 import { LS_Deployable } from "../service/localStorageService";
 import { eventKeys } from "../lib/events/events";
-import { useModal } from "../hooks/useBodyMdoal";
+import { useModal } from "../hooks/useBodyModal";
+import { HowToUseModal } from "./HowToUse";
 
 const createProcess = (): Process => {
   return {
@@ -31,9 +32,10 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
   const [showHowToUse, setShowHowToUse] = useState(false);
   const { modal } = useModal({
     condition: showHowToUse,
-    content: ":(",
+    content: <HowToUseModal closeFn={() => setShowHowToUse(false)} />,
   });
   const [targetOs, setTargetOs] = useState(props.supportedOs[0]);
+  const [name, setName] = useState("");
 
   useEffect(() => {
     addProcess();
@@ -104,12 +106,15 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
   }
 
   async function createExecutable() {
+    const sanitizedName = name.trim() === "" ? undefined : name.trim();
+
     setLoading(true);
 
     const lazyLocalStorage = await import("../service/localStorageService");
 
     if (saveProcess) {
       lazyLocalStorage.default.save("saved", {
+        name: sanitizedName,
         os: targetOs,
         timestamp: Date.now(),
         processes,
@@ -117,12 +122,14 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
     }
 
     lazyLocalStorage.default.save("last", {
+      name: sanitizedName,
       os: targetOs,
       timestamp: Date.now(),
       processes,
     });
 
     const success = await downloadExecutable({
+      name: sanitizedName,
       target: targetOs,
       processes: processes,
     });
@@ -171,7 +178,10 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
             </div>
           </div>
         </Button>
-        <div className="flex justify-center items-center gap-1 relative text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl rounded-lg">
+        <div
+          className="flex justify-center items-center gap-1 relative text-white 
+        bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl rounded-lg"
+        >
           <label>OS:</label>
 
           <Select
@@ -188,44 +198,60 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
             ))}
           </Select>
         </div>
+        <div
+          className="flex justify-center items-center gap-1 relative text-white 
+        bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl rounded-lg text-center px-2 py-1 gap-1"
+        >
+          <label>{"Name:"}</label>
+          <Input
+            value={name}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setName(e.target.value)
+            }
+          ></Input>
+        </div>
       </div>
     );
   };
 
   return (
     loaded && (
-      <div className="w-[50%] flex flex-col gap-5 justify-center items-center">
-        {controlInterface()}
-        <div className="flex flex-col gap-5 w-full">
-          {processes.map((proc, i) => {
-            return (
-              <div
-                key={proc.type + proc.type + i}
-                className="flex gap-5 items-center align-middle justify-center"
-              >
-                <Select
-                  value={proc.type}
-                  onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                    handleSelectChange(e, proc)
-                  }
+      <>
+        <div className="w-[50%] flex flex-col gap-5 justify-center items-center">
+          {controlInterface()}
+          <div className="flex flex-col gap-5 w-full">
+            {processes.map((proc, i) => {
+              return (
+                <div
+                  key={proc.type + proc.type + i}
+                  className="flex gap-5 items-center align-middle justify-center"
                 >
-                  <option value={"path"}>Path</option>
-                  <option value={"cmd"}>Command</option>
-                </Select>
-                <Input
-                  value={proc.arg}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange(e, proc)
-                  }
-                  type="text"
-                />
-                <Button onClick={(e) => removeProcess(e, proc)}>Remove</Button>
-              </div>
-            );
-          })}
+                  <Select
+                    value={proc.type}
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                      handleSelectChange(e, proc)
+                    }
+                  >
+                    <option value={"path"}>Path</option>
+                    <option value={"cmd"}>Command</option>
+                  </Select>
+                  <Input
+                    value={proc.arg}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      handleInputChange(e, proc)
+                    }
+                    type="text"
+                  />
+                  <Button onClick={(e) => removeProcess(e, proc)}>
+                    Remove
+                  </Button>
+                </div>
+              );
+            })}
+          </div>
         </div>
         {modal()}
-      </div>
+      </>
     )
   );
 }

@@ -1,6 +1,7 @@
 import { Process } from "../types/process";
 
 export type DownloadExecutablePayload = {
+  name: string | undefined;
   target: string;
   processes: Process[];
 };
