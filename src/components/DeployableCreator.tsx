@@ -159,11 +159,16 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
           gap: "1rem",
         }}
       >
-        <Button disabled={loading} onClick={createExecutable}>
-          {loading ? Spinner() : "Create Executable"}
+        <Button disabled={loading || showHowToUse} onClick={createExecutable}>
+          {loading ? Spinner() : "Create"}
         </Button>
-        <Button onClick={addProcess}>Add Process</Button>
-        <Button onClick={() => setShowHowToUse(!showHowToUse)}>
+        <Button onClick={addProcess} disabled={showHowToUse}>
+          Add Process
+        </Button>
+        <Button
+          onClick={() => setShowHowToUse(!showHowToUse)}
+          disabled={showHowToUse}
+        >
           How to use
         </Button>
         <Button
@@ -171,6 +176,7 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
             console.log("click");
             setSaveProcesss(!saveProcess);
           }}
+          disabled={showHowToUse}
         >
           <div className="flex items-center justify-center cursor-pointer">
             <div className="flex gap-3">
