@@ -1,7 +1,5 @@
 "use server";
 
-import path from "path";
-
 const envRoutes = {
   baseRoute: process.env.API_BASE,
 };
@@ -22,5 +20,5 @@ if (!envRoutes.baseRoute || !envPaths.bundlingPath || !envPaths.osPath) {
 }
 
 export async function getRouteVar(key: keyof typeof envPaths) {
-  return path.join(envRoutes.baseRoute!, envPaths[key]!);
+  return [envRoutes.baseRoute!, envPaths[key]!].join("/");
 }

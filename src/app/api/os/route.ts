@@ -18,7 +18,7 @@ export async function GET() {
   const timeoutId = setTimeout(() => controller.abort(), 10000);
 
   try {
-    const res = await fetch(apiPath as string, {
+    const res = await fetch(apiPath, {
       method: "GET",
       headers: {
         authorization: `Bearer ${apiKey}`,

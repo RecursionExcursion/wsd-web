@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   try {
     const payload = (await req.json()) as DownloadExecutablePayload;
 
-    const externalApiResponse = await fetch(apiPath as string, {
+    const externalApiResponse = await fetch(apiPath, {
       method: "POST",
       body: JSON.stringify(payload),
       headers: {
