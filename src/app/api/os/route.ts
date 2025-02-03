@@ -30,9 +30,11 @@ export async function GET() {
 
     console.log({ res });
 
+    console.log({ body: await res.json() });
+
     return new Response(res.body, {
       status: res.status,
-      headers: res.headers,
+      // headers: res.headers,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
