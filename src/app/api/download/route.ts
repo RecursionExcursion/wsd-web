@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-// import { Process } from "../../../types/process";
 import { DownloadExecutablePayload } from "../../../service/downloadService";
-
-const apiPath = process.env.BUNDLING_API;
-const apiKey = process.env.API_KEY;
-
-if (!apiPath || !apiKey) {
-  throw Error("Bundling API params not configured");
-}
+import { getRouteVar } from "../../../service/externalAPIService";
 
 export async function POST(req: NextRequest) {
+  const apiPath = await getRouteVar("bundlingPath");
+  const apiKey = process.env.API_KEY;
+
+  if (!apiPath || !apiKey) {
+    throw Error("Bundling API params not configured");
+  }
+
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000);
 

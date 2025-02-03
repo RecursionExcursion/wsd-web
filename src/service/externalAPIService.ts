@@ -1,0 +1,26 @@
+"use server";
+
+import path from "path";
+
+const envRoutes = {
+  baseRoute: process.env.API_BASE,
+};
+
+const envPaths = {
+  bundlingPath: process.env.API_BUNDLING,
+  osPath: process.env.API_OS,
+};
+
+if (!envRoutes.baseRoute || !envPaths.bundlingPath || !envPaths.osPath) {
+  console.error({
+    base: envRoutes.baseRoute,
+    bundling: envPaths.bundlingPath,
+    os: envPaths.osPath,
+  });
+
+  throw Error("API env vars not configured");
+}
+
+export async function getRouteVar(key: keyof typeof envPaths) {
+  return path.join(envRoutes.baseRoute!, envPaths[key]!);
+}

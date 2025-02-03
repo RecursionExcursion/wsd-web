@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
-
-const apiPath = process.env.OS_API;
-const apiKey = process.env.API_KEY;
-
-if (!apiPath || !apiKey) {
-  throw Error("Bundling API params not configured");
-}
+import { getRouteVar } from "../../../service/externalAPIService";
 
 export async function GET() {
+  const apiPath = await getRouteVar("osPath");
+  const apiKey = process.env.API_KEY;
+
+  if (!apiPath || !apiKey) {
+    throw Error("Bundling API params not configured");
+  }
+
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000);
 
