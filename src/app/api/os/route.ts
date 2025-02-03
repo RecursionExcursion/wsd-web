@@ -28,6 +28,8 @@ export async function GET() {
 
     clearTimeout(timeoutId);
 
+    console.log({ res });
+
     return new Response(res.body, {
       status: res.status,
       headers: res.headers,
