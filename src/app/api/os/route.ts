@@ -2,11 +2,13 @@ import { NextResponse } from "next/server";
 import { getRouteVar } from "../../../service/externalAPIService";
 
 export const maxDuration = 60;
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const apiPath = await getRouteVar("osPath");
   const apiKey = process.env.API_KEY;
+
+  console.log({ apiPath });
 
   if (!apiPath || !apiKey) {
     throw Error("Bundling API params not configured");
