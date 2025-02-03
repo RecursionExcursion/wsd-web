@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   }
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  const timeoutId = setTimeout(() => controller.abort(), 600000);
 
   try {
     const payload = (await req.json()) as DownloadExecutablePayload;
