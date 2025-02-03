@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { getRouteVar } from "../../../service/externalAPIService";
 
-export const maxDuration = 30;
+export const maxDuration = 60;
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const apiPath = await getRouteVar("osPath");

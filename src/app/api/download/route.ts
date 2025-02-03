@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { DownloadExecutablePayload } from "../../../service/downloadService";
 import { getRouteVar } from "../../../service/externalAPIService";
 
-export const maxDuration = 30;
+export const maxDuration = 60;
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   const apiPath = await getRouteVar("bundlingPath");
