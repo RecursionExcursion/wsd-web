@@ -106,9 +106,17 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
   }
 
   async function createExecutable() {
-    const sanitizedName = name.trim() === "" ? undefined : name.trim();
+    //Sanitaze process inputs
+    const sanitizedProcesses = processes.filter((p) => p.arg.trim() !== "");
+    setProcesses(sanitizedProcesses);
+
+    if (sanitizedProcesses.length <= 0) {
+      return;
+    }
 
     setLoading(true);
+
+    const sanitizedName = name.trim() === "" ? undefined : name.trim();
 
     const lazyLocalStorage = await import("../service/localStorageService");
 
@@ -117,7 +125,7 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
         name: sanitizedName,
         os: targetOs,
         timestamp: Date.now(),
-        processes,
+        processes: sanitizedProcesses,
       });
     }
 
@@ -125,13 +133,13 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
       name: sanitizedName,
       os: targetOs,
       timestamp: Date.now(),
-      processes,
+      processes: sanitizedProcesses,
     });
 
     const success = await downloadExecutable({
       name: sanitizedName,
       target: targetOs,
-      processes: processes,
+      processes: sanitizedProcesses,
     });
     console.log({ success });
 
@@ -151,11 +159,16 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
           gap: "1rem",
         }}
       >
-        <Button disabled={loading} onClick={createExecutable}>
-          {loading ? Spinner() : "Create Executable"}
+        <Button disabled={loading || showHowToUse} onClick={createExecutable}>
+          {loading ? Spinner() : "Create"}
         </Button>
-        <Button onClick={addProcess}>Add Process</Button>
-        <Button onClick={() => setShowHowToUse(!showHowToUse)}>
+        <Button onClick={addProcess} disabled={showHowToUse}>
+          Add Process
+        </Button>
+        <Button
+          onClick={() => setShowHowToUse(!showHowToUse)}
+          disabled={showHowToUse}
+        >
           How to use
         </Button>
         <Button
@@ -163,6 +176,7 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
             console.log("click");
             setSaveProcesss(!saveProcess);
           }}
+          disabled={showHowToUse}
         >
           <div className="flex items-center justify-center cursor-pointer">
             <div className="flex gap-3">
@@ -180,7 +194,7 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
         </Button>
         <div
           className="flex justify-center items-center gap-1 relative text-white 
-        bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl rounded-lg"
+        bg-gradient rounded-lg"
         >
           <label>OS:</label>
 
@@ -200,7 +214,7 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
         </div>
         <div
           className="flex justify-center items-center gap-1 relative text-white 
-        bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl rounded-lg text-center px-2 py-1 gap-1"
+        bg-gradient rounded-lg text-center px-2 py-1 gap-1"
         >
           <label>{"Name:"}</label>
           <Input
