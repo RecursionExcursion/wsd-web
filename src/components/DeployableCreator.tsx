@@ -12,6 +12,7 @@ import { LS_Deployable } from "../service/localStorageService";
 import { eventKeys } from "../lib/events/events";
 import { useModal } from "../hooks/useBodyModal";
 import { HowToUseModal } from "./HowToUse";
+import NoConnectionToBackendNotice from "./NoConnectionToBackendNotice";
 
 const createProcess = (): Process => {
   return {
@@ -20,11 +21,7 @@ const createProcess = (): Process => {
   };
 };
 
-type DeployableCreatorProps = {
-  supportedOs: string[];
-};
-
-export default function DeployableCreator(props: DeployableCreatorProps) {
+export default function DeployableCreator() {
   const [processes, setProcesses] = useState<Process[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -34,12 +31,12 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
     condition: showHowToUse,
     content: <HowToUseModal closeFn={() => setShowHowToUse(false)} />,
   });
-  const [targetOs, setTargetOs] = useState(props.supportedOs[0]);
+  const [supportedOs, setSupportedOs] = useState<string[]>([]);
+  const [targetOs, setTargetOs] = useState("");
   const [name, setName] = useState("");
 
   useEffect(() => {
     addProcess();
-    setLoaded(true);
 
     const updateContent = (data: { content: LS_Deployable }) => {
       setProcesses(data.content.processes);
@@ -51,6 +48,14 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
     return () => {
       emitter.off(eventKeys.updateDeployable, updateContent);
     };
+  }, []);
+
+  useEffect(() => {
+    getSupportedOs().then((sos) => {
+      setSupportedOs(sos);
+      setTargetOs(sos[0]);
+      setLoaded(true);
+    });
   }, []);
 
   function handleInputChange(
@@ -205,7 +210,7 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
               setTargetOs(e.target.value)
             }
           >
-            {props.supportedOs.map((sos) => (
+            {supportedOs.map((sos) => (
               <option key={sos} value={sos}>
                 {sos}
               </option>
@@ -229,7 +234,8 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
   };
 
   return (
-    loaded && (
+    loaded &&
+    (supportedOs.length > 0 ? (
       <>
         <div className="w-[50%] flex flex-col gap-5 justify-center items-center">
           {controlInterface()}
@@ -266,6 +272,18 @@ export default function DeployableCreator(props: DeployableCreatorProps) {
         </div>
         {modal()}
       </>
-    )
+    ) : (
+      <NoConnectionToBackendNotice />
+    ))
   );
 }
+
+const getSupportedOs = async () => {
+  const res = await fetch(`/api/os`);
+
+  if (!res.ok) {
+    return [];
+  }
+
+  return (await res.json()) as string[];
+};
