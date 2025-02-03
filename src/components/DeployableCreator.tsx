@@ -52,6 +52,8 @@ export default function DeployableCreator() {
 
   useEffect(() => {
     getSupportedOs().then((sos) => {
+      console.log({ sos });
+
       setSupportedOs(sos);
       setTargetOs(sos[0]);
       setLoaded(true);
@@ -152,6 +154,16 @@ export default function DeployableCreator() {
 
     emitter.emit(eventKeys.updateSideBar);
   }
+
+  const getSupportedOs = async () => {
+    const res = await fetch(`/api/os`);
+
+    if (!res.ok) {
+      return [];
+    }
+
+    return (await res.json()) as string[];
+  };
 
   const controlInterface = () => {
     return (
@@ -277,13 +289,3 @@ export default function DeployableCreator() {
     ))
   );
 }
-
-const getSupportedOs = async () => {
-  const res = await fetch(`/api/os`);
-
-  if (!res.ok) {
-    return [];
-  }
-
-  return (await res.json()) as string[];
-};
