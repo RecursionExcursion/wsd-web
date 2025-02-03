@@ -2,8 +2,14 @@ import { headers } from "next/headers";
 import MainAnimation from "../components/animations/MainAni";
 import DeployableCreator from "../components/DeployableCreator";
 import SideBar from "../components/sidebar/SideBar";
+import NoConnectionToBackendNotice from "../components/NoConnectionToBackendNotice";
 
 export default async function Home() {
+  const supportedOs = await getSupportedOs();
+
+  const connectionFlag =
+    process.env.ENV === "DEV" ? true : supportedOs.length > 0;
+
   return (
     <main className="w-full h-full relative flex">
       <SideBar />
@@ -16,16 +22,22 @@ export default async function Home() {
           muted
           playsInline
         />
-        <div className="bg-black bg-opacity-50 rounded-full p-4">
-          <h1
-            className={`text-7xl`}
-            style={{ fontFamily: "var(--font-doto), sans-serif" }}
-          >
-            Workspace Deployer Web
-          </h1>
-        </div>
-        <MainAnimation />
-        <DeployableCreator supportedOs={await getSupportedOs()} />
+        {connectionFlag ? (
+          <>
+            <div className="bg-black bg-opacity-50 rounded-full p-4">
+              <h1
+                className={`text-7xl`}
+                style={{ fontFamily: "var(--font-doto), sans-serif" }}
+              >
+                Workspace Deployer Web
+              </h1>
+            </div>
+            <MainAnimation />
+            <DeployableCreator supportedOs={supportedOs} />
+          </>
+        ) : (
+          <NoConnectionToBackendNotice />
+        )}
       </div>
     </main>
   );
@@ -33,8 +45,6 @@ export default async function Home() {
 
 const getSupportedOs = async () => {
   const host = (await headers()).get("host");
-
-  // console.log({ url: });
 
   const protocol = process.env.ENV === "DEV" ? "http" : "https";
 
@@ -45,5 +55,4 @@ const getSupportedOs = async () => {
   }
 
   return (await res.json()) as string[];
-  // return [];
 };

@@ -22,3 +22,6 @@ body {
   width: 100vw;
 }
 
+.bg-gradient{
+  @apply bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl;
+}
