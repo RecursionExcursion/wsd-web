@@ -30,7 +30,7 @@ export async function GET() {
 
     console.log({ res });
 
-    console.log({ body: await res.json() });
+    // console.log({ body: await res.json() });
 
     return new Response(res.body, {
       status: res.status,
