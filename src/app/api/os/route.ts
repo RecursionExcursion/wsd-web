@@ -32,7 +32,7 @@ export async function GET() {
 
     return new Response(res.body, {
       status: res.status,
-      headers: res.headers,
+      // headers: res.headers,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
