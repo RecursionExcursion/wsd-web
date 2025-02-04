@@ -12,7 +12,6 @@ import Spinner from "../base/Spinner";
 
 export default function MainDisplay() {
   const [processes, setProcesses] = useState<Process[]>([]);
-  // const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [supportedOs, setSupportedOs] = useState<string[]>([]);
   const [saveProcess, setSaveProcesss] = useState(false);
