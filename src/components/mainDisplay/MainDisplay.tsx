@@ -12,7 +12,6 @@ import Spinner from "../base/Spinner";
 
 export default function MainDisplay() {
   const [processes, setProcesses] = useState<Process[]>([]);
-  // const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [supportedOs, setSupportedOs] = useState<string[]>([]);
   const [saveProcess, setSaveProcesss] = useState(false);
@@ -41,6 +40,10 @@ export default function MainDisplay() {
       emitter.off(eventKeys.updateDeployable, updateContent);
     };
   }, []);
+
+  const resetProcesses = () => {
+    setProcesses([createProcess()]);
+  };
 
   async function createExecutable() {
     //Sanitaze process inputs
@@ -97,15 +100,14 @@ export default function MainDisplay() {
       setProcesses(copyProcesses);
     }
   }
+  const createProcess = (): Process => {
+    return {
+      type: "path",
+      arg: "",
+    };
+  };
 
   function addProcess() {
-    const createProcess = (): Process => {
-      return {
-        type: "path",
-        arg: "",
-      };
-    };
-
     setProcesses((prev) => [...prev, createProcess()]);
   }
 
@@ -149,6 +151,7 @@ export default function MainDisplay() {
         createAction={createExecutable}
         saveAction={() => setSaveProcesss(!saveProcess)}
         savedState={saveProcess}
+        resetAction={resetProcesses}
       />
       <DeployableDisplay
         processes={processes}
