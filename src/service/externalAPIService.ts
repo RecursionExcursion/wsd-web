@@ -7,13 +7,20 @@ const envRoutes = {
 const envPaths = {
   bundlingPath: process.env.API_BUNDLING,
   osPath: process.env.API_OS,
+  wakePath: process.env.API_WAKE,
 };
 
-if (!envRoutes.baseRoute || !envPaths.bundlingPath || !envPaths.osPath) {
+if (
+  !envRoutes.baseRoute ||
+  !envPaths.bundlingPath ||
+  !envPaths.osPath ||
+  !envPaths.wakePath
+) {
   console.error({
     base: envRoutes.baseRoute,
     bundling: envPaths.bundlingPath,
     os: envPaths.osPath,
+    wake: envPaths.wakePath,
   });
 
   throw Error("API env vars not configured");
