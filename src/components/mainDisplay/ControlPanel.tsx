@@ -27,6 +27,7 @@ export default function ControlPanel(props: ControlPanelProps) {
           ...controlContainerStyle,
         }}
       >
+        {iconServer({ iconKey: "monitorIcon", size: 20 })}
         <span>OS:</span>
         <select
           style={{
@@ -66,6 +67,7 @@ export default function ControlPanel(props: ControlPanelProps) {
           ...controlContainerStyle,
         }}
       >
+        {iconServer({ iconKey: "blocks", size: 20 })}
         CREATE
       </button>
     </div>

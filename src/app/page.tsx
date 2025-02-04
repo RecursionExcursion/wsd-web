@@ -1,5 +1,4 @@
 import MainAnimation from "../components/animations/MainAni";
-import DeployableCreator from "../components/DeployableCreator";
 import MainDisplay from "../components/mainDisplay/MainDisplay";
 import SideBar from "../components/sidebar/SideBar";
 
@@ -7,7 +6,7 @@ export default async function Home() {
   return (
     <main className="w-full h-full relative flex">
       <SideBar />
-      <div className="flex-grow flex flex-col justify-start items-center gap-20 p-10">
+      <div className="flex-grow flex flex-col justify-start items-center gap-10 p-10">
         <video
           className="absolute top-0 left-0 w-full h-full object-cover -z-10"
           src="/nebula.mp4"
@@ -26,7 +25,6 @@ export default async function Home() {
           </h1>
         </div>
         <MainAnimation />
-        {/* <DeployableCreator /> */}
         <MainDisplay />
       </div>
     </main>

@@ -137,8 +137,7 @@ export default function MainDisplay() {
   ) : (
     <div
       className="bg-black bg-opacity-50 p-10 rounded-lg
-    flex w-[60rem] h-[40rem] overflow-y-auto
-    "
+    flex w-[60rem] h-[40rem] overflow-y-auto"
       style={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(0, 1fr))",
