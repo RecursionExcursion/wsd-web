@@ -42,6 +42,10 @@ export default function MainDisplay() {
     };
   }, []);
 
+  const resetProcesses = () => {
+    setProcesses([createProcess()]);
+  };
+
   async function createExecutable() {
     //Sanitaze process inputs
     const sanitizedProcesses = processes.filter((p) => p.arg.trim() !== "");
@@ -97,15 +101,14 @@ export default function MainDisplay() {
       setProcesses(copyProcesses);
     }
   }
+  const createProcess = (): Process => {
+    return {
+      type: "path",
+      arg: "",
+    };
+  };
 
   function addProcess() {
-    const createProcess = (): Process => {
-      return {
-        type: "path",
-        arg: "",
-      };
-    };
-
     setProcesses((prev) => [...prev, createProcess()]);
   }
 
@@ -149,6 +152,7 @@ export default function MainDisplay() {
         createAction={createExecutable}
         saveAction={() => setSaveProcesss(!saveProcess)}
         savedState={saveProcess}
+        resetAction={resetProcesses}
       />
       <DeployableDisplay
         processes={processes}

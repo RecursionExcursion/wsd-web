@@ -9,6 +9,7 @@ type ControlPanelProps = {
   saveAction: () => void;
   savedState: boolean;
   createAction: () => void;
+  resetAction: () => void;
 };
 
 export default function ControlPanel(props: ControlPanelProps) {
@@ -18,10 +19,18 @@ export default function ControlPanel(props: ControlPanelProps) {
     createAction,
     saveAction,
     savedState,
+    resetAction,
   } = props;
 
   return (
     <div className="flex flex-col justify-around items-center">
+      <button
+        onClick={resetAction}
+        style={{ ...controlContainerStyle, color: "#ff11f1" }}
+      >
+        {iconServer({ iconKey: "egg", size: 20 })} NEW
+      </button>
+
       <div
         style={{
           ...controlContainerStyle,
