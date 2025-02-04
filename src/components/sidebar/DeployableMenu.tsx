@@ -8,7 +8,6 @@ import LocalStorageService, {
 import { iconServer } from "../../assets/icons";
 import { emitter } from "../../lib/events/EventEmittor";
 import { eventKeys } from "../../lib/events/events";
-import Button from "../base/Button";
 import { uppercaseFirstLetter } from "../../lib/util";
 
 type DeployableMenuProps = {
@@ -83,7 +82,7 @@ const ItemDisplay = (props: ItemDisplayProps) => {
       {showProcesses && (
         <>
           <div className="flex flex-col px-2">
-           {item.name && <span>{item.name}</span>}
+            {item.name && <span>{item.name}</span>}
             <span>OS: {item.os}</span>
             {item.processes.map((p, i) => {
               return (
@@ -97,7 +96,7 @@ const ItemDisplay = (props: ItemDisplayProps) => {
             })}
           </div>
           {type === "saved" && (
-            <Button
+            <button
               style={{
                 color: "#ee3939",
               }}
@@ -105,10 +104,9 @@ const ItemDisplay = (props: ItemDisplayProps) => {
                 LocalStorageService.remove(type, item.id);
                 emitter.emit(eventKeys.updateSideBar);
               }}
-              styleKey="none"
             >
               {iconServer({ iconKey: "trashCan", size: 24 })}
-            </Button>
+            </button>
           )}
         </>
       )}

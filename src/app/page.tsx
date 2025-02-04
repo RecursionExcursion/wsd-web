@@ -1,5 +1,6 @@
 import MainAnimation from "../components/animations/MainAni";
 import DeployableCreator from "../components/DeployableCreator";
+import MainDisplay from "../components/mainDisplay/MainDisplay";
 import SideBar from "../components/sidebar/SideBar";
 
 export default async function Home() {
@@ -16,7 +17,7 @@ export default async function Home() {
           playsInline
         />
 
-        <div className="bg-black bg-opacity-50 rounded-full p-4">
+        <div className="bg-black bg-opacity-50 rounded-full p-4 mt-3">
           <h1
             className={`text-7xl`}
             style={{ fontFamily: "var(--font-doto), sans-serif" }}
@@ -25,7 +26,8 @@ export default async function Home() {
           </h1>
         </div>
         <MainAnimation />
-        <DeployableCreator />
+        {/* <DeployableCreator /> */}
+        <MainDisplay />
       </div>
     </main>
   );
