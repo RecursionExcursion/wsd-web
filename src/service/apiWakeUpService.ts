@@ -15,5 +15,6 @@ export const awakenAPI = async () => {
     headers: {
       authorization: `Bearer ${key}`,
     },
+    cache: "no-store",
   });
 };
