@@ -23,7 +23,7 @@ export default function MainDisplay() {
     getSupportedOs().then((sos) => {
       setSupportedOs(sos);
       setTargetOs(sos[0]);
-      // setLoading(false);
+      setLoading(false);
     });
   }, []);
 
