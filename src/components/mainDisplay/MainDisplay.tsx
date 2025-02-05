@@ -33,6 +33,9 @@ export default function MainDisplay() {
     const updateContent = (data: { content: LS_Deployable }) => {
       setProcesses(data.content.processes);
       setTargetOs(data.content.os);
+      if (data.content.name) {
+        setName(data.content.name);
+      }
     };
 
     emitter.on(eventKeys.updateDeployable, updateContent);
