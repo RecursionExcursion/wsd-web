@@ -143,7 +143,7 @@ export default function MainDisplay() {
   const updateName = (newName: string) => setName(newName);
 
   return loading ? (
-    <div className="w-full h-full flex justify-center">
+    <div className="w-full h-full flex justify-center items-center">
       {spinner}
     </div>
   ) : (
