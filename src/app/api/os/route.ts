@@ -8,8 +8,6 @@ export async function GET() {
   const apiPath = await getRouteVar("osPath");
   const apiKey = process.env.API_KEY;
 
-  console.log({ apiPath });
-
   if (!apiPath || !apiKey) {
     throw Error("Bundling API params not configured");
   }
