@@ -8,7 +8,7 @@ import { emitter } from "../../lib/events/EventEmittor";
 import { downloadExecutable } from "../../service/downloadService";
 import { eventKeys } from "../../lib/events/events";
 import { LS_Deployable } from "../../service/localStorageService";
-import Spinner from "../base/Spinner";
+import { useSpinner } from "../../hook/UseSpinner";
 
 export default function MainDisplay() {
   const [processes, setProcesses] = useState<Process[]>([]);
@@ -17,12 +17,13 @@ export default function MainDisplay() {
   const [saveProcess, setSaveProcesss] = useState(false);
   const [targetOs, setTargetOs] = useState("");
   const [name, setName] = useState("");
+  const spinner = useSpinner();
 
   useEffect(() => {
     getSupportedOs().then((sos) => {
       setSupportedOs(sos);
       setTargetOs(sos[0]);
-      setLoading(false);
+      // setLoading(false);
     });
   }, []);
 
@@ -39,7 +40,14 @@ export default function MainDisplay() {
     return () => {
       emitter.off(eventKeys.updateDeployable, updateContent);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (processes.length === 0) {
+      setProcesses([createProcess()]);
+    }
+  }, [processes]);
 
   const resetProcesses = () => {
     setProcesses([createProcess()]);
@@ -135,7 +143,9 @@ export default function MainDisplay() {
   const updateName = (newName: string) => setName(newName);
 
   return loading ? (
-    <Spinner />
+    <div className="w-full h-full flex justify-center">
+      {spinner}
+    </div>
   ) : (
     <div
       className="bg-black bg-opacity-50 p-10 rounded-lg

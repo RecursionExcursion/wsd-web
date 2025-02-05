@@ -28,13 +28,8 @@ export async function GET() {
 
     clearTimeout(timeoutId);
 
-    console.log({ res });
-
-    // console.log({ body: await res.json() });
-
     return new Response(res.body, {
       status: res.status,
-      // headers: res.headers,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
