@@ -9,21 +9,30 @@ import { downloadExecutable } from "../../service/downloadService";
 import { eventKeys } from "../../lib/events/events";
 import { LS_Deployable } from "../../service/localStorageService";
 import { useSpinner } from "../../hooks/UseSpinner";
+import NoConnectionToBackendNotice from "../NoConnectionToBackendNotice";
 
 export default function MainDisplay() {
   const [processes, setProcesses] = useState<Process[]>([]);
+  const [firstLoad, setFirstLoad] = useState(true);
   const [loading, setLoading] = useState(true);
   const [supportedOs, setSupportedOs] = useState<string[]>([]);
   const [saveProcess, setSaveProcesss] = useState(false);
   const [targetOs, setTargetOs] = useState("");
   const [name, setName] = useState("");
-  const spinner = useSpinner();
+
+  const [noConnection, setNoConnection] = useState(false);
 
   useEffect(() => {
     getSupportedOs().then((sos) => {
+      if (sos.length === 0) {
+        setNoConnection(true);
+        return;
+      }
+
       setSupportedOs(sos);
       setTargetOs(sos[0]);
       setLoading(false);
+      setFirstLoad(false);
     });
   }, []);
 
@@ -87,13 +96,14 @@ export default function MainDisplay() {
       processes: sanitizedProcesses,
     });
 
-    const success = await downloadExecutable({
+    // const success =
+    await downloadExecutable({
       name: sanitizedName,
       target: targetOs,
       processes: sanitizedProcesses,
     });
     //TODO
-    console.log({ success });
+    // console.log({ success });
 
     setLoading(false);
 
@@ -135,20 +145,29 @@ export default function MainDisplay() {
   }
 
   const getSupportedOs = async () => {
-    const res = await fetch(`/api/os`);
+    let iterations = 0;
 
-    if (!res.ok) {
-      return [];
+    while (iterations <= 3) {
+      const res = await fetch(`/api/os`);
+
+      if (res.ok) {
+        return (await res.json()) as string[];
+      }
+
+      iterations++;
+      await new Promise((resolve) => setTimeout(resolve, 1500));
     }
 
-    return (await res.json()) as string[];
+    return [];
   };
 
   const updateName = (newName: string) => setName(newName);
 
-  return loading ? (
+  return noConnection ? (
+    <NoConnectionToBackendNotice />
+  ) : loading ? (
     <div className="w-full h-full flex justify-center items-center">
-      {spinner}
+      <ConnectingToBackEndAnimation type={firstLoad ? "init" : "building"} />
     </div>
   ) : (
     <div
@@ -177,3 +196,41 @@ export default function MainDisplay() {
     </div>
   );
 }
+
+type ConnectingToBackEndAnimationProps = {
+  type: "init" | "building";
+};
+
+const ConnectingToBackEndAnimation = (
+  props: ConnectingToBackEndAnimationProps
+) => {
+  const initText = "Connecting to backend";
+  const buildingText = "Building";
+
+  const spinner = useSpinner();
+
+  const [text, setText] = useState(
+    props.type === "init" ? initText : buildingText
+  );
+
+  useEffect(() => {
+    const inter = setInterval(() => {
+      setText((prev) => {
+        if (prev.endsWith("...")) {
+          return prev.slice(0, -3);
+        } else {
+          return prev + ".";
+        }
+      });
+    }, 500);
+
+    return () => clearInterval(inter);
+  }, []);
+
+  return (
+    <div>
+      {spinner}
+      {text}
+    </div>
+  );
+};

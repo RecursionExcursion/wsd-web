@@ -16,8 +16,6 @@ export async function downloadExecutable(
       cache: "no-store",
     });
 
-    console.log(res);
-
     if (!res.ok) {
       return false;
     }
