@@ -57,7 +57,6 @@ export default function MainDisplay() {
 
   useEffect(() => {
     if (processes.length === 0) {
-      setProcesses([createProcess()]);
     }
   }, [processes]);
 
@@ -161,26 +160,22 @@ export default function MainDisplay() {
     return [];
   };
 
-  const updateName = (newName: string) => setName(newName);
-
   return noConnection ? (
     <NoConnectionToBackendNotice />
   ) : loading ? (
     <div className="w-full h-full flex justify-center items-center">
-      <ConnectingToBackEndAnimation type={firstLoad ? "init" : "building"} />
+      <SpinnerAnimationAndText type={firstLoad ? "init" : "building"} />
     </div>
   ) : (
     <div
-      className="bg-black bg-opacity-50 p-10 rounded-lg
-    flex w-[60rem] h-[40rem] overflow-y-auto"
+      className="bg-black bg-opacity-50 p-10 rounded-lg h-[40rem] overflow-y-auto"
       style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(0, 1fr))",
+        gridTemplateColumns: "1fr 1fr",
       }}
     >
       <ControlPanel
         supportedOs={supportedOs}
-        addProcessAction={addProcess}
         createAction={createExecutable}
         saveAction={() => setSaveProcesss(!saveProcess)}
         savedState={saveProcess}
@@ -189,9 +184,10 @@ export default function MainDisplay() {
       <DeployableDisplay
         processes={processes}
         name={name}
-        updateNameAction={updateName}
+        updateNameAction={(newName: string) => setName(newName)}
         setProcessAction={setProcessAction}
         removeProcessAction={removeProcess}
+        addProcessAction={addProcess}
       />
     </div>
   );
@@ -201,9 +197,7 @@ type ConnectingToBackEndAnimationProps = {
   type: "init" | "building";
 };
 
-const ConnectingToBackEndAnimation = (
-  props: ConnectingToBackEndAnimationProps
-) => {
+const SpinnerAnimationAndText = (props: ConnectingToBackEndAnimationProps) => {
   const initText = "Connecting to backend";
   const buildingText = "Building";
 

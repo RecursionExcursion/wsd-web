@@ -5,7 +5,6 @@ import { iconServer } from "../../assets/icons";
 
 type ControlPanelProps = {
   supportedOs: string[];
-  addProcessAction: () => void;
   saveAction: () => void;
   savedState: boolean;
   createAction: () => void;
@@ -13,14 +12,8 @@ type ControlPanelProps = {
 };
 
 export default function ControlPanel(props: ControlPanelProps) {
-  const {
-    supportedOs,
-    addProcessAction,
-    createAction,
-    saveAction,
-    savedState,
-    resetAction,
-  } = props;
+  const { supportedOs, createAction, saveAction, savedState, resetAction } =
+    props;
 
   return (
     <div className="flex flex-col justify-around items-center">
@@ -50,15 +43,6 @@ export default function ControlPanel(props: ControlPanelProps) {
           ))}
         </select>
       </div>
-      <button
-        onClick={addProcessAction}
-        style={{
-          color: "#47e025",
-          ...controlContainerStyle,
-        }}
-      >
-        {iconServer({ iconKey: "add", size: 20 })} ADD
-      </button>
       <button
         onClick={saveAction}
         style={{
