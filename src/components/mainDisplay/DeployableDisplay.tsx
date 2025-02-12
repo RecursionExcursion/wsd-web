@@ -1,8 +1,8 @@
 "use client";
 
-import { ChangeEvent, CSSProperties } from "react";
+import { ChangeEvent, CSSProperties, useEffect, useRef } from "react";
 import { Process } from "../../types/process";
-import { iconServer } from "../../assets/icons";
+import ProcessLine from "./ProcessLine";
 
 type DeployableDisplayProps = {
   processes: Process[];
@@ -10,6 +10,7 @@ type DeployableDisplayProps = {
   updateNameAction: (newName: string) => void;
   setProcessAction: (oldProcess: Process, newProcess: Process) => void;
   removeProcessAction: (process: Process) => void;
+  addProcessAction: () => void;
 };
 
 export default function DeployableDisplay(props: DeployableDisplayProps) {
@@ -19,30 +20,33 @@ export default function DeployableDisplay(props: DeployableDisplayProps) {
     removeProcessAction,
     name,
     updateNameAction,
+    addProcessAction,
   } = props;
 
-  function handleInputChange(
-    e: ChangeEvent<HTMLInputElement>,
-    proc: Process
-  ): void {
+  const scrollableContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollableContainerRef.current) {
+      scrollableContainerRef.current.scrollTo({
+        top: scrollableContainerRef.current.scrollHeight,
+      });
+    }
+  }, [scrollableContainerRef, processes]);
+
+  function updateArgInput(newArg: string, proc: Process): void {
     const searchedProc = processes.find(
       (p) => p.type === proc.type && p.arg === proc.arg
     );
 
     if (searchedProc) {
-      setProcessAction(searchedProc, { ...searchedProc, arg: e.target.value });
+      setProcessAction(searchedProc, { ...searchedProc, arg: newArg });
     }
   }
 
-  function handleSelectChange(
-    e: ChangeEvent<HTMLSelectElement>,
-    proc: Process
-  ): void {
+  function updateTypeSelect(newVal: string, proc: Process): void {
     const searchedProc = processes.find(
       (p) => p.type === proc.type && p.arg === proc.arg
     );
-
-    const newVal = e.target.value;
 
     if (searchedProc && (newVal === "cmd" || newVal === "path")) {
       setProcessAction(searchedProc, { ...searchedProc, type: newVal });
@@ -50,7 +54,10 @@ export default function DeployableDisplay(props: DeployableDisplayProps) {
   }
 
   return (
-    <div className="flex flex-col gap-5 justify-start items-center">
+    <div
+      className="flex flex-col gap-5 justify-start items-center overflow-y-auto overflow-x-hidden no-scrollbar"
+      ref={scrollableContainerRef}
+    >
       <div className="flex gap-2 items-center">
         <label>Name:</label>
         <input
@@ -62,44 +69,19 @@ export default function DeployableDisplay(props: DeployableDisplayProps) {
           style={{ ...inputStyles }}
         />
       </div>
-
       <div className="flex flex-col gap-5 w-full">
         {processes.map((proc, i) => {
           return (
-            <div
+            <ProcessLine
               key={proc.type + proc.type + i}
-              className="flex gap-5 items-center align-middle justify-center"
-            >
-              <select
-                value={proc.type}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                  handleSelectChange(e, proc)
-                }
-                style={{
-                  ...inputStyles,
-                  padding: "7px",
-                }}
-              >
-                <option className="text-black" value={"path"}>Path</option>
-                <option className="text-black" value={"cmd"}>Command</option>
-              </select>
-              <input
-                value={proc.arg}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  handleInputChange(e, proc)
-                }
-                type="text"
-                style={{ ...inputStyles }}
-              />
-              <button
-                onClick={() => removeProcessAction(proc)}
-                style={{
-                  color: "#ff3911",
-                }}
-              >
-                {iconServer({ iconKey: "delete", size: 30 })}
-              </button>
-            </div>
+              proc={proc}
+              index={i}
+              collectionLength={processes.length}
+              addProcessAction={addProcessAction}
+              removeProcessAction={removeProcessAction}
+              handleInputChange={updateArgInput}
+              handleSelectChange={updateTypeSelect}
+            />
           );
         })}
       </div>
