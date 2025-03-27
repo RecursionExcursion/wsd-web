@@ -6,17 +6,51 @@ export type DownloadExecutablePayload = {
   processes: Process[];
 };
 
+type DDWsdPayload = {
+  name: string | undefined;
+  arch: string;
+  commands: string[];
+};
+
 export async function downloadExecutable(
   payload: DownloadExecutablePayload
 ): Promise<boolean> {
+  console.log({ payload });
+
+  //TODO need to sanitize processes (remove escape\ for /)
+  const ddPayload: DDWsdPayload = {
+    name: payload.name,
+    arch: payload.target,
+    commands: payload.processes.map((p) => {
+      const prefix = p.type === "cmd" ? "cmd:" : "url:";
+
+      let arg = p.arg;
+      if (p.type === "cmd") {
+        arg = arg.replaceAll("\\", "/");
+      }
+
+      console.log(arg);
+
+      return prefix + arg;
+    }),
+  };
+
+  console.log({ ddPayload });
+
   try {
     const res = await fetch("/api/download", {
       method: "POST",
-      body: JSON.stringify(payload),
+      body: JSON.stringify(ddPayload),
       cache: "no-store",
     });
 
+    console.log(res);
+
     if (!res.ok) {
+      const content = await res.json();
+
+      console.log(content);
+
       return false;
     }
 

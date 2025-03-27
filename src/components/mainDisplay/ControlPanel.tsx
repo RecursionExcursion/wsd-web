@@ -15,6 +15,8 @@ export default function ControlPanel(props: ControlPanelProps) {
   const { supportedOs, createAction, saveAction, savedState, resetAction } =
     props;
 
+    console.log('supportedOs', supportedOs)
+
   return (
     <div className="flex flex-col justify-around items-center">
       <button
