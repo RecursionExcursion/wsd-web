@@ -1,6 +1,6 @@
 "use client";
 
-import { CSSProperties } from "react";
+import { ChangeEvent, CSSProperties } from "react";
 import { iconServer } from "../../assets/icons";
 
 type ControlPanelProps = {
@@ -9,13 +9,20 @@ type ControlPanelProps = {
   savedState: boolean;
   createAction: () => void;
   resetAction: () => void;
+  updateTarget: (s: string) => void;
 };
 
 export default function ControlPanel(props: ControlPanelProps) {
-  const { supportedOs, createAction, saveAction, savedState, resetAction } =
-    props;
+  const {
+    supportedOs,
+    createAction,
+    saveAction,
+    savedState,
+    resetAction,
+    updateTarget,
+  } = props;
 
-    console.log('supportedOs', supportedOs)
+  console.log("supportedOs", supportedOs);
 
   return (
     <div className="flex flex-col justify-around items-center">
@@ -36,6 +43,9 @@ export default function ControlPanel(props: ControlPanelProps) {
         <select
           style={{
             background: "transparent",
+          }}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+            updateTarget(e.target.value);
           }}
         >
           {supportedOs.map((sos) => (

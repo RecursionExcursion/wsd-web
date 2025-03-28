@@ -23,13 +23,7 @@ export default function MainDisplay() {
   const [noConnection, setNoConnection] = useState(false);
 
   useEffect(() => {
-    console.log({ supportedOs });
-  }, [supportedOs]);
-
-  useEffect(() => {
     getSupportedOs().then((sos) => {
-      console.log(sos);
-
       if (sos[0].length === 0) {
         setNoConnection(true);
         return;
@@ -68,6 +62,10 @@ export default function MainDisplay() {
 
   const resetProcesses = () => {
     setProcesses([createProcess()]);
+  };
+
+  const updateTarget = (tar: string) => {
+    setTargetOs(tar);
   };
 
   async function createExecutable() {
@@ -186,6 +184,7 @@ export default function MainDisplay() {
         saveAction={() => setSaveProcesss(!saveProcess)}
         savedState={saveProcess}
         resetAction={resetProcesses}
+        updateTarget={updateTarget}
       />
       <DeployableDisplay
         processes={processes}

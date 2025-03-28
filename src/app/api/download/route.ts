@@ -8,8 +8,6 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   const apiPath = await getRouteVar("bundlingPath");
 
-  console.log(apiPath);
-
   const apiKey = process.env.API_KEY;
 
   if (!apiPath || !apiKey) {

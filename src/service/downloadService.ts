@@ -29,13 +29,9 @@ export async function downloadExecutable(
         arg = arg.replaceAll("\\", "/");
       }
 
-      console.log(arg);
-
       return prefix + arg;
     }),
   };
-
-  console.log({ ddPayload });
 
   try {
     const res = await fetch("/api/download", {
@@ -44,13 +40,10 @@ export async function downloadExecutable(
       cache: "no-store",
     });
 
-    console.log(res);
-
     if (!res.ok) {
+      console.log(res);
       const content = await res.json();
-
       console.log(content);
-
       return false;
     }
 
