@@ -38,11 +38,11 @@ export default function ControlPanel(props: ControlPanelProps) {
             background: "transparent",
           }}
         >
-          {supportedOs.map((sos) => (
+          {/* {supportedOs.map((sos) => (
             <option className="text-black" key={sos} value={sos}>
               {sos}
             </option>
-          ))}
+          ))} */}
         </select>
       </div>
       <button
