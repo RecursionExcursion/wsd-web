@@ -30,7 +30,7 @@ export default function MainDisplay() {
     getSupportedOs().then((sos) => {
       console.log(sos);
 
-      if (sos.length === 0) {
+      if (sos[0].length === 0) {
         setNoConnection(true);
         return;
       }
