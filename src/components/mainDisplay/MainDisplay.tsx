@@ -29,8 +29,10 @@ export default function MainDisplay() {
         return;
       }
 
-      setSupportedOs(sos[0]);
-      setTargetOs(sos[0][0]);
+      const sortedOs = sos[0].sort().reverse();
+
+      setSupportedOs(sortedOs);
+      setTargetOs(sortedOs[0]);
       setLoading(false);
       setFirstLoad(false);
     });
