@@ -3,15 +3,16 @@
 import { ComponentPropsWithoutRef, useState } from "react";
 import DeployableMenu from "./DeployableMenu";
 import { HowToUseDisplay } from "../HowToUse";
+import MainAnimation from "../animations/MainAni";
 
 const wrapperStyle = {
-  closed: "h-full w-80 absolute z-10 flex flex-col",
-  open: "h-full w-80 absolute z-10 bg-black bg-opacity-75 flex flex-col",
+  closed: "h-full z-10 flex flex-col",
+  open: "h-full  z-10 bg-black bg-opacity-75 flex flex-col",
 };
 
 export default function SideBar() {
-  const [showMenu, setShowMenu] = useState(false);
-  const [showHowToUse, setShowHowToUse] = useState(false);
+  const [showMenu, setShowMenu] = useState(true);
+  const [showHowToUse, setShowHowToUse] = useState(true);
 
   return (
     <div
@@ -19,21 +20,33 @@ export default function SideBar() {
         showMenu || showHowToUse ? wrapperStyle.open : wrapperStyle.closed
       }
     >
-      <SideBarButton onClick={() => setShowMenu(!showMenu)}>Menu</SideBarButton>
-      {showMenu && (
-        <div className="flex-grow flex flex-col gap-5">
-          <DeployableMenu type="saved" />
-          <DeployableMenu type="last" />
-        </div>
-      )}
-      <SideBarButton onClick={() => setShowHowToUse(!showHowToUse)}>
-        How To Use
-      </SideBarButton>
-      {showHowToUse && (
-        <div className="flex-grow flex">
-          <HowToUseDisplay />
-        </div>
-      )}
+      <div className="relative bg-[url('/hero-bg.png')] bg-cover bg-center bg-opacity-50 w-full p-10 pt-20">
+        <video
+          className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+          src="/nebula.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+        <h1
+          className={`text-7xl w-1/3 flex flex-col gap-10`}
+          style={{ fontFamily: "var(--font-doto), sans-serif" }}
+        >
+          Workspace Deployer
+          <MainAnimation />
+        </h1>
+      </div>
+
+      <div className="flex-grow flex">
+        <HowToUseDisplay />
+      </div>
+
+      <div className="flex-grow flex flex-col gap-5">
+        <DeployableMenu type="saved" />
+        <DeployableMenu type="last" />
+      </div>
+
     </div>
   );
 }

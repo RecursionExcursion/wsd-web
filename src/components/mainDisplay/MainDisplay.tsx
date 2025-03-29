@@ -173,21 +173,10 @@ export default function MainDisplay() {
       <SpinnerAnimationAndText type={firstLoad ? "init" : "building"} />
     </div>
   ) : (
+
     <div
-      className="bg-black bg-opacity-50 p-10 rounded-lg h-[40rem] overflow-y-auto"
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-      }}
+      className="w-full h-full bg-black bg-opacity-50 p-10 rounded-lg h-[40rem] overflow-y-auto flex flex-row gap-10"
     >
-      <ControlPanel
-        supportedOs={supportedOs}
-        createAction={createExecutable}
-        saveAction={() => setSaveProcesss(!saveProcess)}
-        savedState={saveProcess}
-        resetAction={resetProcesses}
-        updateTarget={updateTarget}
-      />
       <DeployableDisplay
         processes={processes}
         name={name}
@@ -195,6 +184,14 @@ export default function MainDisplay() {
         setProcessAction={setProcessAction}
         removeProcessAction={removeProcess}
         addProcessAction={addProcess}
+      />
+      <ControlPanel
+        supportedOs={supportedOs}
+        createAction={createExecutable}
+        saveAction={() => setSaveProcesss(!saveProcess)}
+        savedState={saveProcess}
+        resetAction={resetProcesses}
+        updateTarget={updateTarget}
       />
     </div>
   );

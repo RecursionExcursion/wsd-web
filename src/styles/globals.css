@@ -34,3 +34,24 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 6px;              /* Thin scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #ccc;        /* Grey track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #111;  /* Black thumb */
+  border-radius: 10px;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;        /* Thin scrollbar */
+  scrollbar-color: #111 #ccc;   /* thumb color | track color */
+}
+
