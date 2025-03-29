@@ -3,10 +3,11 @@ import { DownloadExecutablePayload } from "../../../service/downloadService";
 import { getRouteVar } from "../../../service/externalAPIService";
 
 export const maxDuration = 60;
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   const apiPath = await getRouteVar("bundlingPath");
+
   const apiKey = process.env.API_KEY;
 
   if (!apiPath || !apiKey) {

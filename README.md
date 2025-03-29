@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Workspace Deployer — Frontend (`wsd-web`)
 
-## Getting Started
+**Workspace Deployer** is a web app that allows users to generate single-click executables (binaries) that open files, directories, and URLs on their local system. This repository contains the **frontend** portion of the app — a UI built with TypeScript and Next.js that interacts with the backend service to create platform-specific Go binaries.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+- Intuitive UI to build custom workspace launchers  
+- Query the backend to generate Go binaries on-demand  
+- Simple environment configuration for API endpoints  
+- Cross-platform support via backend Go services  
+
+---
+
+## 🧱 Tech Stack
+
+- **Frontend Framework**: [Next.js](https://nextjs.org/)  
+- **Language**: TypeScript  
+- **Package Manager**: npm  
+
+---
+
+## 📦 Getting Started
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/your-org/wsd-web.git
+cd wsd-web
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Create a .env.local file in the root with the following variables:
+
+```bash
+API_BASE=<base_url>
+API_BUNDLING=<build_path>
+API_OS=<os_path>
+API_WAKE=<wake_path>
+API_KEY=<api_key>
+```
+
+These environment variables are used to interact with the backend API that handles binary creation and OS-specific behavior.
+
+### 4. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🧠 How It Works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    The frontend gathers user input for file paths, URLs, and desired config
 
-## Learn More
+    It sends this data to the backend (not in this repo)
 
-To learn more about Next.js, take a look at the following resources:
+    The backend compiles a small Go binary that opens the specified paths/URLs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    The frontend receives the download link and serves it to the user
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+🛠 Backend
 
-## Deploy on Vercel
+This repo only includes the frontend. The Go backend handles the logic for:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    Binary bundling
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    OS-specific path handling
+
+    Script execution logic
+
+Make sure the backend services are running and accessible via the configured environment variables.
+
+
+📸 Screenshots / Demo
+
+...Coming soon 
+
+
+🤝 Contributing
+
+PRs welcome! If you have ideas for improving the UI or extending functionality, feel free to fork and submit a pull request.
+📄 License
