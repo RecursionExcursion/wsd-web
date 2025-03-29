@@ -40,6 +40,44 @@ export default function ProcessLine(props: ProcessLineProps) {
         gridTemplateColumns: "1fr 7fr 1fr",
       }}
     >
+      <div className="flex justify-center items-center">{i + 1}</div>
+      <div className="flex justify-center items-center gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
+          <select
+            value={proc.type}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+              handleSelectChange(e.target.value, proc)
+            }
+            style={{
+              ...inputStyles,
+              padding: "7px",
+            }}
+          >
+            <option className="text-black" value={"path"}>
+              Path
+            </option>
+            <option className="text-black" value={"cmd"}>
+              Command
+            </option>
+          </select>
+          <input
+            style={{ ...inputStyles }}
+            value={proc.arg}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              handleInputChange(e.target.value, proc)
+            }
+            type="text"
+          />
+        </div>
+        <button
+          onClick={() => removeProcessAction(proc)}
+          style={{
+            color: "#ff3911",
+          }}
+        >
+          {iconServer({ iconKey: "delete", size: 30 })}
+        </button>
+      </div>
       <div className="flex justify-center items-center">
         {i === collectionLength - 1 && (
           <button
@@ -52,43 +90,6 @@ export default function ProcessLine(props: ProcessLineProps) {
           </button>
         )}
       </div>
-
-      <div className="flex justify-center items-center gap-4">
-        <select
-          value={proc.type}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            handleSelectChange(e.target.value, proc)
-          }
-          style={{
-            ...inputStyles,
-            padding: "7px",
-          }}
-        >
-          <option className="text-black" value={"path"}>
-            Path
-          </option>
-          <option className="text-black" value={"cmd"}>
-            Command
-          </option>
-        </select>
-        <input
-          style={{ ...inputStyles }}
-          value={proc.arg}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            handleInputChange(e.target.value, proc)
-          }
-          type="text"
-        />
-        <button
-          onClick={() => removeProcessAction(proc)}
-          style={{
-            color: "#ff3911",
-          }}
-        >
-          {iconServer({ iconKey: "delete", size: 30 })}
-        </button>
-      </div>
-      <div className="flex justify-center items-center">{i + 1}</div>
     </div>
   );
 }

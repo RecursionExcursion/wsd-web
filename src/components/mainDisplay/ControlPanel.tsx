@@ -25,9 +25,9 @@ export default function ControlPanel(props: ControlPanelProps) {
   console.log("supportedOs", supportedOs);
 
   return (
-    <div className="grid grid-cols-2 gap-5 flex-1">
+    <div className="flex flex-col xl:flex-1/4 gap-4 w-full justify-center items-center">
       <button
-        className="h-1/2 mt-auto"
+        className="h-fit p-4 "
         onClick={resetAction}
         style={{ ...controlContainerStyle, color: "#ff3911" }}
       >
@@ -35,7 +35,7 @@ export default function ControlPanel(props: ControlPanelProps) {
       </button>
 
       <div
-        className="h-1/2 mt-auto"
+        className="h-fit p-4 "
         style={{
           ...controlContainerStyle,
         }}
@@ -58,7 +58,7 @@ export default function ControlPanel(props: ControlPanelProps) {
         </select>
       </div>
       <button
-        className="h-1/2"
+        className="h-fit p-4"
 
         onClick={saveAction}
         style={{
@@ -70,7 +70,7 @@ export default function ControlPanel(props: ControlPanelProps) {
         {savedState ? "SAVED" : "SAVE"}
       </button>
       <button
-        className="h-1/2"
+        className="h-fit p-4"
 
         onClick={createAction}
         style={{

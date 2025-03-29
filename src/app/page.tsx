@@ -6,8 +6,8 @@ import { awakenAPI } from "../service/apiWakeUpService";
 export default async function Home() {
   awakenAPI();
   return (
-    <main className="w-full h-full relative flex overflow-hidden">
-      <div className="flex flex-row flex-grow justify-between w-full">
+    <main className="w-full h-full relative flex md:overflow-hidden">
+      <div className="flex flex-col md:flex-row flex-grow justify-between w-full">
         <SideBar />
         <MainDisplay />
       </div>

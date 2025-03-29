@@ -20,7 +20,7 @@ export default function SideBar() {
         showMenu || showHowToUse ? wrapperStyle.open : wrapperStyle.closed
       }
     >
-      <div className="relative bg-[url('/hero-bg.png')] bg-cover bg-center bg-opacity-50 w-full p-10 pt-20">
+      <div className="relative bg-[url('/hero-bg.png')] bg-cover bg-center bg-opacity-50 w-full p-10">
         <video
           className="absolute top-0 left-0 w-full h-full object-cover -z-10"
           src="/nebula.mp4"
@@ -30,7 +30,7 @@ export default function SideBar() {
           playsInline
         />
         <h1
-          className={`text-7xl w-1/3 flex flex-col gap-10`}
+          className={`text-5xl xl:text-7xl w-1/3 flex flex-col gap-10`}
           style={{ fontFamily: "var(--font-doto), sans-serif" }}
         >
           Workspace Deployer
@@ -42,7 +42,7 @@ export default function SideBar() {
         <HowToUseDisplay />
       </div>
 
-      <div className="flex-grow flex flex-col gap-5">
+      <div className="flex-grow flex flex-col gap-5 mb-20">
         <DeployableMenu type="saved" />
         <DeployableMenu type="last" />
       </div>
