@@ -29,6 +29,8 @@ export default function MainDisplay() {
         return;
       }
 
+      console.log('sos', sos)
+
       setSupportedOs(sos);
       setTargetOs(sos[0]);
       setLoading(false);

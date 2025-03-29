@@ -1,31 +1,11 @@
 "use server";
 
-const envRoutes = {
-  baseRoute: process.env.API_BASE,
-};
+export async function loadEnvVar(key: string) {
+  const envVar = process.env[key];
 
-const envPaths = {
-  bundlingPath: process.env.API_BUNDLING,
-  osPath: process.env.API_OS,
-  wakePath: process.env.API_WAKE,
-};
+  if (!envVar) {
+    throw Error(`EnvVar ${key} not intialized`);
+  }
 
-if (
-  !envRoutes.baseRoute ||
-  !envPaths.bundlingPath ||
-  !envPaths.osPath ||
-  !envPaths.wakePath
-) {
-  console.error({
-    base: envRoutes.baseRoute,
-    bundling: envPaths.bundlingPath,
-    os: envPaths.osPath,
-    wake: envPaths.wakePath,
-  });
-
-  throw Error("API env vars not configured");
-}
-
-export async function getRouteVar(key: keyof typeof envPaths) {
-  return [envRoutes.baseRoute!, envPaths[key]!].join("/");
+  return envVar;
 }

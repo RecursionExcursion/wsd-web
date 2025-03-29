@@ -1,10 +1,11 @@
 import MainAnimation from "../components/animations/MainAni";
 import MainDisplay from "../components/mainDisplay/MainDisplay";
 import SideBar from "../components/sidebar/SideBar";
-import { awakenAPI } from "../service/apiWakeUpService";
+import { initRoutes } from "../service/getRoutesService";
 
 export default async function Home() {
-  awakenAPI();
+  await initRoutes();
+
   return (
     <main className="w-full h-full relative flex">
       <SideBar />
