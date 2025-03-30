@@ -55,7 +55,7 @@ export default function DeployableDisplay(props: DeployableDisplayProps) {
 
   return (
     <div
-      className="flex flex-col gap-5 justify-start items-center md:overflow-y-auto md:overflow-x-hidden flex-1"
+      className="flex flex-col gap-5 justify-start items-center md:overflow-y-auto md:overflow-x-hidden md:max-h-[80%] py-8"
       ref={scrollableContainerRef}
     >
       <div className="flex gap-2 items-center">

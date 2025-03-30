@@ -39,6 +39,7 @@ export default function ProcessLine(props: ProcessLineProps) {
         display: "grid",
         gridTemplateColumns: "1fr 7fr 1fr",
       }}
+      className="w-full"
     >
       <div className="flex justify-center items-center">{i + 1}</div>
       <div className="flex justify-center items-center gap-4">

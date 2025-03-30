@@ -25,7 +25,7 @@ export default function ControlPanel(props: ControlPanelProps) {
   console.log("supportedOs", supportedOs);
 
   return (
-    <div className="flex flex-col xl:flex-1/4 gap-4 w-full justify-center items-center">
+    <div className="flex flex-col gap-4 w-full justify-center items-center flex-1">
       <button
         className="h-fit p-4 "
         onClick={resetAction}

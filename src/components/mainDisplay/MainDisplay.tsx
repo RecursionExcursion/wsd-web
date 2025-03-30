@@ -175,7 +175,7 @@ export default function MainDisplay() {
   ) : (
 
     <div
-      className="w-full h-full bg-black bg-opacity-50 p-10 rounded-lg h-[40rem] md:overflow-y-auto flex flex-col xl:flex-row gap-10 justify-center items-center"
+      className="w-full bg-black bg-opacity-50 p-10 rounded-lg md:overflow-y-auto flex flex-col xl:flex-row gap-10 justify-center items-center"
     >
       <DeployableDisplay
         processes={processes}
