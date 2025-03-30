@@ -30,7 +30,7 @@ export default function SideBar() {
           playsInline
         />
         <h1
-          className={`text-5xl xl:text-7xl w-1/3 flex flex-col gap-10`}
+          className={`text-5xl xl:text-7xl flex flex-col gap-10`}
           style={{ fontFamily: "var(--font-doto), sans-serif" }}
         >
           Workspace Deployer
