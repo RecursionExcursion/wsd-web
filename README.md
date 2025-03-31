@@ -1,9 +1,11 @@
 # Workspace Deployer — Frontend (`wsd-web`)
 
-![Next.js](https://img.shields.io/badge/Next.js-15+-black?logo=next.js&style=for-the-badge)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript&style=for-the-badge)
-![Build](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge)
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge)
+![Next.js](https://img.shields.io/badge/Next.js-15+-black?logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)
+![Build](https://img.shields.io/badge/build-passing-brightgreen)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)
+![Issues](https://img.shields.io/github/issues/RecursionExcursion/wsd-web)
+![Last Commit](https://img.shields.io/github/last-commit/RecursionExcursion/wsd-web)
 
 
 **Workspace Deployer** is a web app that allows users to generate single-click executables (binaries) that open files, directories, and URLs on their local system. This repository contains the **frontend** portion of the app — a UI built with TypeScript and Next.js that interacts with the backend service to create platform-specific Go binaries.
