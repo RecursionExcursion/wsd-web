@@ -61,7 +61,7 @@ npm run dev
 ```
 
 
-🧠 How It Works
+## 🧠 How It Works
 
     The frontend gathers user input for file paths, URLs, and desired config
 
@@ -71,7 +71,7 @@ npm run dev
 
     The frontend receives the download link and serves it to the user
 
-🛠 Backend
+## 🛠 Backend
 
 This repo only includes the frontend. The Go backend handles the logic for:
 
@@ -80,6 +80,8 @@ This repo only includes the frontend. The Go backend handles the logic for:
     OS-specific path handling
 
     Script execution logic
+
+The backend can be found [here](https://github.com/RecursionExcursion/dd-go-api)
 
 Make sure the backend services are running and accessible via the configured environment variables.
 
@@ -92,4 +94,6 @@ Make sure the backend services are running and accessible via the configured env
 🤝 Contributing
 
 PRs welcome! If you have ideas for improving the UI or extending functionality, feel free to fork and submit a pull request.
+
+
 📄 License
