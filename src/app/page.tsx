@@ -1,10 +1,11 @@
 import MainAnimation from "../components/animations/MainAni";
 import MainDisplay from "../components/mainDisplay/MainDisplay";
 import SideBar from "../components/sidebar/SideBar";
-import { initRoutes } from "../service/getRoutesService";
+import { wakeupApi } from "../service/wakeupService";
 
 export default async function Home() {
-  await initRoutes();
+  wakeupApi();
+  // await initRoutes();
 
   return (
     <main className="w-full h-full relative flex">
