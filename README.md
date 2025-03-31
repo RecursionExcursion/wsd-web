@@ -86,14 +86,14 @@ The backend can be found [here](https://github.com/RecursionExcursion/dd-go-api)
 Make sure the backend services are running and accessible via the configured environment variables.
 
 
-📸 Screenshots / Demo
+## 📸 Screenshots / Demo
 
-...Coming soon 
+Coming soon ...
 
 
-🤝 Contributing
+## 🤝 Contributing
 
 PRs welcome! If you have ideas for improving the UI or extending functionality, feel free to fork and submit a pull request.
 
 
-📄 License
+## 📄 License
