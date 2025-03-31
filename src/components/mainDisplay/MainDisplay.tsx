@@ -66,6 +66,7 @@ export default function MainDisplay() {
   }, [processes]);
 
   const resetProcesses = () => {
+    setName("");
     setProcesses([createProcess()]);
   };
 
