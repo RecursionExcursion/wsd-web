@@ -33,6 +33,7 @@ export default function MainDisplay() {
 
       setSupportedOs(sortedOs);
       setTargetOs(sortedOs[0]);
+
       setLoading(false);
       setFirstLoad(false);
     });
