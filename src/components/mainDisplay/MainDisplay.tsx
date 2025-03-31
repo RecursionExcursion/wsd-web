@@ -29,11 +29,10 @@ export default function MainDisplay() {
         return;
       }
 
-      const sortedOs = sos[0].sort().reverse();
+      const sortedOs = sos.sort().reverse();
 
       setSupportedOs(sortedOs);
       setTargetOs(sortedOs[0]);
-
       setLoading(false);
       setFirstLoad(false);
     });
@@ -157,7 +156,7 @@ export default function MainDisplay() {
       const res = await fetch(`/api/os`);
 
       if (res.ok) {
-        return (await res.json()) as string[][];
+        return (await res.json()) as string[];
       }
 
       iterations++;

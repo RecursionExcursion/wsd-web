@@ -6,7 +6,6 @@ export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
-
   const apiPath = await getApiRoute("postBuild");
 
   const apiKey = process.env.API_KEY;
@@ -33,10 +32,6 @@ export async function POST(req: NextRequest) {
       cache: "no-store",
     });
 
-    console.log('res', res)
-    console.log(await res.text());
-    
-
     clearTimeout(timeoutId);
 
     const { readable, writable } = new TransformStream();
@@ -53,8 +48,7 @@ export async function POST(req: NextRequest) {
       status: res.status,
       headers: {
         "Content-Type":
-          res.headers.get("Content-Type") ||
-          "application/octet-stream",
+          res.headers.get("Content-Type") || "application/octet-stream",
         "Content-Disposition":
           res.headers.get("Content-Disposition") ||
           'attachment; filename="file.exe"',
