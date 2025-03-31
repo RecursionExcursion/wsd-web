@@ -1,7 +1,7 @@
 # Workspace Deployer — Frontend (`wsd-web`)
 
-![Next.js](https://img.shields.io/badge/Next.js-13+-black?logo=next.js&style=for-the-badge)
-![TypeScript](https://img.shields.io/badge/TypeScript-4.x-blue?logo=typescript&style=for-the-badge)
+![Next.js](https://img.shields.io/badge/Next.js-15+-black?logo=next.js&style=for-the-badge)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript&style=for-the-badge)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge)
 
