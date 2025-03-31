@@ -6,7 +6,9 @@ export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
+
   const apiPath = await getApiRoute("postBuild");
+
   const apiKey = process.env.API_KEY;
 
   if (!apiPath || !apiKey) {

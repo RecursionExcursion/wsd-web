@@ -24,15 +24,16 @@ export default function MainDisplay() {
 
   useEffect(() => {
     getSupportedOs().then((sos) => {
-      if (sos.length === 0) {
+      if (sos[0].length === 0) {
         setNoConnection(true);
         return;
       }
 
-      console.log('sos', sos)
+      const sortedOs = sos[0].sort().reverse();
 
-      setSupportedOs(sos);
-      setTargetOs(sos[0]);
+      setSupportedOs(sortedOs);
+      setTargetOs(sortedOs[0]);
+
       setLoading(false);
       setFirstLoad(false);
     });
@@ -64,6 +65,10 @@ export default function MainDisplay() {
 
   const resetProcesses = () => {
     setProcesses([createProcess()]);
+  };
+
+  const updateTarget = (tar: string) => {
+    setTargetOs(tar);
   };
 
   async function createExecutable() {
@@ -152,7 +157,7 @@ export default function MainDisplay() {
       const res = await fetch(`/api/os`);
 
       if (res.ok) {
-        return (await res.json()) as string[];
+        return (await res.json()) as string[][];
       }
 
       iterations++;
@@ -182,6 +187,7 @@ export default function MainDisplay() {
         saveAction={() => setSaveProcesss(!saveProcess)}
         savedState={saveProcess}
         resetAction={resetProcesses}
+        updateTarget={updateTarget}
       />
       <DeployableDisplay
         processes={processes}
