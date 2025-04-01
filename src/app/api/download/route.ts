@@ -1,18 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DownloadExecutablePayload } from "../../../service/downloadService";
-import { getRouteVar } from "../../../service/externalAPIService";
+import { getApiRoute } from "../../../service/getRoutesService";
 
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
-  const apiPath = await getRouteVar("bundlingPath");
+  const apiPath = await getApiRoute("postBuild");
 
   const apiKey = process.env.API_KEY;
 
   if (!apiPath || !apiKey) {
     throw Error("Bundling API params not configured");
   }
+  console.log(apiPath);
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 600000);
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
   try {
     const payload = (await req.json()) as DownloadExecutablePayload;
 
-    const externalApiResponse = await fetch(apiPath, {
+    const res = await fetch(apiPath, {
       method: "POST",
       body: JSON.stringify(payload),
       headers: {
@@ -35,22 +36,21 @@ export async function POST(req: NextRequest) {
 
     const { readable, writable } = new TransformStream();
 
-    if (!externalApiResponse.body) {
+    if (!res.body) {
       return new Response(null, {
         status: 500,
       });
     }
 
-    externalApiResponse.body.pipeTo(writable);
+    res.body.pipeTo(writable);
 
     return new Response(readable, {
-      status: externalApiResponse.status,
+      status: res.status,
       headers: {
         "Content-Type":
-          externalApiResponse.headers.get("Content-Type") ||
-          "application/octet-stream",
+          res.headers.get("Content-Type") || "application/octet-stream",
         "Content-Disposition":
-          externalApiResponse.headers.get("Content-Disposition") ||
+          res.headers.get("Content-Disposition") ||
           'attachment; filename="file.exe"',
       },
     });

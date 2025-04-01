@@ -48,9 +48,7 @@ npm install
 
 ```bash
 API_BASE=<base_url>
-API_BUNDLING=<build_path>
-API_OS=<os_path>
-API_WAKE=<wake_path>
+API_ROUTES=<route_path>
 API_KEY=<api_key>
 ```
 

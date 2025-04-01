@@ -22,8 +22,6 @@ export default function ControlPanel(props: ControlPanelProps) {
     updateTarget,
   } = props;
 
-  console.log("supportedOs", supportedOs);
-
   return (
     <div className="flex flex-col justify-around items-center">
       <button

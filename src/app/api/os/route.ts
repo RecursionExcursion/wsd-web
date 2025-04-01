@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
-import { getRouteVar } from "../../../service/externalAPIService";
+import { getApiRoute } from "../../../service/getRoutesService";
 
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const apiPath = await getRouteVar("osPath");
+  const apiPath = await getApiRoute("getOs");
   const apiKey = process.env.API_KEY;
+
+  console.log("hi");
 
   if (!apiPath || !apiKey) {
     throw Error("Bundling API params not configured");
@@ -24,15 +26,14 @@ export async function GET() {
       signal: controller.signal,
     });
 
-    clearTimeout(timeoutId);
+    console.log(res);
 
-    return new Response(res.body, {
-      status: res.status,
-    });
+    clearTimeout(timeoutId);
+    return res;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.name === "AbortError") {
-      throw new Error("Fetch request timed out");
+      NextResponse.json({ message: "Request tiemd out" }, { status: 500 });
     }
 
     return NextResponse.json(

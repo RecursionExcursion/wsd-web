@@ -10,6 +10,7 @@ import { eventKeys } from "../../lib/events/events";
 import { LS_Deployable } from "../../service/localStorageService";
 import { useSpinner } from "../../hooks/UseSpinner";
 import NoConnectionToBackendNotice from "../NoConnectionToBackendNotice";
+import { initRoutes } from "../../service/getRoutesService";
 
 export default function MainDisplay() {
   const [processes, setProcesses] = useState<Process[]>([]);
@@ -23,18 +24,20 @@ export default function MainDisplay() {
   const [noConnection, setNoConnection] = useState(false);
 
   useEffect(() => {
-    getSupportedOs().then((sos) => {
-      if (sos[0].length === 0) {
-        setNoConnection(true);
-        return;
-      }
+    initRoutes().then(() => {
+      getSupportedOs().then((sos) => {
+        if (sos[0].length === 0) {
+          setNoConnection(true);
+          return;
+        }
 
-      const sortedOs = sos[0].sort().reverse();
+        const sortedOs = sos.sort().reverse();
 
-      setSupportedOs(sortedOs);
-      setTargetOs(sortedOs[0]);
-      setLoading(false);
-      setFirstLoad(false);
+        setSupportedOs(sortedOs);
+        setTargetOs(sortedOs[0]);
+        setLoading(false);
+        setFirstLoad(false);
+      });
     });
   }, []);
 
@@ -63,6 +66,7 @@ export default function MainDisplay() {
   }, [processes]);
 
   const resetProcesses = () => {
+    setName("");
     setProcesses([createProcess()]);
   };
 
@@ -156,7 +160,7 @@ export default function MainDisplay() {
       const res = await fetch(`/api/os`);
 
       if (res.ok) {
-        return (await res.json()) as string[][];
+        return (await res.json()) as string[];
       }
 
       iterations++;
