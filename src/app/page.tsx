@@ -1,7 +1,7 @@
 import MainAnimation from "../components/animations/MainAni";
 import MainDisplay from "../components/mainDisplay/MainDisplay";
 import SideBar from "../components/sidebar/SideBar";
-import { wakeupApi } from "../service/wakeupService";
+import { wakeupApi } from "../service/apiPingService";
 
 export default async function Home() {
   wakeupApi();

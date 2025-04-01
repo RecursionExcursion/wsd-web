@@ -8,9 +8,12 @@ import { emitter } from "../../lib/events/EventEmittor";
 import { downloadExecutable } from "../../service/downloadService";
 import { eventKeys } from "../../lib/events/events";
 import { LS_Deployable } from "../../service/localStorageService";
-import { useSpinner } from "../../hooks/UseSpinner";
 import NoConnectionToBackendNotice from "../NoConnectionToBackendNotice";
 import { initRoutes } from "../../service/getRoutesService";
+import { getSupportedOs } from "../../service/supportedOsService";
+import { createProcess } from "../../service/processService";
+import { pollApiStatus } from "../../service/apiStatusPollingService";
+import { SpinnerAnimationAndText } from "./Spinner";
 
 export default function MainDisplay() {
   const [processes, setProcesses] = useState<Process[]>([]);
@@ -20,8 +23,26 @@ export default function MainDisplay() {
   const [saveProcess, setSaveProcesss] = useState(false);
   const [targetOs, setTargetOs] = useState("");
   const [name, setName] = useState("");
+  const [isReady, setIsReady] = useState(false);
 
   const [noConnection, setNoConnection] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/warmup");
+    pollApiStatus();
+
+    const setReadyStatus = (data: { content: boolean }) => {
+      if (data.content) {
+        setIsReady(data.content);
+      }
+    };
+
+    emitter.on(eventKeys.backendReady, setReadyStatus);
+
+    return () => {
+      emitter.off(eventKeys.backendReady, setReadyStatus);
+    };
+  }, []);
 
   useEffect(() => {
     initRoutes().then(() => {
@@ -60,11 +81,6 @@ export default function MainDisplay() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (processes.length === 0) {
-    }
-  }, [processes]);
-
   const resetProcesses = () => {
     setName("");
     setProcesses([createProcess()]);
@@ -75,6 +91,11 @@ export default function MainDisplay() {
   };
 
   async function createExecutable() {
+    if (!isReady) {
+      console.log("Backend is not ready");
+      return;
+    }
+
     //Sanitaze process inputs
     const sanitizedProcesses = processes.filter((p) => p.arg.trim() !== "");
     setProcesses(sanitizedProcesses);
@@ -131,12 +152,6 @@ export default function MainDisplay() {
       setProcesses(copyProcesses);
     }
   }
-  const createProcess = (): Process => {
-    return {
-      type: "path",
-      arg: "",
-    };
-  };
 
   function addProcess() {
     setProcesses((prev) => [...prev, createProcess()]);
@@ -154,23 +169,6 @@ export default function MainDisplay() {
       }
     }
   }
-
-  const getSupportedOs = async () => {
-    let iterations = 0;
-
-    while (iterations <= 3) {
-      const res = await fetch(`/api/os`);
-
-      if (res.ok) {
-        return (await res.json()) as string[];
-      }
-
-      iterations++;
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-    }
-
-    return [];
-  };
 
   return noConnection ? (
     <NoConnectionToBackendNotice />
@@ -205,39 +203,3 @@ export default function MainDisplay() {
     </div>
   );
 }
-
-type ConnectingToBackEndAnimationProps = {
-  type: "init" | "building";
-};
-
-const SpinnerAnimationAndText = (props: ConnectingToBackEndAnimationProps) => {
-  const initText = "Connecting to backend";
-  const buildingText = "Building";
-
-  const spinner = useSpinner();
-
-  const [text, setText] = useState(
-    props.type === "init" ? initText : buildingText
-  );
-
-  useEffect(() => {
-    const inter = setInterval(() => {
-      setText((prev) => {
-        if (prev.endsWith("...")) {
-          return prev.slice(0, -3);
-        } else {
-          return prev + ".";
-        }
-      });
-    }, 500);
-
-    return () => clearInterval(inter);
-  }, []);
-
-  return (
-    <div>
-      {spinner}
-      {text}
-    </div>
-  );
-};

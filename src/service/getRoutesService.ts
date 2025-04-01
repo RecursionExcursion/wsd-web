@@ -18,6 +18,8 @@ export async function initRoutes() {
 
   Object.entries(routes).forEach(([k, v]) => routeMap.set(k, baseUrl + v));
 
+  console.log("routeMap", routeMap);
+
   initalized = true;
 }
 
