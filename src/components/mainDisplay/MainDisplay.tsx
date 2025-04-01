@@ -12,7 +12,7 @@ import NoConnectionToBackendNotice from "../NoConnectionToBackendNotice";
 import { initRoutes } from "../../service/getRoutesService";
 import { getSupportedOs } from "../../service/supportedOsService";
 import { createProcess } from "../../service/processService";
-import { pollApiStatus } from "../../service/apiStatusPollingService";
+import { warmupAndPoll } from "../../service/apiStatusPollingService";
 import { SpinnerAnimationAndText } from "./Spinner";
 
 export default function MainDisplay() {
@@ -28,8 +28,7 @@ export default function MainDisplay() {
   const [noConnection, setNoConnection] = useState(false);
 
   useEffect(() => {
-    fetch("/api/warmup");
-    pollApiStatus();
+    warmupAndPoll();
 
     const setReadyStatus = (data: { content: boolean }) => {
       if (data.content) {
