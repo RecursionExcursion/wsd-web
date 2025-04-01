@@ -39,7 +39,6 @@ export async function downloadExecutable(
     });
 
     if (!res.ok) {
-      const content = await res.json();
       return false;
     }
 
