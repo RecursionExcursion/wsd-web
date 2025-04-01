@@ -143,13 +143,15 @@ export default function MainDisplay() {
   }
 
   function removeProcess(proc: Process): void {
-    const copyProcesses = [...processes];
-    const indexToRemove = copyProcesses.findIndex(
-      (p) => p.type === proc.type && p.arg === proc.arg
-    );
-    if (indexToRemove >= 0) {
-      copyProcesses.splice(indexToRemove, 1);
-      setProcesses(copyProcesses);
+    if (processes.length > 1) {
+      const copyProcesses = [...processes];
+      const indexToRemove = copyProcesses.findIndex(
+        (p) => p.type === proc.type && p.arg === proc.arg
+      );
+      if (indexToRemove >= 0) {
+        copyProcesses.splice(indexToRemove, 1);
+        setProcesses(copyProcesses);
+      }
     }
   }
 
