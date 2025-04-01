@@ -15,8 +15,6 @@ type DDWsdPayload = {
 export async function downloadExecutable(
   payload: DownloadExecutablePayload
 ): Promise<boolean> {
-  console.log({ payload });
-
   //TODO need to sanitize processes (remove escape\ for /)
   const ddPayload: DDWsdPayload = {
     name: payload.name,
@@ -41,9 +39,7 @@ export async function downloadExecutable(
     });
 
     if (!res.ok) {
-      console.log(res);
       const content = await res.json();
-      console.log(content);
       return false;
     }
 
