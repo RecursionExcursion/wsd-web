@@ -5,7 +5,6 @@ import { wakeupApi } from "../service/wakeupService";
 
 export default async function Home() {
   wakeupApi();
-  // await initRoutes();
 
   return (
     <main className="w-full h-full relative flex">

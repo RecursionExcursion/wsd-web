@@ -25,7 +25,9 @@ export async function GET() {
     });
 
     clearTimeout(timeoutId);
-    return res;
+    // return res;
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.name === "AbortError") {
