@@ -13,9 +13,9 @@ export const warmupAndPoll = async () => {
       console.log(`API is already warmed up`);
       emitter.emit(eventKeys.backendReady, { content: isReady });
       return;
+    } else {
+      fetch("/api/warmup");
     }
-  } else {
-    fetch("/api/warmup");
   }
 
   const pollFreq = 5000;
