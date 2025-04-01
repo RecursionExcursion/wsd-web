@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
   if (!apiPath || !apiKey) {
     throw Error("Bundling API params not configured");
   }
-  console.log(apiPath);
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 600000);
