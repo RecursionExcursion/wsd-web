@@ -25,15 +25,17 @@ export default function ControlPanel(props: ControlPanelProps) {
   console.log("supportedOs", supportedOs);
 
   return (
-    <div className="flex flex-col justify-around items-center">
+    <div className="flex flex-col gap-4 w-full justify-center items-center flex-1">
       <button
+        className="h-fit p-4 "
         onClick={resetAction}
-        style={{ ...controlContainerStyle, color: "#ff11f1" }}
+        style={{ ...controlContainerStyle, color: "#ff3911" }}
       >
-        {iconServer({ iconKey: "egg", size: 20 })} NEW
+        {iconServer({ iconKey: "trashCan", size: 20 })} CLEAR
       </button>
 
       <div
+        className="h-fit p-4 "
         style={{
           ...controlContainerStyle,
         }}
@@ -56,16 +58,20 @@ export default function ControlPanel(props: ControlPanelProps) {
         </select>
       </div>
       <button
+        className="h-fit p-4"
+
         onClick={saveAction}
         style={{
-          color: savedState ? "#47e025" : "#ff3911",
+          color: savedState ? "#47e025" : "#ff11f1",
           ...controlContainerStyle,
         }}
       >
-        {iconServer({ iconKey: savedState ? "check" : "x", size: 20 })}
-        SAVE
+        {iconServer({ iconKey: savedState ? "check" : "save", size: 20 })}
+        {savedState ? "SAVED" : "SAVE"}
       </button>
       <button
+        className="h-fit p-4"
+
         onClick={createAction}
         style={{
           color: "#11d4ff",

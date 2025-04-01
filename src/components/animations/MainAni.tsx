@@ -97,7 +97,7 @@ export default function MainAnimation() {
   }, [windowSize]);
 
   return (
-    <div className="w-[80%] flex justify-between relative">
+    <div className="w-full flex justify-between relative">
       <div ref={serverRef}>{serverIcon}</div>
       <div className="absolute" ref={messageRef}>
         {messageHorz}
