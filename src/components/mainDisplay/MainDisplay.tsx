@@ -77,7 +77,6 @@ export default function MainDisplay() {
     return () => {
       emitter.off(eventKeys.updateDeployable, updateContent);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const resetProcesses = () => {

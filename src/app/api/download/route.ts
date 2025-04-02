@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    await res.body.pipeTo(writable);
+    res.body.pipeTo(writable);
 
     return new Response(readable, {
       status: res.status,
