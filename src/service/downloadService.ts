@@ -6,7 +6,7 @@ export type DownloadExecutablePayload = {
   processes: Process[];
 };
 
-type DDWsdPayload = {
+export type DDWsdPayload = {
   name: string | undefined;
   arch: string;
   commands: string[];
