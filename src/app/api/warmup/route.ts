@@ -5,7 +5,7 @@ export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const apiPath = await getApiRoute("getWarmUp");
+  const apiPath = await getApiRoute("postWarmUp");
   const apiKey = process.env.API_KEY;
 
   if (!apiPath || !apiKey) {
@@ -17,7 +17,7 @@ export async function GET() {
 
   try {
     const res = await fetch(apiPath, {
-      method: "GET",
+      method: "POST",
       headers: {
         authorization: `Bearer ${apiKey}`,
       },
@@ -31,7 +31,7 @@ export async function GET() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.name === "AbortError") {
-      NextResponse.json({ message: "Request tiemd out" }, { status: 500 });
+      NextResponse.json({ message: "Request timed out" }, { status: 500 });
     }
 
     return NextResponse.json(

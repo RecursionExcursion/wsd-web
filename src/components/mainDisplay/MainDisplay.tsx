@@ -45,6 +45,7 @@ export default function MainDisplay() {
 
   useEffect(() => {
     initRoutes().then(() => {
+      fetch("/api/warmup")
       getSupportedOs().then((sos) => {
         if (sos[0].length === 0) {
           setNoConnection(true);
