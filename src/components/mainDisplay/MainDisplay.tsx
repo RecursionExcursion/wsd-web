@@ -12,7 +12,6 @@ import NoConnectionToBackendNotice from "../NoConnectionToBackendNotice";
 import { initRoutes } from "../../service/getRoutesService";
 import { getSupportedOs } from "../../service/supportedOsService";
 import { createProcess } from "../../service/processService";
-// import { warmupAndPoll } from "../../service/apiStatusPollingService";
 import { SpinnerAnimationAndText } from "./Spinner";
 
 export default function MainDisplay() {
@@ -23,29 +22,11 @@ export default function MainDisplay() {
   const [saveProcess, setSaveProcesss] = useState(false);
   const [targetOs, setTargetOs] = useState("");
   const [name, setName] = useState("");
-  // const [isReady, setIsReady] = useState(false);
 
   const [noConnection, setNoConnection] = useState(false);
 
-  // useEffect(() => {
-  //   warmupAndPoll();
-
-  //   const setReadyStatus = (data: { content: boolean }) => {
-  //     if (data.content) {
-  //       setIsReady(data.content);
-  //     }
-  //   };
-
-  //   emitter.on(eventKeys.backendReady, setReadyStatus);
-
-  //   return () => {
-  //     emitter.off(eventKeys.backendReady, setReadyStatus);
-  //   };
-  // }, []);
-
   useEffect(() => {
     initRoutes().then(() => {
-      // fetch("/api/warmup")
       getSupportedOs().then((sos) => {
         if (sos[0].length === 0) {
           setNoConnection(true);
@@ -90,11 +71,6 @@ export default function MainDisplay() {
   };
 
   async function createExecutable() {
-    // if (!isReady) {
-    //   console.log("Backend is not ready");
-    //   return;
-    // }
-
     //Sanitaze process inputs
     const sanitizedProcesses = processes.filter((p) => p.arg.trim() !== "");
     setProcesses(sanitizedProcesses);
