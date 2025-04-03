@@ -13,34 +13,39 @@ import { initRoutes } from "../../service/getRoutesService";
 import { getSupportedOs } from "../../service/supportedOsService";
 import { createProcess } from "../../service/processService";
 import { SpinnerAnimationAndText } from "./Spinner";
+import { useApiConnectionWatcher } from "../../hooks/UseApiConnectionWatcher";
 
 export default function MainDisplay() {
   const [processes, setProcesses] = useState<Process[]>([]);
-  const [firstLoad, setFirstLoad] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [supportedOs, setSupportedOs] = useState<string[]>([]);
   const [saveProcess, setSaveProcesss] = useState(false);
   const [targetOs, setTargetOs] = useState("");
   const [name, setName] = useState("");
 
+  const { isConnected, connect, ConnectionStatus } = useApiConnectionWatcher();
+
   const [noConnection, setNoConnection] = useState(false);
 
   useEffect(() => {
-    initRoutes().then(() => {
-      getSupportedOs().then((sos) => {
-        if (sos[0].length === 0) {
-          setNoConnection(true);
-          return;
-        }
+    connect(async () => {
+      initRoutes().then(() => {
+        getSupportedOs().then((sos) => {
+          if (sos[0].length === 0) {
+            setNoConnection(true);
+            return;
+          }
 
-        const sortedOs = sos.sort().reverse();
+          const sortedOs = sos.sort().reverse();
 
-        setSupportedOs(sortedOs);
-        setTargetOs(sortedOs[0]);
-        setLoading(false);
-        setFirstLoad(false);
+          setSupportedOs(sortedOs);
+          setTargetOs(sortedOs[0]);
+          setLoading(false);
+          // setFirstLoad(false);
+        });
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -71,6 +76,8 @@ export default function MainDisplay() {
   };
 
   async function createExecutable() {
+    if (!isConnected) return;
+
     //Sanitaze process inputs
     const sanitizedProcesses = processes.filter((p) => p.arg.trim() !== "");
     setProcesses(sanitizedProcesses);
@@ -149,32 +156,35 @@ export default function MainDisplay() {
     <NoConnectionToBackendNotice />
   ) : loading ? (
     <div className="w-full h-full flex justify-center items-center">
-      <SpinnerAnimationAndText type={firstLoad ? "init" : "building"} />
+      <SpinnerAnimationAndText type={"building"} />
     </div>
   ) : (
-    <div
-      className="bg-black bg-opacity-50 p-10 rounded-lg h-[40rem] overflow-y-auto"
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-      }}
-    >
-      <ControlPanel
-        supportedOs={supportedOs}
-        createAction={createExecutable}
-        saveAction={() => setSaveProcesss(!saveProcess)}
-        savedState={saveProcess}
-        resetAction={resetProcesses}
-        updateTarget={updateTarget}
-      />
-      <DeployableDisplay
-        processes={processes}
-        name={name}
-        updateNameAction={(newName: string) => setName(newName)}
-        setProcessAction={setProcessAction}
-        removeProcessAction={removeProcess}
-        addProcessAction={addProcess}
-      />
+    <div>
+      {ConnectionStatus()}
+      <div
+        className="bg-black bg-opacity-50 p-10 rounded-lg h-[40rem] overflow-y-auto"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+        }}
+      >
+        <ControlPanel
+          supportedOs={supportedOs}
+          createAction={createExecutable}
+          saveAction={() => setSaveProcesss(!saveProcess)}
+          savedState={saveProcess}
+          resetAction={resetProcesses}
+          updateTarget={updateTarget}
+        />
+        <DeployableDisplay
+          processes={processes}
+          name={name}
+          updateNameAction={(newName: string) => setName(newName)}
+          setProcessAction={setProcessAction}
+          removeProcessAction={removeProcess}
+          addProcessAction={addProcess}
+        />
+      </div>
     </div>
   );
 }
