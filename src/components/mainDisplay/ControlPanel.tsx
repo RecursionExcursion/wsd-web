@@ -38,7 +38,7 @@ export default function ControlPanel(props: ControlPanelProps) {
       >
         {iconServer({ iconKey: "monitorIcon", size: 20 })}
         <span>OS:</span>
-        <select
+        <select className="cursor-pointer"
           style={{
             background: "transparent",
           }}

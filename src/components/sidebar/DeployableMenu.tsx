@@ -15,7 +15,12 @@ type DeployableMenuProps = {
 };
 
 export default function DeployableMenu(props: DeployableMenuProps) {
-  const [items, setItems] = useState(LocalStorageService.get(props.type));
+  const [items, setItems] = useState<LS_Deployable[]>();
+
+  useEffect(()=>{
+    setItems(LocalStorageService.get(props.type))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
 
   useEffect(() => {
     const refreshContent = () => {
@@ -30,7 +35,7 @@ export default function DeployableMenu(props: DeployableMenuProps) {
   }, [props.type]);
 
   const title = (() => {
-    const l = items.length;
+    const l = items?.length ?? 0;
     switch (props.type) {
       case "saved":
         return `SAVED (${l})`;
@@ -42,7 +47,7 @@ export default function DeployableMenu(props: DeployableMenuProps) {
   return (
     <div className="flex flex-col justify-center text-center">
       <h2>{title}</h2>
-      {items.map((item, i) => (
+      {items?.map((item, i) => (
         <ItemDisplay key={item.timestamp + i} item={item} type={props.type} />
       ))}
     </div>
@@ -95,7 +100,7 @@ const ItemDisplay = (props: ItemDisplayProps) => {
               );
             })}
           </div>
-          {type === "saved" && (
+          {/* {type === "saved" && ( */}
             <button
               style={{
                 color: "#ee3939",
@@ -107,7 +112,7 @@ const ItemDisplay = (props: ItemDisplayProps) => {
             >
               {iconServer({ iconKey: "trashCan", size: 24 })}
             </button>
-          )}
+          {/* )} */}
         </>
       )}
     </div>

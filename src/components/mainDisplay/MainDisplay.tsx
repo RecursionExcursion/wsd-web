@@ -14,6 +14,7 @@ import { getSupportedOs } from "../../service/supportedOsService";
 import { createProcess } from "../../service/processService";
 import { SpinnerAnimationAndText } from "./Spinner";
 import { useApiConnectionWatcher } from "../../hooks/UseApiConnectionWatcher";
+import { createPortal } from "react-dom";
 
 export default function MainDisplay() {
   const [processes, setProcesses] = useState<Process[]>([]);
@@ -22,6 +23,8 @@ export default function MainDisplay() {
   const [saveProcess, setSaveProcesss] = useState(false);
   const [targetOs, setTargetOs] = useState("");
   const [name, setName] = useState("");
+  const [connectionStatusPortalTarget, setConnectionStatusPortalTarget] =
+    useState<HTMLElement>();
 
   const { isConnected, connect, ConnectionStatus } = useApiConnectionWatcher();
 
@@ -29,6 +32,11 @@ export default function MainDisplay() {
 
   useEffect(() => {
     connect(async () => {
+      //TODO mocking conn delay
+      await (function () {
+        return new Promise((resolve) => setTimeout(resolve, 5000));
+      })();
+
       initRoutes().then(() => {
         getSupportedOs().then((sos) => {
           if (sos[0].length === 0) {
@@ -64,6 +72,13 @@ export default function MainDisplay() {
     return () => {
       emitter.off(eventKeys.updateDeployable, updateContent);
     };
+  }, []);
+
+  useEffect(() => {
+    const target = document.getElementById("connection-status");
+    if (target) {
+      setConnectionStatusPortalTarget(target);
+    }
   }, []);
 
   const resetProcesses = () => {
@@ -152,39 +167,44 @@ export default function MainDisplay() {
     }
   }
 
-  return noConnection ? (
-    <NoConnectionToBackendNotice />
-  ) : loading ? (
-    <div className="w-full h-full flex justify-center items-center">
-      <SpinnerAnimationAndText type={"building"} />
-    </div>
-  ) : (
-    <div>
-      {ConnectionStatus()}
-      <div
-        className="bg-black bg-opacity-50 p-10 rounded-lg h-[40rem] overflow-y-auto"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-        }}
-      >
-        <ControlPanel
-          supportedOs={supportedOs}
-          createAction={createExecutable}
-          saveAction={() => setSaveProcesss(!saveProcess)}
-          savedState={saveProcess}
-          resetAction={resetProcesses}
-          updateTarget={updateTarget}
-        />
-        <DeployableDisplay
-          processes={processes}
-          name={name}
-          updateNameAction={(newName: string) => setName(newName)}
-          setProcessAction={setProcessAction}
-          removeProcessAction={removeProcess}
-          addProcessAction={addProcess}
-        />
-      </div>
-    </div>
+  return (
+    <>
+      {noConnection ? (
+        <NoConnectionToBackendNotice />
+      ) : loading ? (
+        <div className="w-full h-full flex justify-center items-center">
+          <SpinnerAnimationAndText type={"building"} />
+        </div>
+      ) : (
+        <div>
+          <div
+            className="bg-black bg-opacity-50 p-10 rounded-lg h-[40rem] overflow-y-auto"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+            }}
+          >
+            <ControlPanel
+              supportedOs={supportedOs}
+              createAction={createExecutable}
+              saveAction={() => setSaveProcesss(!saveProcess)}
+              savedState={saveProcess}
+              resetAction={resetProcesses}
+              updateTarget={updateTarget}
+            />
+            <DeployableDisplay
+              processes={processes}
+              name={name}
+              updateNameAction={(newName: string) => setName(newName)}
+              setProcessAction={setProcessAction}
+              removeProcessAction={removeProcess}
+              addProcessAction={addProcess}
+            />
+          </div>
+        </div>
+      )}
+      {connectionStatusPortalTarget &&
+        createPortal(ConnectionStatus(), connectionStatusPortalTarget)}
+    </>
   );
 }
