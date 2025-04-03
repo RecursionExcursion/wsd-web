@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Process } from "../../types/process";
-import ControlPanel from "./ControlPanel";
-import DeployableDisplay from "./DeployableDisplay";
 import { emitter } from "../../lib/events/EventEmittor";
 import { downloadExecutable } from "../../service/downloadService";
 import { eventKeys } from "../../lib/events/events";
@@ -15,6 +13,10 @@ import { createProcess } from "../../service/processService";
 import { SpinnerAnimationAndText } from "./Spinner";
 import { useApiConnectionWatcher } from "../../hooks/UseApiConnectionWatcher";
 import { createPortal } from "react-dom";
+import Button from "../Button";
+import Input from "../Input";
+import ProcessLine from "./ProcessLine";
+import OsSelector from "../OsSelector";
 
 export default function MainDisplay() {
   const [processes, setProcesses] = useState<Process[]>([]);
@@ -34,7 +36,7 @@ export default function MainDisplay() {
     connect(async () => {
       await initRoutes();
       const sos = await getSupportedOs();
-      
+
       if (sos[0].length === 0) {
         setNoConnection(true);
         return;
@@ -160,6 +162,26 @@ export default function MainDisplay() {
     }
   }
 
+  function updateTypeSelect(newVal: string, proc: Process): void {
+    const searchedProc = processes.find(
+      (p) => p.type === proc.type && p.arg === proc.arg
+    );
+
+    if (searchedProc && (newVal === "cmd" || newVal === "path")) {
+      setProcessAction(searchedProc, { ...searchedProc, type: newVal });
+    }
+  }
+
+  function updateArgInput(newArg: string, proc: Process): void {
+    const searchedProc = processes.find(
+      (p) => p.type === proc.type && p.arg === proc.arg
+    );
+
+    if (searchedProc) {
+      setProcessAction(searchedProc, { ...searchedProc, arg: newArg });
+    }
+  }
+
   return (
     <>
       {noConnection ? (
@@ -170,30 +192,56 @@ export default function MainDisplay() {
         </div>
       ) : (
         <div>
-          <div
-            className="bg-black bg-opacity-50 p-10 rounded-lg h-[40rem] overflow-y-auto"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-            }}
-          >
-            <ControlPanel
-              supportedOs={supportedOs}
-              createAction={createExecutable}
-              saveAction={() => setSaveProcesss(!saveProcess)}
-              savedState={saveProcess}
-              resetAction={resetProcesses}
-              updateTarget={updateTarget}
-              isConnected={isConnected}
-            />
-            <DeployableDisplay
-              processes={processes}
-              name={name}
-              updateNameAction={(newName: string) => setName(newName)}
-              setProcessAction={setProcessAction}
-              removeProcessAction={removeProcess}
-              addProcessAction={addProcess}
-            />
+          <div className="h-[40rem] overflow-y-auto flex flex-col gap-10">
+            <Button onClick={resetProcesses}>
+              <span className="flex items-center gap-2">
+                <span className="text-cyan-400 text-3xl">+</span> New
+              </span>
+            </Button>
+            <div className="flex flex-col gap-2 items-start">
+              <label>Name</label>
+              <Input
+                type="text"
+                value={name}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setName(e.target.value)
+                }
+              />
+            </div>
+            <div className="flex flex-col gap-5 w-full">
+              {processes.map((proc, i) => {
+                return (
+                  <ProcessLine
+                    key={proc.type + proc.type + i}
+                    proc={proc}
+                    index={i}
+                    collectionLength={processes.length}
+                    addProcessAction={addProcess}
+                    removeProcessAction={removeProcess}
+                    handleInputChange={updateArgInput}
+                    handleSelectChange={updateTypeSelect}
+                  />
+                );
+              })}
+            </div>
+            <div className="flex flex-col gap-10">
+              <Button onClick={() => setSaveProcesss(!saveProcess)}>
+                Save
+              </Button>
+              <div className="flex">
+                <OsSelector
+                  updateTarget={updateTarget}
+                  supportedOs={supportedOs}
+                />
+                <Button
+                  disabled={!isConnected}
+                  className="disabled:text-gray-500 disabled:cursor-not-allowed"
+                  onClick={createExecutable}
+                >
+                  Create
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       )}
