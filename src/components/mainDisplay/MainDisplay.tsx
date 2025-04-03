@@ -32,26 +32,19 @@ export default function MainDisplay() {
 
   useEffect(() => {
     connect(async () => {
-      //TODO mocking conn delay
-      await (function () {
-        return new Promise((resolve) => setTimeout(resolve, 5000));
-      })();
+      await initRoutes();
+      const sos = await getSupportedOs();
+      
+      if (sos[0].length === 0) {
+        setNoConnection(true);
+        return;
+      }
 
-      initRoutes().then(() => {
-        getSupportedOs().then((sos) => {
-          if (sos[0].length === 0) {
-            setNoConnection(true);
-            return;
-          }
+      const sortedOs = sos.sort().reverse();
 
-          const sortedOs = sos.sort().reverse();
-
-          setSupportedOs(sortedOs);
-          setTargetOs(sortedOs[0]);
-          setLoading(false);
-          // setFirstLoad(false);
-        });
-      });
+      setSupportedOs(sortedOs);
+      setTargetOs(sortedOs[0]);
+      setLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -191,6 +184,7 @@ export default function MainDisplay() {
               savedState={saveProcess}
               resetAction={resetProcesses}
               updateTarget={updateTarget}
+              isConnected={isConnected}
             />
             <DeployableDisplay
               processes={processes}

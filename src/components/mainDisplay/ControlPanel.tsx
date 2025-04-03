@@ -10,6 +10,7 @@ type ControlPanelProps = {
   createAction: () => void;
   resetAction: () => void;
   updateTarget: (s: string) => void;
+  isConnected: boolean;
 };
 
 export default function ControlPanel(props: ControlPanelProps) {
@@ -20,6 +21,7 @@ export default function ControlPanel(props: ControlPanelProps) {
     savedState,
     resetAction,
     updateTarget,
+    isConnected,
   } = props;
 
   return (
@@ -38,7 +40,8 @@ export default function ControlPanel(props: ControlPanelProps) {
       >
         {iconServer({ iconKey: "monitorIcon", size: 20 })}
         <span>OS:</span>
-        <select className="cursor-pointer"
+        <select
+          className="cursor-pointer"
           style={{
             background: "transparent",
           }}
@@ -64,9 +67,11 @@ export default function ControlPanel(props: ControlPanelProps) {
         SAVE
       </button>
       <button
+        disabled={!isConnected}
         onClick={createAction}
+        className="text-[#11d4ff] disabled:text-gray-500 disabled:cursor-not-allowed"
         style={{
-          color: "#11d4ff",
+          // color: "",
           ...controlContainerStyle,
         }}
       >
