@@ -1,18 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Doto } from "next/font/google";
+import { Artifika } from "next/font/google";
 import "../styles/globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-const doto = Doto({
-  variable: "--font-doto",
+const artifika = Artifika({
+  weight: "400",
+  variable: "--font-artfika",
   subsets: ["latin"],
 });
 
@@ -29,7 +21,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${doto.variable} antialiased`}
+        style={{ fontFamily: `var(--font-artfika)` }}
+        className={`${artifika.variable} antialiased`}
       >
         {children}
       </body>
