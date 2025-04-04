@@ -245,8 +245,7 @@ export default function MainDisplay() {
               />
               <Button
                 disabled={!isConnected}
-                className="text-xl disabled:text-gray-500 disabled:cursor-not-allowed
-                 bg-[var(--color-accent)] text-[var(--color-tertiary)]"
+                className="text-xl disabled:text-gray-500 disabled:cursor-not-allowed"
                 onClick={createExecutable}
               >
                 Create
