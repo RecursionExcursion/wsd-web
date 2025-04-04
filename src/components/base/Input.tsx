@@ -7,7 +7,7 @@ export default function Input(props: InputProps) {
 
   return (
     <input
-      className="border border-[#22272c] bg-[#1c2226] p-1 rounded-lg"
+      className="border border-[var(--color-trim)] bg-[var(--color-tertiary)] p-1 rounded-lg"
       {...attributes}
     />
   );

@@ -1,5 +1,5 @@
 import MainAnimation from "../components/animations/MainAni";
-import Card from "../components/Card";
+import Card from "../components/base/Card";
 import { HowToUseDisplay } from "../components/HowToUse";
 import LogoTitle from "../components/LogoTitle";
 import MainDisplay from "../components/mainDisplay/MainDisplay";
@@ -11,14 +11,25 @@ export default async function Home() {
 
   return (
     <>
-      <main className="w-full h-full relative flex flex-col p-10">
-        <div className="flex items-center gap-10">
-          <LogoTitle />
+      <main className="w-full h-full relative flex flex-col sm:p-10">
+        <div className="flex flex-col sm:flex-row 
+                        pt-5 sm:pt-0
+                        items-center gap-10">
+          <LogoTitle text="Workspace Deployer"/>
           <MainAnimation />
         </div>
-        <div className="flex-grow flex justify-center items-center p-10 gap-5">
-          <div className="flex flex-col gap-5 w-[30%]">
-            <Card>
+        <div
+          className="flex-grow flex flex-col lg:flex-row
+                     justify items-center sm:mx-auto my-auto
+                     gap-5 lg:gap-0
+                     mt-10 lg:mt-0
+                     "
+        >
+          <div className="flex flex-col gap-5 w-[70%] lg:w-[30%] overflow-y-auto">
+            <Card height="20rem">
+              <HowToUseDisplay />
+            </Card>
+            <Card height="20rem">
               <div className="flex flex-col">
                 <h2 className="text-xl font-semibold">Menu</h2>
                 <div
@@ -29,12 +40,9 @@ export default async function Home() {
                 <DeployableMenu type="last" />
               </div>
             </Card>
-            <Card>
-              <HowToUseDisplay />
-            </Card>
           </div>
           <div className="flex justify-center w-[70%]">
-            <Card>
+            <Card height="40rem">
               <MainDisplay />
             </Card>
           </div>

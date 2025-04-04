@@ -1,10 +1,9 @@
-export default function LogoTitle() {
+type LogoTitleProps = {
+  text: string;
+};
+
+export default function LogoTitle(props:LogoTitleProps) {
   return (
-    <h1
-      className="text-7xl text-nowrap"
-      // style={{ fontFamily: "var(--font-doto), sans-serif" }}
-    >
-      Workspace Deployer
-    </h1>
+    <h1 className="text-2xl lg:text-7xl text-nowrap">{props.text}</h1>
   );
 }

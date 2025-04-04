@@ -7,6 +7,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --color-primary: #171717; 
+  --color-secondary: #191d22; 
+  --color-tertiary: #1c2226; 
+  --color-trim: #22272c;
+  --color-accent: #1bc6e4;
+  --color-info: #3b82f6  ;
+  --color-success: #22c55e ;
+  --color-warning: #eab308;
+  --color-error: #ef4444 ;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -7,11 +7,11 @@ export default function Button(props: ButtonProps) {
 
   return (
     <button
-    {...attributes}
-    className={
-      "w-fit bg-[#1c2226] px-4 py-0.5 rounded-lg border border-[#22272c] " +
-      attributes.className
-    }
+      {...attributes}
+      className={
+        "w-fit bg-[var(--color-tertiary)] px-4 py-0.5 rounded-lg border border-[var(--color-trim)] " +
+        attributes.className
+      }
     />
   );
 }

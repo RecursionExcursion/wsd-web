@@ -2,7 +2,7 @@
 
 import { ChangeEvent } from "react";
 import { iconServer } from "../assets/icons";
-import Select from "./Select";
+import Select from "./base/Select";
 
 type OsSelectorProps = {
   updateTarget: (s: string) => void;
@@ -14,11 +14,11 @@ export default function OsSelector(props: OsSelectorProps) {
   return (
     <div
       className="flex items-center justify-center
-                            rounded-lg border border-[#22272c]
+                            rounded-lg border border-[var(--color-trim)]
                             p-1 gap-1 w-fit"
     >
       {iconServer({ iconKey: "monitorIcon", size: 20 })}
-      <span>OS:</span>
+      <span className="text-lg">OS:</span>
       <Select
         className="cursor-pointer"
         style={{

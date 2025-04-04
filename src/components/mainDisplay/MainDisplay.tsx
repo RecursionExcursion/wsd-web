@@ -13,8 +13,8 @@ import { createProcess } from "../../service/processService";
 import { SpinnerAnimationAndText } from "./Spinner";
 import { useApiConnectionWatcher } from "../../hooks/UseApiConnectionWatcher";
 import { createPortal } from "react-dom";
-import Button from "../Button";
-import Input from "../Input";
+import Button from "../base/Button";
+import Input from "../base/Input";
 import ProcessLine from "./ProcessLine";
 import OsSelector from "../OsSelector";
 
@@ -22,7 +22,6 @@ export default function MainDisplay() {
   const [processes, setProcesses] = useState<Process[]>([]);
   const [loading, setLoading] = useState(false);
   const [supportedOs, setSupportedOs] = useState<string[]>([]);
-  const [saveProcess, setSaveProcesss] = useState(false);
   const [targetOs, setTargetOs] = useState("");
   const [name, setName] = useState("");
   const [connectionStatusPortalTarget, setConnectionStatusPortalTarget] =
@@ -102,15 +101,6 @@ export default function MainDisplay() {
 
     const lazyLocalStorage = await import("../../service/localStorageService");
 
-    if (saveProcess) {
-      lazyLocalStorage.default.save("saved", {
-        name: sanitizedName,
-        os: targetOs,
-        timestamp: Date.now(),
-        processes: sanitizedProcesses,
-      });
-    }
-
     lazyLocalStorage.default.save("last", {
       name: sanitizedName,
       os: targetOs,
@@ -182,6 +172,24 @@ export default function MainDisplay() {
     }
   }
 
+  async function handleSaveClick() {
+    const sanitizedName = name.trim() === "" ? undefined : name.trim();
+    const sanitizedProcesses = processes.filter((p) => p.arg.trim() !== "");
+
+    if (!sanitizedProcesses || !sanitizedName) {
+      return;
+    }
+
+    const lazyLocalStorage = await import("../../service/localStorageService");
+    lazyLocalStorage.default.save("saved", {
+      name: sanitizedName,
+      os: targetOs,
+      timestamp: Date.now(),
+      processes: sanitizedProcesses,
+    });
+    emitter.emit(eventKeys.updateSideBar);
+  }
+
   return (
     <>
       {noConnection ? (
@@ -191,11 +199,12 @@ export default function MainDisplay() {
           <SpinnerAnimationAndText type={"building"} />
         </div>
       ) : (
-        <div>
-          <div className="h-[40rem] overflow-y-auto flex flex-col gap-10">
+        <div className="h-full flex flex-col gap-10 justify-between">
+          <div className="flex flex-col gap-6 overflow-y-auto">
             <Button onClick={resetProcesses}>
               <span className="flex items-center gap-2">
-                <span className="text-cyan-400 text-3xl">+</span> New
+                <span className="text-[var(--color-accent)] text-3xl">+</span>{" "}
+                New
               </span>
             </Button>
             <div className="flex flex-col gap-2 items-start">
@@ -208,7 +217,7 @@ export default function MainDisplay() {
                 }
               />
             </div>
-            <div className="flex flex-col gap-5 w-full">
+            <div className="flex flex-col gap-5 w-full bg-[var(--color-tertiary)] rounded-lg py-2">
               {processes.map((proc, i) => {
                 return (
                   <ProcessLine
@@ -224,23 +233,24 @@ export default function MainDisplay() {
                 );
               })}
             </div>
-            <div className="flex flex-col gap-10">
-              <Button onClick={() => setSaveProcesss(!saveProcess)}>
-                Save
+          </div>
+          <div className="flex flex-col gap-10">
+            <Button className="text-xl" onClick={handleSaveClick}>
+              Save
+            </Button>
+            <div className="flex gap-4">
+              <OsSelector
+                updateTarget={updateTarget}
+                supportedOs={supportedOs}
+              />
+              <Button
+                disabled={!isConnected}
+                className="text-xl disabled:text-gray-500 disabled:cursor-not-allowed
+                 bg-[var(--color-accent)] text-[var(--color-tertiary)]"
+                onClick={createExecutable}
+              >
+                Create
               </Button>
-              <div className="flex">
-                <OsSelector
-                  updateTarget={updateTarget}
-                  supportedOs={supportedOs}
-                />
-                <Button
-                  disabled={!isConnected}
-                  className="disabled:text-gray-500 disabled:cursor-not-allowed"
-                  onClick={createExecutable}
-                >
-                  Create
-                </Button>
-              </div>
             </div>
           </div>
         </div>
