@@ -194,13 +194,9 @@ export default function MainDisplay() {
     <>
       {noConnection ? (
         <NoConnectionToBackendNotice />
-      ) : loading ? (
-        <div className="w-full h-full flex justify-center items-center">
-          <SpinnerAnimationAndText type={"building"} />
-        </div>
       ) : (
-        <div className="h-full flex flex-col gap-10 justify-between">
-          <div className="flex flex-col gap-6 overflow-y-auto">
+        <div className="h-full flex flex-col justify-between">
+          <div className="flex flex-col gap-6 overflow-y-auto h-[80%]">
             <Button onClick={resetProcesses}>
               <span className="flex items-center gap-2">
                 <span className="text-[var(--color-accent)] text-3xl">+</span>{" "}
@@ -210,6 +206,7 @@ export default function MainDisplay() {
             <div className="flex flex-col gap-2 items-start">
               <label>Name</label>
               <Input
+                className="ml-2"
                 type="text"
                 value={name}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -217,24 +214,32 @@ export default function MainDisplay() {
                 }
               />
             </div>
-            <div className="flex flex-col gap-5 w-full bg-[var(--color-tertiary)] rounded-lg py-2">
-              {processes.map((proc, i) => {
-                return (
-                  <ProcessLine
-                    key={proc.type + proc.type + i}
-                    proc={proc}
-                    index={i}
-                    collectionLength={processes.length}
-                    addProcessAction={addProcess}
-                    removeProcessAction={removeProcess}
-                    handleInputChange={updateArgInput}
-                    handleSelectChange={updateTypeSelect}
-                  />
-                );
-              })}
+            <div className="w-[35rem] h-full">
+              {loading ? (
+                <div className="flex h-full w-full justify-center items-center">
+                  <SpinnerAnimationAndText type={"none"} />
+                </div>
+              ) : (
+                <div className="flex flex-col gap-5 w-full bg-[var(--color-tertiary)] rounded-lg py-2">
+                  {processes.map((proc, i) => {
+                    return (
+                      <ProcessLine
+                        key={proc.type + proc.type + i}
+                        proc={proc}
+                        index={i}
+                        collectionLength={processes.length}
+                        addProcessAction={addProcess}
+                        removeProcessAction={removeProcess}
+                        handleInputChange={updateArgInput}
+                        handleSelectChange={updateTypeSelect}
+                      />
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-10 h-[20%]">
             <Button className="text-xl" onClick={handleSaveClick}>
               Save
             </Button>
@@ -243,8 +248,9 @@ export default function MainDisplay() {
                 updateTarget={updateTarget}
                 supportedOs={supportedOs}
               />
+
               <Button
-                disabled={!isConnected}
+                disabled={!isConnected || loading}
                 className="text-xl disabled:text-gray-500 disabled:cursor-not-allowed"
                 onClick={createExecutable}
               >
