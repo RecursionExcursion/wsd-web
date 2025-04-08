@@ -12,11 +12,11 @@ import { getSupportedOs } from "../../service/supportedOsService";
 import { createProcess } from "../../service/processService";
 import { SpinnerAnimationAndText } from "./Spinner";
 import { useApiConnectionWatcher } from "../../hooks/UseApiConnectionWatcher";
-import { createPortal } from "react-dom";
 import Button from "../base/Button";
 import Input from "../base/Input";
 import ProcessLine from "./ProcessLine";
 import OsSelector from "../OsSelector";
+import { usePortal } from "../../hooks/usePortal";
 
 export default function MainDisplay() {
   const [processes, setProcesses] = useState<Process[]>([]);
@@ -24,10 +24,12 @@ export default function MainDisplay() {
   const [supportedOs, setSupportedOs] = useState<string[]>([]);
   const [targetOs, setTargetOs] = useState("");
   const [name, setName] = useState("");
-  const [connectionStatusPortalTarget, setConnectionStatusPortalTarget] =
-    useState<HTMLElement>();
 
   const { isConnected, connect, ConnectionStatus } = useApiConnectionWatcher();
+  const { renderPortal } = usePortal({
+    targetId: "connection-status",
+    node: ConnectionStatus(),
+  });
 
   const [noConnection, setNoConnection] = useState(false);
 
@@ -66,13 +68,6 @@ export default function MainDisplay() {
     return () => {
       emitter.off(eventKeys.updateDeployable, updateContent);
     };
-  }, []);
-
-  useEffect(() => {
-    const target = document.getElementById("connection-status");
-    if (target) {
-      setConnectionStatusPortalTarget(target);
-    }
   }, []);
 
   const resetProcesses = () => {
@@ -260,8 +255,7 @@ export default function MainDisplay() {
           </div>
         </div>
       )}
-      {connectionStatusPortalTarget &&
-        createPortal(ConnectionStatus(), connectionStatusPortalTarget)}
+      {renderPortal()}
     </>
   );
 }
