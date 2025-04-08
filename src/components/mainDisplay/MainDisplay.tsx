@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Process } from "../../types/process";
-import ControlPanel from "./ControlPanel";
-import DeployableDisplay from "./DeployableDisplay";
 import { emitter } from "../../lib/events/EventEmittor";
 import { downloadExecutable } from "../../service/downloadService";
 import { eventKeys } from "../../lib/events/events";
@@ -13,34 +11,45 @@ import { initRoutes } from "../../service/getRoutesService";
 import { getSupportedOs } from "../../service/supportedOsService";
 import { createProcess } from "../../service/processService";
 import { SpinnerAnimationAndText } from "./Spinner";
+import { useApiConnectionWatcher } from "../../hooks/UseApiConnectionWatcher";
+import Button from "../base/Button";
+import Input from "../base/Input";
+import ProcessLine from "./ProcessLine";
+import OsSelector from "../OsSelector";
+import { usePortal } from "../../hooks/usePortal";
 
 export default function MainDisplay() {
   const [processes, setProcesses] = useState<Process[]>([]);
-  const [firstLoad, setFirstLoad] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [supportedOs, setSupportedOs] = useState<string[]>([]);
-  const [saveProcess, setSaveProcesss] = useState(false);
   const [targetOs, setTargetOs] = useState("");
   const [name, setName] = useState("");
+
+  const { isConnected, connect, ConnectionStatus } = useApiConnectionWatcher();
+  const { renderPortal } = usePortal({
+    targetId: "connection-status",
+    node: ConnectionStatus(),
+  });
 
   const [noConnection, setNoConnection] = useState(false);
 
   useEffect(() => {
-    initRoutes().then(() => {
-      getSupportedOs().then((sos) => {
-        if (sos[0].length === 0) {
-          setNoConnection(true);
-          return;
-        }
+    connect(async () => {
+      await initRoutes();
+      const sos = await getSupportedOs();
 
-        const sortedOs = sos.sort().reverse();
+      if (sos[0].length === 0) {
+        setNoConnection(true);
+        return;
+      }
 
-        setSupportedOs(sortedOs);
-        setTargetOs(sortedOs[0]);
-        setLoading(false);
-        setFirstLoad(false);
-      });
+      const sortedOs = sos.sort().reverse();
+
+      setSupportedOs(sortedOs);
+      setTargetOs(sortedOs[0]);
+      setLoading(false);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -71,6 +80,8 @@ export default function MainDisplay() {
   };
 
   async function createExecutable() {
+    if (!isConnected) return;
+
     //Sanitaze process inputs
     const sanitizedProcesses = processes.filter((p) => p.arg.trim() !== "");
     setProcesses(sanitizedProcesses);
@@ -84,15 +95,6 @@ export default function MainDisplay() {
     const sanitizedName = name.trim() === "" ? undefined : name.trim();
 
     const lazyLocalStorage = await import("../../service/localStorageService");
-
-    if (saveProcess) {
-      lazyLocalStorage.default.save("saved", {
-        name: sanitizedName,
-        os: targetOs,
-        timestamp: Date.now(),
-        processes: sanitizedProcesses,
-      });
-    }
 
     lazyLocalStorage.default.save("last", {
       name: sanitizedName,
@@ -145,36 +147,115 @@ export default function MainDisplay() {
     }
   }
 
-  return noConnection ? (
-    <NoConnectionToBackendNotice />
-  ) : loading ? (
-    <div className="w-full h-full flex justify-center items-center">
-      <SpinnerAnimationAndText type={firstLoad ? "init" : "building"} />
-    </div>
-  ) : (
-    <div
-      className="bg-black bg-opacity-50 p-10 rounded-lg h-[40rem] overflow-y-auto"
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-      }}
-    >
-      <ControlPanel
-        supportedOs={supportedOs}
-        createAction={createExecutable}
-        saveAction={() => setSaveProcesss(!saveProcess)}
-        savedState={saveProcess}
-        resetAction={resetProcesses}
-        updateTarget={updateTarget}
-      />
-      <DeployableDisplay
-        processes={processes}
-        name={name}
-        updateNameAction={(newName: string) => setName(newName)}
-        setProcessAction={setProcessAction}
-        removeProcessAction={removeProcess}
-        addProcessAction={addProcess}
-      />
-    </div>
+  function updateTypeSelect(newVal: string, proc: Process): void {
+    const searchedProc = processes.find(
+      (p) => p.type === proc.type && p.arg === proc.arg
+    );
+
+    if (searchedProc && (newVal === "cmd" || newVal === "path")) {
+      setProcessAction(searchedProc, { ...searchedProc, type: newVal });
+    }
+  }
+
+  function updateArgInput(newArg: string, proc: Process): void {
+    const searchedProc = processes.find(
+      (p) => p.type === proc.type && p.arg === proc.arg
+    );
+
+    if (searchedProc) {
+      setProcessAction(searchedProc, { ...searchedProc, arg: newArg });
+    }
+  }
+
+  async function handleSaveClick() {
+    const sanitizedName = name.trim() === "" ? undefined : name.trim();
+    const sanitizedProcesses = processes.filter((p) => p.arg.trim() !== "");
+
+    if (!sanitizedProcesses || !sanitizedName) {
+      return;
+    }
+
+    const lazyLocalStorage = await import("../../service/localStorageService");
+    lazyLocalStorage.default.save("saved", {
+      name: sanitizedName,
+      os: targetOs,
+      timestamp: Date.now(),
+      processes: sanitizedProcesses,
+    });
+    emitter.emit(eventKeys.updateSideBar);
+  }
+
+  return (
+    <>
+      {noConnection ? (
+        <NoConnectionToBackendNotice />
+      ) : (
+        <div className="h-full flex flex-col justify-between">
+          <div className="flex flex-col gap-6 overflow-y-auto h-[80%]">
+            <Button onClick={resetProcesses}>
+              <span className="flex items-center gap-2">
+                <span className="text-[var(--color-accent)] text-3xl">+</span>{" "}
+                New
+              </span>
+            </Button>
+            <div className="flex flex-col gap-2 items-start">
+              <label>Name</label>
+              <Input
+                className="ml-2"
+                type="text"
+                value={name}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setName(e.target.value)
+                }
+              />
+            </div>
+            <div className="w-[35rem] h-full">
+              {loading ? (
+                <div className="flex h-full w-full justify-center items-center">
+                  <SpinnerAnimationAndText type={"none"} />
+                </div>
+              ) : (
+                <div className="flex flex-col gap-5 w-full bg-[var(--color-tertiary)] rounded-lg py-2">
+                  {processes.map((proc, i) => {
+                    return (
+                      <ProcessLine
+                        key={proc.type + proc.type + i}
+                        proc={proc}
+                        index={i}
+                        collectionLength={processes.length}
+                        addProcessAction={addProcess}
+                        removeProcessAction={removeProcess}
+                        handleInputChange={updateArgInput}
+                        handleSelectChange={updateTypeSelect}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-10 h-[20%]">
+            <Button className="text-xl" onClick={handleSaveClick}>
+              Save
+            </Button>
+            <div className="flex gap-4">
+              <OsSelector
+                updateTarget={updateTarget}
+                supportedOs={supportedOs}
+              />
+
+              <Button
+                disabled={!isConnected || loading}
+                className="text-xl disabled:text-gray-500 disabled:cursor-not-allowed"
+                onClick={createExecutable}
+              >
+                Create
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      {renderPortal()}
+    </>
   );
 }

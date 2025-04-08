@@ -10,7 +10,8 @@ export function HowToUseDisplay() {
   const runIcon = iconServer({ iconKey: "play", size: iconSize });
 
   return (
-    <div className="flex flex-grow flex-col py-2.5 px-4 gap-3 rounded-lg border border-black">
+    <div className="flex flex-grow flex-col  gap-3">
+      <h2 className="text-xl font-semibold">How to use</h2>
       <div className={spanStyle}>
         <div>{pointerIcon}</div>
         <p>Select OS and name your Deployable</p>

@@ -53,7 +53,7 @@ export default function ProcessLine(props: ProcessLineProps) {
         )}
       </div>
 
-      <div className="flex justify-center items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
         <select
           value={proc.type}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
