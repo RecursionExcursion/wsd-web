@@ -34,12 +34,13 @@ export default async function Home() {
                      mt-10 lg:mt-0
                      "
       >
+        {/* 2 vertical cards on the Left */}
         <div className="flex flex-col gap-5 w-[70%] lg:w-[30%] overflow-y-auto">
           <Card height="20rem">
             <HowToUseDisplay />
           </Card>
           <Card height="20rem">
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-5">
               <h2 className="text-xl font-semibold">Menu</h2>
               <div
                 id="connection-status"

@@ -7,6 +7,8 @@
 :root {
   --color-primary: #141a1e;
   --color-secondary: #191d22;
+  --color-light-secondary: #2d333a;
+  --color-lightest-secondary: #58616b;
   --color-tertiary: #1c2226;
   --color-trim: #22272c;
   --color-accent: #1bc6e4;

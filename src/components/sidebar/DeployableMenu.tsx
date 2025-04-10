@@ -17,10 +17,10 @@ type DeployableMenuProps = {
 export default function DeployableMenu(props: DeployableMenuProps) {
   const [items, setItems] = useState<LS_Deployable[]>();
 
-  useEffect(()=>{
-    setItems(LocalStorageService.get(props.type))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  useEffect(() => {
+    setItems(LocalStorageService.get(props.type));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const refreshContent = () => {
@@ -45,11 +45,24 @@ export default function DeployableMenu(props: DeployableMenuProps) {
   })();
 
   return (
-    <div className="flex flex-col justify-center text-center">
-      <h2>{title}</h2>
-      {items?.map((item, i) => (
-        <ItemDisplay key={item.timestamp + i} item={item} type={props.type} />
-      ))}
+    <div className="flex flex-col justify-center text-center gap-2">
+      <span className="flex justify-center gap-2">
+        <h2>{title}</h2>
+        <TrashCanButton
+          onClick={() => {
+            /* Deletes all items */
+            items?.forEach((i) => {
+              LocalStorageService.remove(props.type, i.id);
+            });
+            emitter.emit(eventKeys.updateSideBar);
+          }}
+        />
+      </span>
+      <div>
+        {items?.map((item, i) => (
+          <ItemDisplay key={item.timestamp + i} item={item} type={props.type} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -67,7 +80,7 @@ const ItemDisplay = (props: ItemDisplayProps) => {
   const [showProcesses, setShowProccesses] = useState(false);
 
   return (
-    <div>
+    <div className="odd:bg-[var(--color-light-secondary)] even:bg-[var(--color-secondary)]">
       <div className="flex items-center justify-center gap-3">
         <button
           className="underline"
@@ -85,9 +98,11 @@ const ItemDisplay = (props: ItemDisplayProps) => {
         </button>
       </div>
       {showProcesses && (
-        <>
-          <div className="flex flex-col px-2">
-            {item.name && <span>{item.name}</span>}
+        <div className="bg-[var(--color-lightest-secondary)]">
+          <div className="flex flex-col px-2 text-start">
+            {item.name && (
+              <span className="font-semibold underline">Name: {item.name}</span>
+            )}
             <span>OS: {item.os}</span>
             {item.processes.map((p, i) => {
               return (
@@ -100,21 +115,29 @@ const ItemDisplay = (props: ItemDisplayProps) => {
               );
             })}
           </div>
-          {/* {type === "saved" && ( */}
-            <button
-              style={{
-                color: "#ee3939",
-              }}
-              onClick={() => {
-                LocalStorageService.remove(type, item.id);
-                emitter.emit(eventKeys.updateSideBar);
-              }}
-            >
-              {iconServer({ iconKey: "trashCan", size: 24 })}
-            </button>
-          {/* )} */}
-        </>
+          <TrashCanButton
+            onClick={() => {
+              LocalStorageService.remove(type, item.id);
+              emitter.emit(eventKeys.updateSideBar);
+            }}
+          />
+        </div>
       )}
     </div>
+  );
+};
+
+type TrashCanProps = React.ComponentPropsWithoutRef<"button"> & {};
+
+const TrashCanButton = (props: TrashCanProps) => {
+  return (
+    <button
+      style={{
+        color: "#ee3939",
+      }}
+      {...props}
+    >
+      {iconServer({ iconKey: "trashCan", size: 24 })}
+    </button>
   );
 };
