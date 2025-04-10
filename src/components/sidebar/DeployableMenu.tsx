@@ -34,6 +34,13 @@ export default function DeployableMenu(props: DeployableMenuProps) {
     };
   }, [props.type]);
 
+  function deleteAllItems() {
+    items?.forEach((i) => {
+      LocalStorageService.remove(props.type, i.id);
+    });
+    emitter.emit(eventKeys.updateSideBar);
+  }
+
   const title = (() => {
     const l = items?.length ?? 0;
     switch (props.type) {
@@ -48,15 +55,7 @@ export default function DeployableMenu(props: DeployableMenuProps) {
     <div className="flex flex-col justify-center text-center gap-2">
       <span className="flex justify-center gap-2">
         <h2>{title}</h2>
-        <TrashCanButton
-          onClick={() => {
-            /* Deletes all items */
-            items?.forEach((i) => {
-              LocalStorageService.remove(props.type, i.id);
-            });
-            emitter.emit(eventKeys.updateSideBar);
-          }}
-        />
+        <TrashCanButton onClick={deleteAllItems} />
       </span>
       <div>
         {items?.map((item, i) => (
