@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { loadEnvVar } from "../../../service/externalAPIService";
+import { loadEnvVar } from "../../../service/envVarService";
 
 export const maxDuration = 60;
 export const dynamic = "force-dynamic";

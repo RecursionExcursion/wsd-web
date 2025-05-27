@@ -1,7 +1,7 @@
 "use server";
 
 import { NextResponse } from "next/server";
-import { loadEnvVar } from "./externalAPIService";
+import { loadEnvVar } from "./envVarService";
 
 let initalized = false;
 const routeMap = new Map<string, string>();

@@ -1,6 +1,6 @@
 "use server";
 
-import { loadEnvVar } from "./externalAPIService";
+import { loadEnvVar } from "./envVarService";
 
 // Hits base route to trigger cold start
 export async function wakeupApi() {
