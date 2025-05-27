@@ -4,11 +4,8 @@ import { HowToUseDisplay } from "../components/HowToUse";
 import LogoTitle from "../components/LogoTitle";
 import MainDisplay from "../components/mainDisplay/MainDisplay";
 import DeployableMenu from "../components/sidebar/DeployableMenu";
-import { wakeupApi } from "../service/apiPingService";
 
 export default async function Home() {
-  wakeupApi();
-
   return (
     <main className="w-full h-full relative flex flex-col sm:p-10">
       <video

@@ -8,7 +8,6 @@ import { eventKeys } from "../../lib/events/events";
 import { LS_Deployable } from "../../service/localStorageService";
 import NoConnectionToBackendNotice from "../NoConnectionToBackendNotice";
 import { initRoutes } from "../../service/getRoutesService";
-import { getSupportedOs } from "../../service/supportedOsService";
 import { createProcess } from "../../service/processService";
 import { SpinnerAnimationAndText } from "./Spinner";
 import { useApiConnectionWatcher } from "../../hooks/UseApiConnectionWatcher";
@@ -17,8 +16,12 @@ import Input from "../base/Input";
 import ProcessLine from "./ProcessLine";
 import OsSelector from "../OsSelector";
 import { usePortal } from "../../hooks/usePortal";
+import useBackendStore from "../../lib/connection";
+import { SUPPORTED_OS } from "../../constants/sos";
 
 export default function MainDisplay() {
+  const setBackendReady = useBackendStore((s) => s.setBackendReady);
+
   const [processes, setProcesses] = useState<Process[]>([]);
   const [loading, setLoading] = useState(false);
   const [supportedOs, setSupportedOs] = useState<string[]>([]);
@@ -34,23 +37,27 @@ export default function MainDisplay() {
   const [noConnection, setNoConnection] = useState(false);
 
   useEffect(() => {
-    connect(async () => {
-      await initRoutes();
-      const sos = await getSupportedOs();
+    // Hold over from pulling in supported os, consider removing scaffolding or reworking the connection process so this is used
+    setSupportedOs(SUPPORTED_OS);
+    setTargetOs(SUPPORTED_OS[0]);
 
-      if (sos[0].length === 0) {
+    const pingBackend = async () => {
+      const res = await fetch("/api/wakeup");
+
+      if (res.ok) {
+        setBackendReady(true);
+        connect(async () => {
+          await initRoutes();
+          setLoading(false);
+        });
+      } else {
         setNoConnection(true);
-        return;
       }
+    };
 
-      const sortedOs = sos.sort().reverse();
-
-      setSupportedOs(sortedOs);
-      setTargetOs(sortedOs[0]);
-      setLoading(false);
-    });
+    pingBackend();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setBackendReady]);
 
   useEffect(() => {
     addProcess();
