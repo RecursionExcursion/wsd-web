@@ -4,11 +4,8 @@ import { HowToUseDisplay } from "../components/HowToUse";
 import LogoTitle from "../components/LogoTitle";
 import MainDisplay from "../components/mainDisplay/MainDisplay";
 import DeployableMenu from "../components/sidebar/DeployableMenu";
-import { wakeupApi } from "../service/apiPingService";
 
 export default async function Home() {
-  wakeupApi();
-
   return (
     <main className="w-full h-full relative flex flex-col sm:p-10">
       <video
@@ -34,12 +31,13 @@ export default async function Home() {
                      mt-10 lg:mt-0
                      "
       >
+        {/* 2 vertical cards on the Left */}
         <div className="flex flex-col gap-5 w-[70%] lg:w-[30%] overflow-y-auto">
           <Card height="20rem">
             <HowToUseDisplay />
           </Card>
           <Card height="20rem">
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-5">
               <h2 className="text-xl font-semibold">Menu</h2>
               <div
                 id="connection-status"

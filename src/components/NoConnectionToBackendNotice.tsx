@@ -5,7 +5,7 @@ export default function NoConnectionToBackendNotice() {
      justify-center items-center
      text-red-500 font-semibold text-3xl"
     >
-      <span>{"No Connection To Backend :("}</span>
+      <span>{"Unable to connect with Backend :("}</span>
     </div>
   );
 }
