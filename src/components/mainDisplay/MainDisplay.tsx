@@ -1,70 +1,24 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState } from "react";
-import { Process } from "../../types/process";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+
 import { emitter } from "../../lib/events/EventEmittor";
-import { downloadExecutable } from "../../service/downloadService";
 import { eventKeys } from "../../lib/events/events";
 import { LS_Deployable } from "../../service/localStorageService";
-import NoConnectionToBackendNotice from "../NoConnectionToBackendNotice";
-import { initRoutes } from "../../service/getRoutesService";
-import { createProcess } from "../../service/processService";
-import { SpinnerAnimationAndText } from "./Spinner";
-import { useApiConnectionWatcher } from "../../hooks/UseApiConnectionWatcher";
 import Button from "../base/Button";
 import Input from "../base/Input";
-import ProcessLine from "./ProcessLine";
+
 import OsSelector from "../OsSelector";
-import { usePortal } from "../../hooks/usePortal";
-import useBackendStore from "../../lib/connection";
-import { SUPPORTED_OS } from "../../constants/sos";
+import { genScript, SUPPORTED_OS } from "../../service/browserScriptGen";
+import { download } from "../../service/downloadToBrowserService";
 
 export default function MainDisplay() {
-  const setBackendReady = useBackendStore((s) => s.setBackendReady);
-
-  const [processes, setProcesses] = useState<Process[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [supportedOs, setSupportedOs] = useState<string[]>([]);
-  const [targetOs, setTargetOs] = useState("");
+  const [targetOs, setTargetOs] = useState<SUPPORTED_OS>("win");
   const [name, setName] = useState("");
-
-  const { isConnected, connect, ConnectionStatus } = useApiConnectionWatcher();
-  const { renderPortal } = usePortal({
-    targetId: "connection-status",
-    node: ConnectionStatus(),
-  });
-
-  const [noConnection, setNoConnection] = useState(false);
+  const scriptAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    // Hold over from pulling in supported os, consider removing scaffolding or reworking the connection process so this is used
-    setSupportedOs(SUPPORTED_OS);
-    setTargetOs(SUPPORTED_OS[0]);
-
-    const pingBackend = async () => {
-      const res = await fetch("/api/wakeup");
-
-      if (res.ok) {
-        setBackendReady(true);
-        connect(async () => {
-          await initRoutes();
-          setLoading(false);
-        });
-      } else {
-        setNoConnection(true);
-      }
-    };
-
-    pingBackend();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setBackendReady]);
-
-  useEffect(() => {
-    addProcess();
-
     const updateContent = (data: { content: LS_Deployable }) => {
-      setProcesses(data.content.processes);
-      setTargetOs(data.content.os);
       if (data.content.name) {
         setName(data.content.name);
       }
@@ -77,192 +31,109 @@ export default function MainDisplay() {
     };
   }, []);
 
-  const resetProcesses = () => {
-    setName("");
-    setProcesses([createProcess()]);
-  };
-
-  const updateTarget = (tar: string) => {
-    setTargetOs(tar);
-  };
-
   async function createExecutable() {
-    if (!isConnected) return;
+    //TODO check name and script before proceeding
 
-    //Sanitaze process inputs
-    const sanitizedProcesses = processes.filter((p) => p.arg.trim() !== "");
-    setProcesses(sanitizedProcesses);
+    const area = scriptAreaRef.current;
+    if (!area) return;
 
-    if (sanitizedProcesses.length <= 0) {
-      return;
-    }
+    const tc = area.textLength;
+    const v = area.value;
+    const args = area.value.split("\n");
+    console.log({ tc, v, args });
 
-    setLoading(true);
-
-    const sanitizedName = name.trim() === "" ? undefined : name.trim();
-
-    const lazyLocalStorage = await import("../../service/localStorageService");
-
-    lazyLocalStorage.default.save("last", {
-      name: sanitizedName,
-      os: targetOs,
-      timestamp: Date.now(),
-      processes: sanitizedProcesses,
-    });
-
-    // const success =
-    await downloadExecutable({
-      name: sanitizedName,
-      target: targetOs,
-      processes: sanitizedProcesses,
-    });
-    //TODO
-    // console.log({ success });
-
-    setLoading(false);
-
-    emitter.emit(eventKeys.updateSideBar);
-  }
-
-  function setProcessAction(oldProcess: Process, newProcess: Process) {
-    const copyProcesses = [...processes];
-
-    const indexedProc = copyProcesses.findIndex(
-      (p) => p.type === oldProcess.type && p.arg === oldProcess.arg
+    const ret = genScript(
+      targetOs,
+      name,
+      args.map((a) => a.trim())
     );
 
-    if (indexedProc > -1) {
-      copyProcesses[indexedProc] = newProcess;
-      setProcesses(copyProcesses);
-    }
+    const res = download(ret.script, ret.name);
+
+    console.log(res);
+
+    // const lazyLocalStorage = await import("../../service/localStorageService");
+
+    // lazyLocalStorage.default.save("last", {
+    //   name: sanitizedName,
+    //   os: targetOs,
+    //   timestamp: Date.now(),
+    //   processes: sanitizedProcesses,
+    // });
+
+    // emitter.emit(eventKeys.updateSideBar);
   }
 
-  function addProcess() {
-    setProcesses((prev) => [...prev, createProcess()]);
-  }
+  // async function handleSaveClick() {
+  //   const sanitizedName = name.trim() === "" ? undefined : name.trim();
+  //   const sanitizedProcesses = processes.filter((p) => p.arg.trim() !== "");
 
-  function removeProcess(proc: Process): void {
-    if (processes.length > 1) {
-      const copyProcesses = [...processes];
-      const indexToRemove = copyProcesses.findIndex(
-        (p) => p.type === proc.type && p.arg === proc.arg
-      );
-      if (indexToRemove >= 0) {
-        copyProcesses.splice(indexToRemove, 1);
-        setProcesses(copyProcesses);
-      }
-    }
-  }
+  //   if (!sanitizedProcesses || !sanitizedName) {
+  //     return;
+  //   }
 
-  function updateTypeSelect(newVal: string, proc: Process): void {
-    const searchedProc = processes.find(
-      (p) => p.type === proc.type && p.arg === proc.arg
-    );
-
-    if (searchedProc && (newVal === "cmd" || newVal === "path")) {
-      setProcessAction(searchedProc, { ...searchedProc, type: newVal });
-    }
-  }
-
-  function updateArgInput(newArg: string, proc: Process): void {
-    const searchedProc = processes.find(
-      (p) => p.type === proc.type && p.arg === proc.arg
-    );
-
-    if (searchedProc) {
-      setProcessAction(searchedProc, { ...searchedProc, arg: newArg });
-    }
-  }
-
-  async function handleSaveClick() {
-    const sanitizedName = name.trim() === "" ? undefined : name.trim();
-    const sanitizedProcesses = processes.filter((p) => p.arg.trim() !== "");
-
-    if (!sanitizedProcesses || !sanitizedName) {
-      return;
-    }
-
-    const lazyLocalStorage = await import("../../service/localStorageService");
-    lazyLocalStorage.default.save("saved", {
-      name: sanitizedName,
-      os: targetOs,
-      timestamp: Date.now(),
-      processes: sanitizedProcesses,
-    });
-    emitter.emit(eventKeys.updateSideBar);
-  }
+  //   const lazyLocalStorage = await import("../../service/localStorageService");
+  //   lazyLocalStorage.default.save("saved", {
+  //     name: sanitizedName,
+  //     os: targetOs,
+  //     timestamp: Date.now(),
+  //     processes: sanitizedProcesses,
+  //   });
+  //   emitter.emit(eventKeys.updateSideBar);
+  // }
 
   return (
     <>
-      {noConnection ? (
-        <NoConnectionToBackendNotice />
-      ) : (
-        <div className="h-full flex flex-col justify-between">
-          <div className="flex flex-col gap-6 overflow-y-auto h-[80%]">
-            <Button onClick={resetProcesses}>
-              <span className="flex items-center gap-2">
-                <span className="text-[var(--color-accent)] text-3xl">+</span>{" "}
-                New
-              </span>
-            </Button>
-            <div className="flex flex-col gap-2 items-start">
-              <label>Name</label>
-              <Input
-                className="ml-2"
-                type="text"
-                value={name}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setName(e.target.value)
-                }
-              />
-            </div>
-            <div className="w-[35rem] h-full">
-              {loading ? (
-                <div className="flex h-full w-full justify-center items-center">
-                  <SpinnerAnimationAndText type={"none"} />
-                </div>
-              ) : (
-                <div className="flex flex-col gap-5 w-full bg-[var(--color-tertiary)] rounded-lg py-2">
-                  {processes.map((proc, i) => {
-                    return (
-                      <ProcessLine
-                        key={proc.type + proc.type + i}
-                        proc={proc}
-                        index={i}
-                        collectionLength={processes.length}
-                        addProcessAction={addProcess}
-                        removeProcessAction={removeProcess}
-                        handleInputChange={updateArgInput}
-                        handleSelectChange={updateTypeSelect}
-                      />
-                    );
-                  })}
-                </div>
-              )}
-            </div>
+      <div className="h-full flex flex-col justify-between gap-2">
+        <div className="flex flex-col gap-6 overflow-y-auto h-[80%]">
+          {/* TODO */}
+          <Button onClick={() => {}}>
+            <span className="flex items-center gap-2">
+              <span className="text-[var(--color-accent)] text-3xl">+</span> New
+            </span>
+          </Button>
+          <div className="flex flex-col gap-2 items-start">
+            <label>Name</label>
+            <Input
+              className="ml-2"
+              type="text"
+              value={name}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setName(e.target.value)
+              }
+            />
           </div>
-          <div className="flex flex-col gap-10 h-[20%]">
-            <Button className="text-xl" onClick={handleSaveClick}>
-              Save
-            </Button>
-            <div className="flex gap-4">
-              <OsSelector
-                updateTarget={updateTarget}
-                supportedOs={supportedOs}
+          <div className="w-[35rem] h-full bg-[var(--color-tertiary)] p-4 rounded-lg">
+          
+              <textarea
+                ref={scriptAreaRef}
+                className="resize-none text-black h-full w-full rounded-lg border border-black"
               />
-
-              <Button
-                disabled={!isConnected || loading}
-                className="text-xl disabled:text-gray-500 disabled:cursor-not-allowed"
-                onClick={createExecutable}
-              >
-                Create
-              </Button>
-            </div>
+          
           </div>
         </div>
-      )}
-      {renderPortal()}
+        <div className="flex flex-col gap-10 h-[20%]">
+          <Button
+            className="text-xl"
+            // onClick={handleSaveClick}
+          >
+            Save
+          </Button>
+          <div className="flex gap-4">
+            <OsSelector
+              updateTarget={(s) => setTargetOs(s as SUPPORTED_OS)}
+              supportedOs={SUPPORTED_OS}
+            />
+
+            <Button
+              className="text-xl disabled:text-gray-500 disabled:cursor-not-allowed"
+              onClick={createExecutable}
+            >
+              Create
+            </Button>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
