@@ -11,11 +11,18 @@ import Input from "../base/Input";
 import OsSelector from "../OsSelector";
 import { genScript, SUPPORTED_OS } from "../../service/browserScriptGen";
 import { download } from "../../service/downloadToBrowserService";
+import ProcessLine, { ArgType, RawProc } from "./ProcessLine";
 
 export default function MainDisplay() {
   const [targetOs, setTargetOs] = useState<SUPPORTED_OS>("win");
   const [name, setName] = useState("");
   const scriptAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [scriptArgs, setScriptArgs] = useState<RawProc[]>([
+    {
+      type: "u",
+      arg: "",
+    },
+  ]);
 
   useEffect(() => {
     const updateContent = (data: { content: LS_Deployable }) => {
@@ -49,19 +56,22 @@ export default function MainDisplay() {
     );
 
     const res = download(ret.script, ret.name);
+    if (res) {
+      // const lazyLocalStorage = await import("../../service/localStorageService");
+      // lazyLocalStorage.default.save("last", {
+      //   name: sanitizedName,
+      //   os: targetOs,
+      //   timestamp: Date.now(),
+      //   processes: sanitizedProcesses,
+      // });
+      // emitter.emit(eventKeys.updateSideBar);
+    }
+  }
 
-    console.log(res);
-
-    // const lazyLocalStorage = await import("../../service/localStorageService");
-
-    // lazyLocalStorage.default.save("last", {
-    //   name: sanitizedName,
-    //   os: targetOs,
-    //   timestamp: Date.now(),
-    //   processes: sanitizedProcesses,
-    // });
-
-    // emitter.emit(eventKeys.updateSideBar);
+  function clearTextArea() {
+    if (scriptAreaRef.current) {
+      scriptAreaRef.current.value = "";
+    }
   }
 
   // async function handleSaveClick() {
@@ -86,12 +96,24 @@ export default function MainDisplay() {
     <>
       <div className="h-full flex flex-col justify-between gap-2">
         <div className="flex flex-col gap-6 overflow-y-auto h-[80%]">
-          {/* TODO */}
-          <Button onClick={() => {}}>
-            <span className="flex items-center gap-2">
-              <span className="text-[var(--color-accent)] text-3xl">+</span> New
-            </span>
-          </Button>
+          <div className="flex gap-5 w-full">
+            <Button onClick={clearTextArea}>
+              <span className="flex items-center gap-2">
+                <span className="text-[var(--color-accent)] text-3xl">+</span>{" "}
+                New
+              </span>
+            </Button>{" "}
+            <Button
+              onClick={() => {
+                setScriptArgs((prev) => [...prev, { arg: "", type: "u" }]);
+              }}
+            >
+              <span className="flex items-center gap-2">
+                <span className="text-[var(--color-accent)] text-3xl">+</span>{" "}
+                Add
+              </span>
+            </Button>
+          </div>
           <div className="flex flex-col gap-2 items-start">
             <label>Name</label>
             <Input
@@ -103,14 +125,38 @@ export default function MainDisplay() {
               }
             />
           </div>
-          <div className="w-[35rem] h-full bg-[var(--color-tertiary)] p-4 rounded-lg">
-          
-              <textarea
-                ref={scriptAreaRef}
-                className="resize-none text-black h-full w-full rounded-lg border border-black"
-              />
-          
-          </div>
+          {scriptArgs.map((sa, i) => (
+            <ProcessLine
+              key={i}
+              proc={sa}
+              index={i}
+              removeProcessAction={() => {
+                setScriptArgs((prev) => prev.filter((_, index) => index !== i));
+              }}
+              handleSelectChange={(newVal: string): void => {
+                console.log(newVal);
+                let t: ArgType = "u";
+                switch (newVal) {
+                  case "cmd": {
+                    t = "c";
+                  }
+                }
+
+                setScriptArgs((prev) => {
+                  const copy = [...prev];
+                  copy[i].type = t;
+                  return copy;
+                });
+              }}
+              handleInputChange={(newArg: string): void => {
+                setScriptArgs((prev) => {
+                  const copy = [...prev];
+                  copy[i].arg = newArg;
+                  return copy;
+                });
+              }}
+            />
+          ))}
         </div>
         <div className="flex flex-col gap-10 h-[20%]">
           <Button

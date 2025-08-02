@@ -2,7 +2,6 @@
 
 import { ChangeEvent, CSSProperties } from "react";
 import { iconServer } from "../../assets/icons";
-import { Process } from "../../types/process";
 
 const inputStyles: CSSProperties = {
   border: "1px solid white",
@@ -11,25 +10,28 @@ const inputStyles: CSSProperties = {
   borderRadius: ".25rem",
 };
 
+export type ArgType = "u" | "p" | "c";
+
+export type RawProc = {
+  type: ArgType;
+  arg: string;
+};
+
 type ProcessLineProps = {
-  proc: Process;
+  proc: RawProc;
   index: number;
-  collectionLength: number;
-  addProcessAction: () => void;
-  removeProcessAction: (proc: Process) => void;
-  handleSelectChange: (newVal: string, proc: Process) => void;
-  handleInputChange: (newArg: string, proc: Process) => void;
+  removeProcessAction: () => void;
+  handleSelectChange: (newVal: string) => void;
+  handleInputChange: (newArg: string) => void;
 };
 
 export default function ProcessLine(props: ProcessLineProps) {
   const {
     proc,
     index: i,
-    addProcessAction,
     removeProcessAction,
     handleSelectChange,
     handleInputChange,
-    collectionLength,
   } = props;
 
   return (
@@ -40,24 +42,11 @@ export default function ProcessLine(props: ProcessLineProps) {
         gridTemplateColumns: "1fr 7fr 1fr",
       }}
     >
-      <div className="flex justify-center items-center">
-        {i === collectionLength - 1 && (
-          <button
-            onClick={addProcessAction}
-            style={{
-              color: "#47e025",
-            }}
-          >
-            {iconServer({ iconKey: "add", size: 30 })}
-          </button>
-        )}
-      </div>
-
       <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
         <select
           value={proc.type}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            handleSelectChange(e.target.value, proc)
+            handleSelectChange(e.target.value)
           }
           style={{
             ...inputStyles,
@@ -75,12 +64,12 @@ export default function ProcessLine(props: ProcessLineProps) {
           style={{ ...inputStyles }}
           value={proc.arg}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            handleInputChange(e.target.value, proc)
+            handleInputChange(e.target.value)
           }
           type="text"
         />
         <button
-          onClick={() => removeProcessAction(proc)}
+          onClick={() => removeProcessAction()}
           style={{
             color: "#ff3911",
           }}

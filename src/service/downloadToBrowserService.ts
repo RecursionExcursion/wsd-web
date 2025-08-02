@@ -15,7 +15,7 @@ export function download(script: BlobPart, name: string) {
     document.body.appendChild(a);
     a.click();
 
-    // Clean up
+    //  clean up
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     return true;
