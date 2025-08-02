@@ -53,11 +53,14 @@ export default function ProcessLine(props: ProcessLineProps) {
             padding: "7px",
           }}
         >
-          <option className="text-black" value={"path"}>
+          <option className="text-black" value={"p"}>
             Path
           </option>
-          <option className="text-black" value={"cmd"}>
-            Command
+          <option className="text-black" value={"u"}>
+            Url
+          </option>
+          <option className="text-black" value={"c"}>
+            Custom
           </option>
         </select>
         <input

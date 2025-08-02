@@ -39,23 +39,27 @@ export default function MainDisplay() {
   }, []);
 
   async function createExecutable() {
+    console.log({ scriptArgs });
+
     //TODO check name and script before proceeding
 
-    const area = scriptAreaRef.current;
-    if (!area) return;
+    // const area = scriptAreaRef.current;
+    // if (!area) return;
 
-    const tc = area.textLength;
-    const v = area.value;
-    const args = area.value.split("\n");
-    console.log({ tc, v, args });
+    // const tc = area.textLength;
+    // const v = area.value;
+    // const args = area.value.split("\n");
+    // console.log({ tc, v, args });
 
     const ret = genScript(
       targetOs,
       name,
-      args.map((a) => a.trim())
+      scriptArgs.map((sa) => sa.arg.trim())
     );
 
     const res = download(ret.script, ret.name);
+    console.log({ res });
+
     if (res) {
       // const lazyLocalStorage = await import("../../service/localStorageService");
       // lazyLocalStorage.default.save("last", {
@@ -134,17 +138,9 @@ export default function MainDisplay() {
                 setScriptArgs((prev) => prev.filter((_, index) => index !== i));
               }}
               handleSelectChange={(newVal: string): void => {
-                console.log(newVal);
-                let t: ArgType = "u";
-                switch (newVal) {
-                  case "cmd": {
-                    t = "c";
-                  }
-                }
-
                 setScriptArgs((prev) => {
                   const copy = [...prev];
-                  copy[i].type = t;
+                  copy[i].type = newVal as ArgType;
                   return copy;
                 });
               }}
