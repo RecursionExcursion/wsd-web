@@ -2,19 +2,13 @@
 
 import { ChangeEvent, CSSProperties } from "react";
 import { iconServer } from "../../assets/icons";
+import { RawProc } from "../../service/browserScriptGen";
 
 const inputStyles: CSSProperties = {
   border: "1px solid white",
   background: "transparent",
   padding: "4px",
   borderRadius: ".25rem",
-};
-
-export type ArgType = "u" | "p" | "c";
-
-export type RawProc = {
-  type: ArgType;
-  arg: string;
 };
 
 type ProcessLineProps = {

@@ -1,5 +1,12 @@
 "use client";
 
+export type ArgType = "u" | "p" | "c";
+
+export type RawProc = {
+  type: ArgType;
+  arg: string;
+};
+
 type ScriptType = {
   os: string;
   ext: string;
@@ -34,7 +41,9 @@ const templates: Record<SUPPORTED_OS, ScriptType> = {
     os: "linux",
     ext: ".desktop",
     template: (args: string[]) => {
-      return `@echo off\n${args.join("\n").trimEnd()}`;
+      return `[Desktop Entry]\nName=Shortcut\nExec=${args
+        .join("\n")
+        .trimEnd()}\nType=Application`;
     },
   },
   mac: {
@@ -49,10 +58,21 @@ const templates: Record<SUPPORTED_OS, ScriptType> = {
 export function genScript(
   os: keyof typeof templates,
   name: string,
-  args: string[]
+  args: RawProc[]
 ) {
+  const processedArgs = args.map((arg) => {
+    switch (arg.type) {
+      case "u":
+        return prebuiltCmds.openUrl[os](arg.arg.trim());
+      case "p":
+        return prebuiltCmds.openFile[os](arg.arg.trim());
+      case "c":
+        return arg.arg.trim();
+    }
+  });
+
   return {
     name: `${name}${templates[os].ext}`,
-    script: templates[os].template(args),
+    script: templates[os].template(processedArgs),
   };
 }
