@@ -1,13 +1,14 @@
 "use client";
 
-import { Process } from "../types/process";
+// import { Process } from "../types/process";
+import { RawProc } from "./browserScriptGen";
 
 export type LS_Deployable = {
   id: string;
   timestamp: number;
   name: string | undefined;
   os: string;
-  processes: Process[];
+  processes: RawProc[];
 };
 
 export type DeployableWithoutId = Omit<LS_Deployable, "id">;
