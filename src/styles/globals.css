@@ -6,11 +6,11 @@
 
 :root {
   --color-primary: #141a1e;
-  --color-secondary: #191d22;
+  /* --color-secondary: #191d22; */
   --color-light-secondary: #2d333a;
   --color-lightest-secondary: #58616b;
   --color-tertiary: #1c2226;
-  --color-trim: #22272c;
+  /* --color-trim: #22272c; */
   --color-accent: #1bc6e4;
   --color-info: #3b82f6;
   --color-success: #22c55e;
