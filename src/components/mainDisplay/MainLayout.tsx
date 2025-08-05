@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   genScript,
   RawProc,
@@ -12,7 +12,7 @@ import MainDisplay from "./MainDisplay";
 import { emitter } from "../../lib/events/EventEmittor";
 import { eventKeys } from "../../lib/events/events";
 import { download } from "../../service/downloadToBrowserService";
-import OsSelector from "../OsSelector";
+import OsRadio from "../OsRadio";
 
 export default function MainLayout() {
   const [targetOs, setTargetOs] = useState<SUPPORTED_OS>("win");
@@ -23,6 +23,10 @@ export default function MainLayout() {
       arg: "",
     },
   ]);
+
+  useEffect(() => {
+    console.log(targetOs);
+  }, [targetOs]);
 
   async function save() {
     const sanitizedName = name.trim();
@@ -72,12 +76,15 @@ export default function MainLayout() {
             id="connection-status"
             className="flex w-full h-10 items-center justify-center"
           ></div>
-          <OsSelector
-            updateTarget={(s) => setTargetOs(s as SUPPORTED_OS)}
-            supportedOs={SUPPORTED_OS}
-          />
-          <DeployableMenu type="saved" />
-          <DeployableMenu type="last" />
+          <div className="flex-1 text-center flex flex-col gap-5">
+            <h3 className="text-3xl">Target Operating System</h3>
+            <OsRadio setOs={setTargetOs} curr={targetOs} />
+          </div>
+          <div className="flex-1 text-center flex flex-col gap-5">
+            <h3 className="text-3xl">Previously Created</h3>
+            <DeployableMenu type="saved" />
+            <DeployableMenu type="last" />
+          </div>
         </div>
         <MainDisplay
           name={name}

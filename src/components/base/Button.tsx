@@ -9,7 +9,7 @@ export default function Button(props: ButtonProps) {
     <button
       {...attributes}
       className={
-        "w-fit bg-[var(--color-tertiary)] px-4 py-0.5 rounded-lg border border-[var(--color-trim)] " +
+        "w-fit bg-[var(--color-tertiary)] px-6 py-1.5 rounded-md border-2 border-[var(--color-trim)] " +
         attributes.className
       }
     />
