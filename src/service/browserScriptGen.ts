@@ -1,11 +1,6 @@
 "use client";
 
-export type ArgType = "u" | "p" | "c";
-
-export type RawProc = {
-  type: ArgType;
-  arg: string;
-};
+import { Process } from "./scriptService";
 
 type ScriptType = {
   os: string;
@@ -58,7 +53,7 @@ const templates: Record<SUPPORTED_OS, ScriptType> = {
 export function genScript(
   os: keyof typeof templates,
   name: string,
-  args: RawProc[]
+  args: Process[]
 ) {
   const processedArgs = args.map((arg) => {
     switch (arg.type) {

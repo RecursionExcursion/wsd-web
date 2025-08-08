@@ -8,25 +8,25 @@ import { LS_Deployable } from "../../service/localStorageService";
 import Button from "../base/Button";
 import Input from "../base/Input";
 
-import { ArgType, RawProc } from "../../service/browserScriptGen";
 import ProcessLine from "./ProcessLine";
+import { Script } from "../../service/scriptService";
 
 type MainDisplayProps = {
-  setName: Dispatch<SetStateAction<string>>;
-  setScriptArgs: Dispatch<SetStateAction<RawProc[]>>;
-  scriptArgs: RawProc[];
-  name: string;
+  script: Script;
+  setScript: Dispatch<SetStateAction<Script>>;
 };
 
 export default function MainDisplay(props: MainDisplayProps) {
-  const { setName, setScriptArgs, scriptArgs, name } = props;
+  const { script, setScript } = props;
 
   useEffect(() => {
     const updateContent = (data: { content: LS_Deployable }) => {
-      if (data.content.name) {
-        setName(data.content.name);
-      }
-      setScriptArgs(data.content.processes);
+      setScript(
+        script.setScript({
+          name: data.content.name,
+          args: data.content.args,
+        })
+      );
     };
 
     emitter.on(eventKeys.updateDeployable, updateContent);
@@ -38,8 +38,7 @@ export default function MainDisplay(props: MainDisplayProps) {
   }, []);
 
   function clearScript() {
-    setScriptArgs([]);
-    setName("");
+    setScript(script.reset());
   }
 
   return (
@@ -52,9 +51,7 @@ export default function MainDisplay(props: MainDisplayProps) {
             </span>
           </Button>
           <Button
-            onClick={() => {
-              setScriptArgs((prev) => [...prev, { arg: "", type: "u" }]);
-            }}
+            onClick={() => setScript(script.addArgs({ arg: "", type: "u" }))}
           >
             <span className="flex items-center gap-2">
               <span className="text-[var(--color-accent)] text-3xl">+</span> Add
@@ -66,34 +63,24 @@ export default function MainDisplay(props: MainDisplayProps) {
           <Input
             className="ml-2"
             type="text"
-            value={name}
+            value={script.name}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setName(e.target.value)
+              setScript(script.setName(e.target.value))
             }
           />
         </div>
         <div className="overflow-y-auto flex-1 flex flex-col gap-4 py-4 max-h-[32rem]">
-          {scriptArgs.map((sa, i) => (
+          {script.args.map((sa, i) => (
             <ProcessLine
               key={i}
               proc={sa}
               index={i}
-              removeProcessAction={() => {
-                setScriptArgs((prev) => prev.filter((_, index) => index !== i));
-              }}
+              removeProcessAction={() => setScript(script.removeArg(i))}
               handleSelectChange={(newVal: string): void => {
-                setScriptArgs((prev) => {
-                  const copy = [...prev];
-                  copy[i].type = newVal as ArgType;
-                  return copy;
-                });
+                setScript(script.editArg(newVal, i, "type"));
               }}
               handleInputChange={(newArg: string): void => {
-                setScriptArgs((prev) => {
-                  const copy = [...prev];
-                  copy[i].arg = newArg;
-                  return copy;
-                });
+                setScript(script.editArg(newArg, i, "arg"));
               }}
             />
           ))}

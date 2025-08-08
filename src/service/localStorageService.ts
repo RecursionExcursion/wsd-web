@@ -1,17 +1,22 @@
 "use client";
 
-// import { Process } from "../types/process";
-import { RawProc } from "./browserScriptGen";
+import { Script, ScriptType } from "./scriptService";
 
-export type LS_Deployable = {
+// import { Process } from "../types/process";
+
+export type LS_Deployable = ScriptType & {
   id: string;
   timestamp: number;
-  name: string | undefined;
-  os: string;
-  processes: RawProc[];
+  // name: string | undefined;
+  // os: string;
+  // args: Process[];
 };
 
-export type DeployableWithoutId = Omit<LS_Deployable, "id">;
+export type DeployableWithoutId = {
+  script: Script;
+  timestamp: number;
+};
+// export type DeployableWithoutId = Omit<LS_Deployable, "id">;
 
 export type LocalStorageKey = "saved" | "last";
 
@@ -49,7 +54,8 @@ export default class LocalStorageService {
   ): LS_Deployable {
     return {
       id: generateUID(),
-      ...partial,
+      timestamp: partial.timestamp,
+      ...partial.script.toScriptType(),
     };
   }
 

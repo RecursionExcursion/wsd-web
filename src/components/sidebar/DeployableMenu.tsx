@@ -103,7 +103,7 @@ const ItemDisplay = (props: ItemDisplayProps) => {
               <span className="font-semibold underline">Name: {item.name}</span>
             )}
             <span>OS: {item.os}</span>
-            {item.processes.map((p, i) => {
+            {item.args.map((p, i) => {
               return (
                 <span
                   className="text-ellipsis text-nowrap overflow-x-hidden"
