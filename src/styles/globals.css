@@ -1,22 +1,36 @@
 @import "../styles/animations/index.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --color-primary: #141a1e;
-  /* --color-secondary: #191d22; */
-  --color-light-secondary: #2d333a;
-  --color-lightest-secondary: #58616b;
-  --color-tertiary: #1c2226;
-  /* --color-trim: #22272c; */
-  --color-accent: #1bc6e4;
-  --color-info: #3b82f6;
-  --color-success: #22c55e;
-  --color-warning: #eab308;
-  --color-error: #ef4444;
-  --color-text: #ffffff;
+@theme {
+  --color-cosmos: #0d0d0f;
+  --color-nebula: #5a2a82;
+  --color-footer: #2c1a40;
+
+  --color-yellow: #f4c542;
+  --color-pink: #d154a0;
+  --color-purple: #5a2a82;
+
+  --color-primary: #f5f1e6;
+  --color-secondary: #b3a9c9;
+
+  --color-soft: rgba(245, 241, 230, 0.12);
+  /* --color-purple: 0 0 0.75rem rgba(90, 42, 130, 0.5); */
+  --color-yellow: 0 0 0.75rem rgba(244, 197, 66, 0.55);
+
+  /* yelllow */
+  --color-y-hover: #ffd458;
+  --color-y-active: #e5b92f;
+
+  /* purple */
+  --color-pr-hover: #6c35a0;
+  --color-pr-active: #4a216f;
+
+  /* pink */
+  --color-p-hover: #e169b0;
+  --color-p-active: #b8468a;
+
+  --ink-on-yellow: #0d0d0f;
 }
 
 body {
@@ -35,4 +49,8 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+.cut-through {
+    clip-path: polygon(56% 0, 78% 50%, 56% 100%, 31% 100%, 52% 50%, 28% 0);
 }

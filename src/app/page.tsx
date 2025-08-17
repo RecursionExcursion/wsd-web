@@ -4,27 +4,26 @@ import MainLayout from "../components/mainDisplay/MainLayout";
 
 export default async function Home() {
   return (
-    <main className="grid grid-cols-[10%_80%_10%] h-screen">
-      <video
-        className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+    <main className="h-screen">
+      {/* <video
+        className="absolute top-0 left-0 w-full h-full object-cover"
         src="/nebula.mp4"
         autoPlay
         loop
         muted
         playsInline
-      />
-      <div></div>
-      <div className="flex flex-col gap-5 h-screen bg-[var(--color-primary)]">
-        <div className="flex w-full justify-between items-center px-4">
+      /> */}
+
+      <div className="flex flex-col h-screen w-full bg-cosmos">
+        <div className="flex w-full justify-between items-center px-4 py-8 lg:px-8 lg:py-16">
           <LogoTitle text="Quick Script" />
           <div className="px-10 w-full">
             <MainAnimation />
           </div>
         </div>
-        <div className="border border-white px-4"></div>
+        <div className="h-4 "></div>
         <MainLayout />
       </div>
-      <div></div>
     </main>
   );
 }

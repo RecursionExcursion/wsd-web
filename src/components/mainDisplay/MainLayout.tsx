@@ -49,8 +49,8 @@ export default function MainLayout() {
   }
 
   return (
-    <div className="relative flex-1 flex flex-col justify-between overflow-y-hidden">
-      <div className="grid grid-cols-2 gap-4 flex-1  px-4">
+    <div className="relative flex-1 flex flex-col justify-between overflow-y-hidden px-4 py-8 lg:px-8 lg:py-16">
+      <div className="grid grid-cols-2 gap-4 flex-1">
         <div className="flex flex-col gap-5">
           <h2 className="text-xl font-semibold">Menu</h2>
           <div
