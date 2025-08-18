@@ -42,26 +42,27 @@ export default function MainDisplay(props: MainDisplayProps) {
   }
 
   return (
-    <div className="flex flex-col justify-between gap-2">
-      <div className="flex flex-col gap-6 overflow-y-hidden ">
-        <div className="flex gap-5 w-full">
-          <Button onClick={clearScript}>
+    <div className="flex flex-col justify-between gap-2 w-full min-w-0 overflow-hidden">
+      <div className="flex flex-col gap-6 overflow-hidden w-full min-w-0">
+        <div className="flex gap-5 w-full min-w-0">
+          <Button onClick={clearScript} className="flex-shrink-0">
             <span className="flex items-center gap-2">
               <span className="text-[var(--color-accent)] text-3xl">+</span> New
             </span>
           </Button>
           <Button
             onClick={() => setScript(script.addArgs({ arg: "", type: "u" }))}
+            className="flex-shrink-0"
           >
             <span className="flex items-center gap-2">
               <span className="text-[var(--color-accent)] text-3xl">+</span> Add
             </span>
           </Button>
         </div>
-        <div className="flex flex-col gap-2 items-start">
+        <div className="flex flex-col gap-2 items-start w-full min-w-0">
           <label>Name</label>
           <Input
-            className="ml-2"
+            className="ml-2 w-full max-w-md"
             type="text"
             value={script.name}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -69,7 +70,7 @@ export default function MainDisplay(props: MainDisplayProps) {
             }
           />
         </div>
-        <div className="overflow-y-auto flex-1 flex flex-col gap-4 py-4 max-h-[32rem]">
+        <div className="overflow-y-auto overflow-x-hidden flex-1 flex flex-col gap-4 py-4 max-h-[32rem] w-full min-w-0">
           {script.args.map((sa, i) => (
             <ProcessLine
               key={i}

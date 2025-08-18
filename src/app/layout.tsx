@@ -9,9 +9,9 @@ const artifika = Artifika({
 });
 
 export const metadata: Metadata = {
-  title: "Workspace Deployer",
+  title: "Quick Script - Workspace Deployer",
   description:
-    "A webapp used to create reusable executable scripts to deploy a workspace",
+    "A webapp used to create reusable executable scripts to deploy a workspace with cosmic efficiency",
 };
 
 export default function RootLayout({
@@ -20,10 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="overflow-x-hidden">
       <body
-        style={{ fontFamily: `var(--font-artfika)` }}
-        className={`${artifika.variable} antialiased`}
+        className={`${artifika.variable} font-artfika antialiased bg-cosmic-black text-milky-white overflow-x-hidden`}
       >
         {children}
       </body>

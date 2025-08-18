@@ -48,11 +48,13 @@ export default function MainLayout() {
     }
   }
 
+  const osOptions = ["win", "mac", "lin"];
+
   return (
-    <div className="relative flex-1 flex flex-col justify-between overflow-y-hidden px-4 py-8 lg:px-8 lg:py-16">
-      <div className="grid grid-cols-2 gap-4 flex-1">
-        <div className="flex flex-col gap-5">
-          <h2 className="text-xl font-semibold">Menu</h2>
+    <div className="relative flex-1 flex flex-col justify-between overflow-hidden px-4 py-8 lg:px-8 lg:py-16">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-w-0">
+        <div className="flex flex-col gap-5 min-w-0">
+          <h2 className="font-semibold text-4xl">Menu</h2>
           <div
             id="connection-status"
             className="flex w-full h-10 items-center justify-center"
@@ -60,10 +62,11 @@ export default function MainLayout() {
           <div className="flex-1 text-center flex flex-col gap-5">
             <h3 className="text-3xl">Target Operating System</h3>
             <OsRadio
-              setOs={(s: SUPPORTED_OS) => {
-                setScript(script.setTarget(s));
+              options={osOptions}
+              onSelect={(os: string) => {
+                setScript(script.setTarget(os as SUPPORTED_OS));
               }}
-              curr={script.targetOs}
+              defaultSelected={script.targetOs}
             />
           </div>
           <div className="flex-1 text-center flex flex-col gap-5">

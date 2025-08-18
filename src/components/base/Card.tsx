@@ -9,11 +9,10 @@ type CardProps = {
 export default function Card(props: CardProps) {
   return (
     <div
-      className="border border-[var(--color-trim)]
-                bg-[var(--color-secondary)] rounded-xl py-6 px-8 overflow-y-auto"
+      className="border border-nebula-purple/30 bg-nebula-purple/10 rounded-xl py-6 px-8 overflow-y-auto"
       style={{
         height: props.height ?? "100%",
-        width: props.width ?? "fit",
+        width: props.width ?? "auto",
       }}
     >
       {props.children}

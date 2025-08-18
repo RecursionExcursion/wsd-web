@@ -1,0 +1,60 @@
+"use client";
+
+import Link from "next/link";
+
+type CosmicLinkProps = React.ComponentPropsWithoutRef<typeof Link> & {
+  variant?: "cosmic" | "glow" | "button";
+  size?: "sm" | "md" | "lg";
+  external?: boolean;
+};
+
+export default function CosmicLink(props: CosmicLinkProps) {
+  const { variant = "cosmic", size = "md", external = false, className = "", children, ...attributes } = props;
+  
+  const baseStyles = "transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-starlight-yellow";
+  
+  const sizeStyles = {
+    sm: "text-sm",
+    md: "text-base",
+    lg: "text-lg",
+  };
+  
+  const variantStyles = {
+    cosmic: "text-aurora-pink hover:text-starlight-yellow hover:underline hover:underline-offset-4 active:font-bold active:text-milky-white",
+    glow: "text-milky-white hover:text-shadow-lg hover:shadow-nebula-purple active:text-starlight-yellow",
+    button: "inline-block bg-nebula-purple text-milky-white px-4 py-2 rounded-full hover:bg-starlight-yellow hover:text-cosmic-black active:bg-cosmic-black active:text-starlight-yellow",
+  };
+
+  const linkContent = (
+    <>
+      {children}
+      {external && (
+        <svg className="inline-block w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      )}
+    </>
+  );
+
+  if (external && typeof attributes.href === "string" && attributes.href.startsWith("http")) {
+    return (
+      <a
+        href={attributes.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
+      >
+        {linkContent}
+      </a>
+    );
+  }
+
+  return (
+    <Link
+      {...attributes}
+      className={`${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
+    >
+      {linkContent}
+    </Link>
+  );
+}

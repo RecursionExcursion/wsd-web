@@ -1,66 +1,58 @@
 "use client";
 
-import { ChangeEvent } from "react";
-import { SUPPORTED_OS } from "../service/browserScriptGen";
+import { useState } from "react";
 
 type OsRadioProps = {
-  setOs: (s: SUPPORTED_OS) => void;
-  curr: SUPPORTED_OS;
+  options: string[];
+  onSelect: (option: string) => void;
+  defaultSelected?: string;
+  className?: string;
 };
 
-export default function OsRadio(props: OsRadioProps) {
-  const { setOs, curr } = props;
+export default function OsRadio({
+  options,
+  onSelect,
+  defaultSelected,
+  className = "",
+}: OsRadioProps) {
+  const [selected, setSelected] = useState(defaultSelected || options[0]);
+
+  const handleSelect = (option: string) => {
+    setSelected(option);
+    onSelect(option);
+  };
+
   return (
-    <div className="flex w-full justify-center gap-5">
-      <OsRadioButton
-        id="win"
-        val="win"
-        setOs={setOs}
-        checked={curr === "win"}
-      />
-      <OsRadioButton
-        id="mac"
-        val="mac"
-        setOs={setOs}
-        checked={curr === "mac"}
-      />
-      <OsRadioButton
-        id="lin"
-        val="lin"
-        setOs={setOs}
-        checked={curr === "lin"}
-      />
+    <div className={`w-full ${className}`}>
+      <div className="relative bg-nebula-purple/20 border border-nebula-purple/30 rounded-lg p-1">
+        {/* Background highlight bar */}
+        <div
+          className="absolute top-1 bottom-1 bg-starlight-yellow rounded-md transition-all duration-300 ease-in-out"
+          style={{
+            width: `${100 / options.length}%`,
+            left: `${(options.findIndex(opt => opt === selected) / options.length) * 100}%`,
+          }}
+        />
+        
+        {/* Options */}
+        <div className="relative flex">
+          {options.map((option, index) => (
+            <button
+              key={option}
+              onClick={() => handleSelect(option)}
+              className={`
+                flex-1 relative z-10 px-4 py-2 text-sm font-medium rounded-md transition-all duration-300 ease-in-out
+                ${selected === option 
+                  ? 'text-cosmic-black font-semibold' 
+                  : 'text-milky-white hover:text-starlight-yellow'
+                }
+              `}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
-}
-
-type OsRadioButtonProps = {
-  id: string;
-  val: SUPPORTED_OS;
-  setOs: (s: SUPPORTED_OS) => void;
-  checked?: boolean;
-};
-
-function OsRadioButton(props: OsRadioButtonProps) {
-  const { id, val, setOs, checked = false } = props;
-  function handleSelection(e: ChangeEvent<HTMLInputElement>) {
-    setOs(e.target.value as SUPPORTED_OS);
-  }
-  return (
-    <div className="flex gap-2">
-      <input
-        onChange={handleSelection}
-        id={id}
-        type="radio"
-        value={val}
-        name="os"
-        checked={checked}
-      ></input>
-      <label htmlFor={id}>{capitalizeFirstLetter(val)}</label>
-    </div>
-  );
-}
-
-function capitalizeFirstLetter(s: string) {
-  return s[0].toUpperCase() + s.slice(1);
 }
