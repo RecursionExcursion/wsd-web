@@ -14,8 +14,9 @@ export default async function Home() {
     >
       <Header />
       <main className="flex-1 overflow-hidden w-full relative">
+        {/* TODO rm */}
         {/* Single continuous background gradient spanning all sections */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-cosmic-black/20 to-slate-900 pointer-events-none"></div>
+        {/* <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-cosmic-black/20 to-slate-900 pointer-events-none"></div> */}
         
         <div className="relative z-10">
           <Hero />

@@ -52,7 +52,7 @@ export default function MainLayout() {
   const osOptions = ["win", "mac", "lin"];
 
   return (
-    <section className="py-16 lg:py-24 overflow-hidden w-full">
+    <section className="py-16 lg:py-24 overflow-hidden w-full bg-slate-900">
       <div className="max-w-7xl mx-auto px-4 lg:px-24 overflow-hidden w-full">
         <div className="relative flex-1 flex flex-col justify-between overflow-hidden px-4 py-8 lg:px-8 lg:py-16">
           <SideBySide
