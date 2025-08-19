@@ -34,16 +34,7 @@ export default function Documentation({ className = "" }: DocumentationProps) {
   ];
 
   return (
-    <div className={`${className}`}>
-      <h2 className="text-3xl lg:text-4xl font-bold text-milky-white mb-6">
-        Documentation
-        <span className="text-starlight-yellow block">& Resources</span>
-      </h2>
-      <p className="text-lg text-muted-lavender mb-8">
-        Everything you need to know about WSD Web. From quick start guides to advanced 
-        features, our comprehensive documentation will help you master the platform.
-      </p>
-      
+    <div className={`${className}`}>      
       {/* Documentation Cards - 2x2 Grid */}
       <div className="grid grid-cols-2 gap-4">
         {docSections.map((section, index) => (
@@ -56,9 +47,6 @@ export default function Documentation({ className = "" }: DocumentationProps) {
               <p className="text-muted-lavender text-sm mb-3">
                 {section.description}
               </p>
-              <Button variant="secondary" size="sm">
-                Learn More
-              </Button>
             </div>
           </Card>
         ))}

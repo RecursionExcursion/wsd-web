@@ -7,13 +7,6 @@ type HeroProps = {
 };
 
 export default function Hero({ className = "" }: HeroProps) {
-  // function setIsHovered(arg0: boolean) {
-  //   const ast = document.getElementById("astronaut");
-  //   if (ast) {
-  //     ast.style.transform = "scale(1.50)";
-  //   }
-  // }
-
   return (
     <section
       className={`relative overflow-hidden w-full ${className}`}
@@ -42,10 +35,8 @@ export default function Hero({ className = "" }: HeroProps) {
             </div>
           </div>
 
-          {/* Orbiting Planets with Astronaut */}
           <div className="flex-1 flex justify-center items-center lg:justify-center min-w-0 overflow-visible">
             <div className="relative overflow-visible w-[500px] h-[500px] flex items-center justify-center">
-              {/* Astronaut at center */}
               <Image
                 id="astronaut"
                 src="./astronaut_graphic.svg"

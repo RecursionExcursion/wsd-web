@@ -1,11 +1,12 @@
-import About from "./About";
-import Documentation from "./Documentation";
+import { ReactNode } from "react";
 
 type SideBySideProps = {
+  leftChild: ReactNode;
+  rightChild: ReactNode;
   className?: string;
 };
 
-export default function SideBySide({ className = "" }: SideBySideProps) {
+export default function SideBySide({ leftChild, rightChild, className = "" }: SideBySideProps) {
   return (
     <section
       className={`relative overflow-hidden w-full ${className}`}
@@ -14,10 +15,10 @@ export default function SideBySide({ className = "" }: SideBySideProps) {
         <div className="w-full py-16 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
             <div className="flex items-start">
-              <About />
+              {leftChild}
             </div>
             <div className="flex items-start">
-              <Documentation />
+              {rightChild}
             </div>
           </div>
         </div>

@@ -44,7 +44,7 @@ export default function MainDisplay(props: MainDisplayProps) {
   return (
     <div className="flex flex-col justify-between gap-2 w-full min-w-0 overflow-hidden">
       <div className="flex flex-col gap-6 overflow-hidden w-full min-w-0">
-        <div className="flex gap-5 w-full min-w-0">
+        <div className="flex gap-5 w-full min-w-0 justify-center">
           <Button onClick={clearScript} className="flex-shrink-0">
             <span className="flex items-center gap-2">
               <span className="text-[var(--color-accent)] text-3xl">+</span> New
@@ -60,9 +60,10 @@ export default function MainDisplay(props: MainDisplayProps) {
           </Button>
         </div>
         <div className="flex flex-col gap-2 items-start w-full min-w-0">
-          <label>Name</label>
+          <label htmlFor="script-name">Name</label>
           <Input
-            className="ml-2 w-full max-w-md"
+            id="script-name"
+            className="w-full max-w-md"
             type="text"
             value={script.name}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>

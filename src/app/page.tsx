@@ -3,6 +3,8 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import Hero from "../components/Hero";
 import SideBySide from "../components/SideBySide";
+import About from "../components/About";
+import Documentation from "../components/Documentation";
 
 export default async function Home() {
   return (
@@ -17,9 +19,11 @@ export default async function Home() {
         
         <div className="relative z-10">
           <Hero />
-          <SideBySide />
+          <SideBySide 
+            leftChild={<About />}
+            rightChild={<Documentation />}
+          />
         </div>
-        
         <MainLayout />
       </main>
       <Footer />

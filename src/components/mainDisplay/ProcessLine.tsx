@@ -30,7 +30,7 @@ export default function ProcessLine(props: ProcessLineProps) {
 
   return (
     <div className="grid grid-cols-12 gap-2 items-center w-full min-w-0">
-      <div className="col-span-1 flex justify-center">
+      <div className="col-span-2 flex justify-center">
         <select
           value={proc.type}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
@@ -54,8 +54,9 @@ export default function ProcessLine(props: ProcessLineProps) {
         </select>
       </div>
       
-      <div className="col-span-10 min-w-0">
+      <div className="col-span-9 min-w-0">
         <input
+          id={`process-arg-${i}`}
           style={{ ...inputStyles }}
           value={proc.arg}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -66,7 +67,7 @@ export default function ProcessLine(props: ProcessLineProps) {
         />
       </div>
       
-      <div className="col-span-1 flex justify-center">
+      <div className="col-span-1 flex justify-end">
         <button
           onClick={() => removeProcessAction()}
           style={{
