@@ -1,4 +1,3 @@
-import Button from "./base/Button";
 import Card from "./base/Card";
 
 type DocumentationProps = {
