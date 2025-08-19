@@ -15,8 +15,7 @@ export default function Hero({ className = "" }: HeroProps) {
 
   return (
     <section
-      className={`relative overflow-hidden w-full bg-cover bg-no-repeat bg-center ${className}`}
-      style={{ backgroundImage: 'url(./space_bg.png)' }}
+      className={`relative overflow-hidden w-full ${className}`}
     >
       <div className="max-w-7xl mx-auto px-4 lg:px-24 overflow-hidden w-full">
         <div className="w-full py-16 lg:py-24 flex flex-col lg:flex-row items-center justify-between gap-12 overflow-hidden">
@@ -43,15 +42,15 @@ export default function Hero({ className = "" }: HeroProps) {
           </div>
 
           {/* Orbiting Planets with Astronaut */}
-          <div className="flex-1 flex justify-center items-center lg:justify-end min-w-0 overflow-visible">
+          <div className="flex-1 flex justify-center items-center lg:justify-center min-w-0 overflow-visible">
             <div className="relative overflow-visible w-[500px] h-[500px] flex items-center justify-center">
               {/* Astronaut at center */}
               <img
                 id="astronaut"
                 src="./astronaut_graphic.svg"
                 alt="Astronaut"
-                width={400}
-                height={400}
+                width={500}
+                height={500}
                 className="floating-astronaut z-10 relative max-w-full h-auto"
               />
               <img

@@ -12,16 +12,6 @@
   --color-deep-purple: #2C1A40;
   --color-muted-lavender: #B3A9C9;
 
-  /* Legacy color mappings for backward compatibility */
-  --color-cosmos: var(--color-cosmic-black);
-  --color-nebula: var(--color-nebula-purple);
-  --color-footer: var(--color-deep-purple);
-  --color-yellow: var(--color-starlight-yellow);
-  --color-pink: var(--color-aurora-pink);
-  --color-purple: var(--color-nebula-purple);
-  --color-primary: var(--color-milky-white);
-  --color-secondary: var(--color-muted-lavender);
-
   /* Interactive states */
   --color-y-hover: #ffd458;
   --color-y-active: #e5b92f;
