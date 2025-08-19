@@ -36,7 +36,7 @@ export default function OsRadio({
         
         {/* Options */}
         <div className="relative flex">
-          {options.map((option, index) => (
+          {options.map((option) => (
             <button
               key={option}
               onClick={() => handleSelect(option)}

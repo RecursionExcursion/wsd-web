@@ -1,3 +1,4 @@
+import Image from "next/image";
 import MainAnimation from "./animations/MainAni";
 import Button from "./base/Button";
 
@@ -6,12 +7,12 @@ type HeroProps = {
 };
 
 export default function Hero({ className = "" }: HeroProps) {
-  function setIsHovered(arg0: boolean) {
-    const ast = document.getElementById("astronaut");
-    if (ast) {
-      ast.style.transform = "scale(1.50)";
-    }
-  }
+  // function setIsHovered(arg0: boolean) {
+  //   const ast = document.getElementById("astronaut");
+  //   if (ast) {
+  //     ast.style.transform = "scale(1.50)";
+  //   }
+  // }
 
   return (
     <section
@@ -28,9 +29,9 @@ export default function Hero({ className = "" }: HeroProps) {
               </span>
             </h2>
             <p className="text-xl text-muted-lavender mb-8 max-w-2xl">
-              Create reusable executable scripts that transform your development
+              {`Create reusable executable scripts that transform your development
               workflow. From simple automation to complex deployments, we've got
-              you covered.
+              you covered.`}
             </p>
             <div className="w-full max-w-md">
               <MainAnimation />
@@ -45,7 +46,7 @@ export default function Hero({ className = "" }: HeroProps) {
           <div className="flex-1 flex justify-center items-center lg:justify-center min-w-0 overflow-visible">
             <div className="relative overflow-visible w-[500px] h-[500px] flex items-center justify-center">
               {/* Astronaut at center */}
-              <img
+              <Image
                 id="astronaut"
                 src="./astronaut_graphic.svg"
                 alt="Astronaut"
@@ -53,21 +54,21 @@ export default function Hero({ className = "" }: HeroProps) {
                 height={500}
                 className="floating-astronaut z-10 relative max-w-full h-auto"
               />
-              <img
+              <Image
                 src="./planet_graphic.svg"
                 alt="Planet 1"
                 width={220}
                 height={220}
                 className="absolute bottom-2 max-w-full h-auto"
               />
-              <img
+              <Image
                 src="./yellow_moon_graphic.svg"
                 alt="Planet 1"
                 width={20}
                 height={20}
                 className="absolute bottom-48 right-48 max-w-full h-auto"
               />
-              <img
+              <Image
                 src="./purple_moon_graphic.svg"
                 alt="Planet 1"
                 width={30}

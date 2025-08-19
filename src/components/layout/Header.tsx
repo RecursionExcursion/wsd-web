@@ -1,7 +1,6 @@
 "use client";
 
 import LogoTitle from "../LogoTitle";
-import Button from "../base/Button";
 import CosmicLink from "../base/Link";
 
 type HeaderProps = {

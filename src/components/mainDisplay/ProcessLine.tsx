@@ -2,7 +2,7 @@
 
 import { ChangeEvent, CSSProperties } from "react";
 import { iconServer } from "../../assets/icons";
-import { RawProc } from "../../service/browserScriptGen";
+import { Process } from "../../service/scriptService";
 
 const inputStyles: CSSProperties = {
   border: "1px solid white",
@@ -12,7 +12,7 @@ const inputStyles: CSSProperties = {
 };
 
 type ProcessLineProps = {
-  proc: RawProc;
+  proc: Process;
   index: number;
   removeProcessAction: () => void;
   handleSelectChange: (newVal: string) => void;
