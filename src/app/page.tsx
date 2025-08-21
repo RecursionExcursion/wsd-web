@@ -5,6 +5,7 @@ import Hero from "../components/Hero";
 import SideBySide from "../components/SideBySide";
 import About from "../components/About";
 import Documentation from "../components/Documentation";
+import Accordion from "@/components/Accordion";
 
 export default async function Home() {
   return (
@@ -22,7 +23,7 @@ export default async function Home() {
           <Hero />
           <SideBySide 
             leftChild={<About />}
-            rightChild={<Documentation />}
+            rightChild={<Accordion />}
           />
         </div>
         <MainLayout />
