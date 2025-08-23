@@ -12,7 +12,7 @@ export default function Hero({ className = "" }: HeroProps) {
       className={`relative overflow-hidden w-full ${className} bg-cover bg-no-repeat bg-center`}
       style={{ backgroundImage: "url(./space_bg.png)" }}
     >
-      <div className="max-w-7xl mx-auto px-4 lg:px-24 overflow-hidden w-full">
+      <div className="mx-auto px-4 lg:px-24 overflow-hidden w-full">
         <div className="w-full py-16 lg:py-24 flex flex-col lg:flex-row items-center justify-between gap-12 overflow-hidden">
           {/* Hero Content */}
           <div className="flex-1 text-center lg:text-left min-w-0 overflow-hidden">

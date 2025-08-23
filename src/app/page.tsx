@@ -18,7 +18,7 @@ export default async function Home() {
 
         <div className="relative z-10">
           <Hero />
-          <SideBySide leftChild={<About />} rightChild={<Accordion />} />
+          <Accordion />
         </div>
         <MainLayout />
       </main>
