@@ -42,33 +42,6 @@ body {
   font-family: var(--font-artfika), system-ui, sans-serif;
 }
 
-/* Floating Astronaut Animation */
-.floating-astronaut {
-  animation: float 6s ease-in-out infinite;
-  filter: drop-shadow(0 0 20px rgba(243, 239, 226, 0.3));
-  transition: all 0.3s ease;
-}
-
-.floating-astronaut:hover {
-  filter: drop-shadow(0 0 30px rgba(247, 245, 241, 0.6));
-  transform: scale(1.50);
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-15px) rotate(1deg);
-  }
-  50% {
-    transform: translateY(-25px) rotate(0deg);
-  }
-  75% {
-    transform: translateY(-15px) rotate(-1deg);
-  }
-}
-
 /* Header styles */
 .header-cosmic {
   background: linear-gradient(135deg, var(--color-cosmic-black) 0%, var(--color-deep-purple) 100%);
@@ -108,4 +81,52 @@ body {
 
 .cut-through {
     clip-path: polygon(56% 0, 78% 50%, 56% 100%, 31% 100%, 52% 50%, 28% 0);
+}
+
+
+/* Floating Astronaut Animation */
+.floating-astronaut {
+  animation: float 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(243, 239, 226, 0.3));
+  transition: all 0.3s ease;
+}
+
+.floating-astronaut:hover {
+  filter: drop-shadow(0 0 30px rgba(247, 245, 241, 0.6));
+  transform: scale(1.50);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-15px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-25px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-15px) rotate(-1deg);
+  }
+}
+
+
+/* Floating Spaceship Animation */
+.floating-spaceship {
+  animation: float-spaceship 6s ease-in-out infinite;
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.floating-spaceship:hover {
+  z-index: 10;
+}
+
+@keyframes float-spaceship {
+  0%   { transform: translate(0, 0) rotate(120deg); }
+  25%  { transform: translate(0,-250%) rotate(120deg); }
+  50%  { transform: translate(0,-250%) rotate(80deg); }
+  75%  { transform: translate(-100%,-250%) rotate(20deg); }
+  100% { transform: translate(-1000%,-250%) rotate(20deg); }
 }

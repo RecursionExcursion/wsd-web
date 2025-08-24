@@ -21,29 +21,15 @@ export default function Documentation({ className = "" }: DocumentationProps) {
       icon: "⚡",
       link: "#script-creation",
     },
-    {
-      title: "Deployment",
-      description:
-        "Deploy your scripts across different environments and operating systems",
-      icon: "🌍",
-      link: "#deployment",
-    },
-    {
-      title: "API Reference",
-      description:
-        "Comprehensive documentation of all available functions and methods",
-      icon: "📚",
-      link: "#api-reference",
-    },
   ];
 
   return (
     <section>
-      <div className="space-y-4 !max-w-7xl mx-auto p-4 lg:p-24 overflow-hidden w-full">
+      <div className="space-y-4 !max-w-7xl mx-auto pt-4 lg:pt-24 overflow-hidden w-full">
         {docSections.map((section, index) => (
           <details
             className="group [&_summary::-webkit-details-marker]:hidden"
-            open
+            open={false}
           >
             <summary className="flex items-center justify-between gap-1.5 rounded-md border border-gray-100 bg-nebula-purple p-4 text-milky-white hover:bg-aurora-pink hover:cursor-pointer">
               <h2 className="text-lg font-medium">

@@ -42,7 +42,7 @@ export default function MainDisplay(props: MainDisplayProps) {
   }
 
   return (
-    <div className="flex flex-col justify-between gap-2 w-full min-w-0 overflow-hidden">
+    <div className="flex flex-col justify-between gap-2 w-full min-w-0 overflow-hidden p-4">
       <div className="flex flex-col gap-6 overflow-hidden w-full min-w-0">
         <div className="flex gap-5 w-full min-w-0 justify-center">
           <Button onClick={clearScript} className="flex-shrink-0">
@@ -50,6 +50,18 @@ export default function MainDisplay(props: MainDisplayProps) {
               <span className="text-[var(--color-accent)] text-3xl">+</span> New
             </span>
           </Button>
+        </div>
+        <div className="flex flex-row gap-2 items-start w-full min-w-0">
+          <label htmlFor="script-name">Name</label>
+          <Input
+            id="script-name"
+            className="w-full max-w-md border-aurora-pink border-2 min-h-full"
+            type="text"
+            value={script.name}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setScript(script.setName(e.target.value))
+            }
+          />
           <Button
             onClick={() => setScript(script.addArgs({ arg: "", type: "u" }))}
             className="flex-shrink-0"
@@ -58,18 +70,6 @@ export default function MainDisplay(props: MainDisplayProps) {
               <span className="text-[var(--color-accent)] text-3xl">+</span> Add
             </span>
           </Button>
-        </div>
-        <div className="flex flex-col gap-2 items-start w-full min-w-0">
-          <label htmlFor="script-name">Name</label>
-          <Input
-            id="script-name"
-            className="w-full max-w-md"
-            type="text"
-            value={script.name}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setScript(script.setName(e.target.value))
-            }
-          />
         </div>
         <div className="overflow-y-auto overflow-x-hidden flex-1 flex flex-col gap-4 py-4 max-h-[32rem] w-full min-w-0">
           {script.args.map((sa, i) => (

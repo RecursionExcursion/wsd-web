@@ -2,14 +2,13 @@ import MainLayout from "../components/mainDisplay/MainLayout";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import Hero from "../components/Hero";
-import SideBySide from "../components/SideBySide";
-import About from "../components/About";
-import Documentation from "../components/Documentation";
 import Accordion from "@/components/Accordion";
+import Image from "next/image";
+
 
 export default async function Home() {
   return (
-    <div className="min-h-screen w-screen bg-cosmic-black text-milky-white flex flex-col overflow-hidden">
+    <div className="min-h-screen w-screen text-milky-white flex flex-col overflow-hidden">
       <Header />
       <main className="flex-1 overflow-hidden w-full relative">
         {/* TODO rm */}
@@ -21,6 +20,14 @@ export default async function Home() {
           <Accordion />
         </div>
         <MainLayout />
+        <Image
+          id="spaceship"
+          src="/spaceship_graphic.svg"
+          alt="Spaceship"
+          width={200}
+          height={200}
+          className="floating-spaceship absolute bottom-0 right-0 max-w-full h-auto"
+        />
       </main>
       <Footer />
     </div>

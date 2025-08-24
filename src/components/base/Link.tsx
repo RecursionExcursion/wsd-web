@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 type CosmicLinkProps = React.ComponentPropsWithoutRef<typeof Link> & {
-  variant?: "cosmic" | "glow" | "button";
+  variant?: "cosmic" | "glow" | "button_primary" | "button_secondary";
   size?: "sm" | "md" | "lg";
   external?: boolean;
 };
@@ -18,11 +18,14 @@ export default function CosmicLink(props: CosmicLinkProps) {
     md: "text-base",
     lg: "text-lg",
   };
+
+  const buttonBaseStyles= "inline-block  px-4 py-2 rounded-full "
   
   const variantStyles = {
     cosmic: "text-aurora-pink hover:text-starlight-yellow hover:underline hover:underline-offset-4 active:font-bold active:text-milky-white",
     glow: "text-milky-white hover:text-shadow-lg hover:shadow-nebula-purple active:text-starlight-yellow",
-    button: "inline-block bg-nebula-purple text-milky-white px-4 py-2 rounded-full hover:bg-starlight-yellow hover:text-cosmic-black active:bg-cosmic-black active:text-starlight-yellow",
+    button_primary: buttonBaseStyles + " bg-nebula-purple text-milky-white hover:bg-starlight-yellow hover:text-cosmic-black active:bg-cosmic-black active:text-starlight-yellow",
+    button_secondary: buttonBaseStyles + " bg-transparent text-milky-white border-2 border-nebula-purple rounded-full hover:bg-nebula-purple hover:text-milky-white active:bg-aurora-pink active:text-cosmic-black",
   };
 
   const linkContent = (

@@ -9,10 +9,13 @@ type HeroProps = {
 export default function Hero({ className = "" }: HeroProps) {
   return (
     <section
-      className={`relative overflow-hidden w-full ${className} bg-cover bg-no-repeat bg-center`}
-      style={{ backgroundImage: "url(./space_bg.png)" }}
+      className={`relative overflow-hidden w-full ${className} bg-[url('/space_bg.png')] bg-cover bg-no-repeat bg-center`}
     >
-      <div className="mx-auto px-4 lg:px-24 overflow-hidden w-full">
+      <div
+        className="absolute inset-0 bg-gradient-to-b from-transparent to-cosmic-black pointer-events-none z-10"
+        aria-hidden="true"
+      />
+      <div className="mx-auto py-4 lg:pb-24 px-4 lg:px-24 overflow-hidden w-full relative z-20">
         <div className="w-full py-16 lg:py-24 flex flex-col lg:flex-row items-center justify-between gap-12 overflow-hidden">
           {/* Hero Content */}
           <div className="flex-1 text-center lg:text-left min-w-0 overflow-hidden">
@@ -40,28 +43,28 @@ export default function Hero({ className = "" }: HeroProps) {
             <div className="relative overflow-visible w-[500px] h-[500px] flex items-center justify-center">
               <Image
                 id="astronaut"
-                src="./astronaut_graphic.svg"
+                src="/astronaut_graphic.svg"
                 alt="Astronaut"
                 width={500}
                 height={500}
                 className="floating-astronaut z-10 relative max-w-full h-auto"
               />
               <Image
-                src="./planet_graphic.svg"
+                src="/planet_graphic.svg"
                 alt="Planet 1"
                 width={220}
                 height={220}
                 className="absolute bottom-2 max-w-full h-auto"
               />
               <Image
-                src="./yellow_moon_graphic.svg"
+                src="/yellow_moon_graphic.svg"
                 alt="Planet 1"
                 width={20}
                 height={20}
                 className="absolute bottom-48 right-48 max-w-full h-auto"
               />
               <Image
-                src="./purple_moon_graphic.svg"
+                src="/purple_moon_graphic.svg"
                 alt="Planet 1"
                 width={30}
                 height={30}
