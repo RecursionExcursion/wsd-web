@@ -57,7 +57,7 @@ export default function DeployableMenu(props: DeployableMenuProps) {
         <h2 className="text-2xl font-bold">{title}</h2>
         <TrashCanButton onClick={deleteAllItems} />
       </span>
-      <div>
+      <div className="flex flex-col gap-2">
         {items?.map((item, i) => (
           <ItemDisplay key={item.timestamp + i} item={item} type={props.type} />
         ))}
@@ -79,17 +79,17 @@ const ItemDisplay = (props: ItemDisplayProps) => {
   const [showProcesses, setShowProccesses] = useState(false);
 
   return (
-    <div className="odd:bg-nebula-purple even:bg-aurora-pink rounded-lg ">
-      <div className="flex items-center justify-between gap-3">
+    <div className="bg-nebula-purple hover:bg-aurora-pink rounded-md border-white border-1">
+      <div className="hover:cursor-pointer flex items-center justify-between gap-3">
         <button
-          className="font-bold text-lg ml-4 hover:text-starlight-yellow cursor-pointer hover:underline"
+          className="text-lg ml-4 hover:text-starlight-yellow cursor-pointer hover:underline"
           onClick={() => {
             emitter.emit(eventKeys.updateDeployable, { content: item });
           }}
         >
           Use {item.name}
         </button>
-        <button className="flex items-center gap-2 flex-row flex-1 justify-end" onClick={() => setShowProccesses(!showProcesses)}>
+        <button className="hover:cursor-pointer flex items-center gap-2 flex-row flex-1 justify-end" onClick={() => setShowProccesses(!showProcesses)}>
           <span>Created: {new Date(item.timestamp).toLocaleDateString()}</span>
           {showProcesses
             ? iconServer({ iconKey: "cheveronUp", size: iconSize })

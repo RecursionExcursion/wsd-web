@@ -45,13 +45,13 @@ export default function MainDisplay(props: MainDisplayProps) {
     <div className="flex flex-col justify-between gap-2 w-full min-w-0 overflow-hidden p-4">
       <div className="flex flex-col gap-6 overflow-hidden w-full min-w-0">
         <div className="flex gap-5 w-full min-w-0 justify-center">
-          <Button onClick={clearScript} className="flex-shrink-0">
+          <Button onClick={clearScript} className="flex-shrink-0" size="sm">
             <span className="flex items-center gap-2">
               <span className="text-[var(--color-accent)] text-3xl">+</span> New
             </span>
           </Button>
         </div>
-        <div className="flex flex-row gap-2 items-start w-full min-w-0">
+        <div className="flex flex-row gap-2 items-center w-full min-w-0">
           <label htmlFor="script-name">Name</label>
           <Input
             id="script-name"
@@ -65,6 +65,7 @@ export default function MainDisplay(props: MainDisplayProps) {
           <Button
             onClick={() => setScript(script.addArgs({ arg: "", type: "u" }))}
             className="flex-shrink-0"
+            size="sm"
           >
             <span className="flex items-center gap-2">
               <span className="text-[var(--color-accent)] text-3xl">+</span> Add

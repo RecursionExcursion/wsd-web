@@ -71,7 +71,8 @@ export default function MainLayout() {
                   className="flex w-full h-10 items-center justify-center"
                 ></div> */}
                 <div className="flex-1 text-center flex flex-col gap-5">
-                  <h3 className="text-3xl">Target Operating System</h3>
+                  <h3 className="text-3xl">Create a New Deployable</h3>
+                  <h4 className="text-xl">Target Operating System</h4>
                   <OsRadio
                     options={osOptions}
                     onSelect={(os: string) => {

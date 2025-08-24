@@ -126,7 +126,15 @@ body {
 @keyframes float-spaceship {
   0%   { transform: translate(0, 0) rotate(120deg); }
   25%  { transform: translate(0,-250%) rotate(120deg); }
-  50%  { transform: translate(0,-250%) rotate(80deg); }
   75%  { transform: translate(-100%,-250%) rotate(20deg); }
   100% { transform: translate(-1000%,-250%) rotate(20deg); }
+}
+
+.alien {
+  --dist: 50%;
+  animation: bob 10s ease-in-out infinite alternate;
+}
+@keyframes bob {
+  from { transform: translateY(0); }
+  to   { transform: translateY(var(--dist)); }
 }

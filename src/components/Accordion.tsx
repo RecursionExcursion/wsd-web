@@ -1,5 +1,3 @@
-import Card from "./base/Card";
-
 type DocumentationProps = {
   className?: string;
 };
@@ -24,12 +22,13 @@ export default function Documentation({ className = "" }: DocumentationProps) {
   ];
 
   return (
-    <section>
+    <section className={className}>
       <div className="space-y-4 !max-w-7xl mx-auto pt-4 lg:pt-24 overflow-hidden w-full">
         {docSections.map((section, index) => (
           <details
             className="group [&_summary::-webkit-details-marker]:hidden"
             open={false}
+            key={section.title + index}
           >
             <summary className="flex items-center justify-between gap-1.5 rounded-md border border-gray-100 bg-nebula-purple p-4 text-milky-white hover:bg-aurora-pink hover:cursor-pointer">
               <h2 className="text-lg font-medium">

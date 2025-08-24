@@ -11,7 +11,7 @@ export default function Button(props: ButtonProps) {
   const baseStyles = "font-semibold transition-all duration-300 ease-in-out cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-starlight-yellow";
   
   const sizeStyles = {
-    sm: "px-4 py-2 text-sm",
+    sm: "px-4 py-0 text-sm",
     md: "px-6 py-3 text-base",
     lg: "px-8 py-4 text-lg",
   };

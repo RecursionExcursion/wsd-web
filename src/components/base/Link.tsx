@@ -24,8 +24,8 @@ export default function CosmicLink(props: CosmicLinkProps) {
   const variantStyles = {
     cosmic: "text-aurora-pink hover:text-starlight-yellow hover:underline hover:underline-offset-4 active:font-bold active:text-milky-white",
     glow: "text-milky-white hover:text-shadow-lg hover:shadow-nebula-purple active:text-starlight-yellow",
-    button_primary: buttonBaseStyles + " bg-nebula-purple text-milky-white hover:bg-starlight-yellow hover:text-cosmic-black active:bg-cosmic-black active:text-starlight-yellow",
-    button_secondary: buttonBaseStyles + " bg-transparent text-milky-white border-2 border-nebula-purple rounded-full hover:bg-nebula-purple hover:text-milky-white active:bg-aurora-pink active:text-cosmic-black",
+    button_primary: buttonBaseStyles + " bg-starlight-yellow text-cosmic-black border-2 border-starlight-yellow rounded-lg hover:bg-yellow-400 hover:text-cosmic-black hover:shadow-cosmic-glow active:border-yellow-500 active:shadow-lg",
+    button_secondary: buttonBaseStyles + " bg-transparent text-milky-white border-2 border-nebula-purple rounded-lg hover:bg-nebula-purple hover:text-milky-white active:bg-aurora-pink active:text-cosmic-black",
   };
 
   const linkContent = (
