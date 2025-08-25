@@ -18,10 +18,10 @@ export default function Header({ className = "" }: HeaderProps) {
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <CosmicLink href="#about" variant="button_primary">
+          <CosmicLink href="#about" variant="cosmic" size="lg">
             About
           </CosmicLink>
-          <CosmicLink href="/features" variant="button_primary">
+          <CosmicLink href="/features" variant="cosmic" size="lg">
             Examples
           </CosmicLink>
           <CosmicLink href="/docs" variant="button_secondary">

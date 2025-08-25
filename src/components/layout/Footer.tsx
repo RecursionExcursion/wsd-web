@@ -19,7 +19,7 @@ export default function Footer({ className = "" }: FooterProps) {
         alt="Alien"
         width={400}
         height={800}
-        className="alien absolute z-10 bottom-[-80%] left-0 max-w-full h-auto"
+        className="alien absolute z-10 bottom-[-95%] left-0 max-w-full h-auto"
       />
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

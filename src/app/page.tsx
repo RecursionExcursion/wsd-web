@@ -20,14 +20,14 @@ export default async function Home() {
           <Accordion />
         </div>
         <MainLayout />
-        <Image
+        {/* <Image
           id="spaceship"
           src="/spaceship_graphic.svg"
           alt="Spaceship"
           width={200}
           height={200}
           className="floating-spaceship absolute bottom-0 right-0 max-w-full h-auto"
-        />
+        /> */}
       </main>
       <Footer />
     </div>

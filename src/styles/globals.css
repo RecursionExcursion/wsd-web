@@ -130,10 +130,10 @@ body {
   100% { transform: translate(-1000%,-250%) rotate(20deg); }
 }
 
-.alien {
+/* .alien {
   --dist: 50%;
   animation: bob 10s ease-in-out infinite alternate;
-}
+} */
 @keyframes bob {
   from { transform: translateY(0); }
   to   { transform: translateY(var(--dist)); }

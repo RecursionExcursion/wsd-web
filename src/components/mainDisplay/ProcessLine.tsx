@@ -70,12 +70,9 @@ export default function ProcessLine(props: ProcessLineProps) {
       <div className="col-span-1 flex justify-end">
         <button
           onClick={() => removeProcessAction()}
-          style={{
-            color: "#ff3911",
-          }}
-          className="flex-shrink-0"
+          className="flex-shrink-0 hover:text-aurora-pink hover:cursor-pointer rounded-full h-fit shadow-lg"
         >
-          {iconServer({ iconKey: "delete", size: 30 })}
+          {iconServer({ iconKey: "trashCan", size: 30 })}
         </button>
       </div>
       

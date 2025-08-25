@@ -30,9 +30,9 @@ export default function Hero({ className = "" }: HeroProps) {
               workflow. From simple automation to complex deployments, we've got
               you covered.`}
             </p>
-            <div className="w-full max-w-md">
+            {/* <div className="w-full max-w-md">
               <MainAnimation />
-            </div>
+            </div> */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mt-4">
               <Button variant="primary">Start Building</Button>
               <Button variant="secondary">View Examples</Button>
