@@ -1,5 +1,5 @@
 import Image from "next/image";
-import MainAnimation from "./animations/MainAni";
+// import MainAnimation from "./animations/MainAni";
 import Button from "./base/Button";
 
 type HeroProps = {

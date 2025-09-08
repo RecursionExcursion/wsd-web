@@ -3,7 +3,7 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import Hero from "../components/Hero";
 import Accordion from "@/components/Accordion";
-import Image from "next/image";
+// import Image from "next/image";
 
 
 export default async function Home() {
