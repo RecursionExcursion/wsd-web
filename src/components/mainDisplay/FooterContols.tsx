@@ -9,7 +9,7 @@ type FooterControlsProps = {
 
 export default function FooterControls(props: FooterControlsProps) {
   return (
-    <div className="flex absolute bottom-0 bg-[var(--color-light-secondary)] h-20 w-full justify-center items-center">
+    <div className="relative bottom-0 bg-[var(--color-light-secondary)] h-20 w-full justify-center items-center flex">
       <div className="flex justify-center gap-10 w-full">
         <Button
           className="text-xl disabled:text-gray-500 disabled:cursor-not-allowed"

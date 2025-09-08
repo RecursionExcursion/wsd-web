@@ -3,41 +3,69 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cosmos: #0d0d0f;
-  --color-nebula: #5a2a82;
-  --color-footer: #2c1a40;
+  /* Cosmic Color Palette */
+  --color-cosmic-black: #0D0D0F;
+  --color-nebula-purple: #5A2A82;
+  --color-starlight-yellow: #F4C542;
+  --color-aurora-pink: #D154A0;
+  --color-milky-white: #F5F1E6;
+  --color-deep-purple: #2C1A40;
+  --color-muted-lavender: #B3A9C9;
 
-  --color-yellow: #f4c542;
-  --color-pink: #d154a0;
-  --color-purple: #5a2a82;
-
-  --color-primary: #f5f1e6;
-  --color-secondary: #b3a9c9;
-
-  --color-soft: rgba(245, 241, 230, 0.12);
-  /* --color-purple: 0 0 0.75rem rgba(90, 42, 130, 0.5); */
-  --color-yellow: 0 0 0.75rem rgba(244, 197, 66, 0.55);
-
-  /* yelllow */
+  /* Interactive states */
   --color-y-hover: #ffd458;
   --color-y-active: #e5b92f;
-
-  /* purple */
   --color-pr-hover: #6c35a0;
   --color-pr-active: #4a216f;
-
-  /* pink */
   --color-p-hover: #e169b0;
   --color-p-active: #b8468a;
-
-  --ink-on-yellow: #0d0d0f;
+  --ink-on-yellow: var(--color-cosmic-black);
 }
 
+/* Global overflow prevention */
+* {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Base styles */
 body {
-  color: var(--color-text);
-  background: var(--color-primary);
+  color: var(--color-milky-white);
+  background: var(--color-cosmic-black);
   height: 100vh;
   width: 100vw;
+  font-family: var(--font-artfika), system-ui, sans-serif;
+}
+
+/* Header styles */
+.header-cosmic {
+  background: linear-gradient(135deg, var(--color-cosmic-black) 0%, var(--color-deep-purple) 100%);
+  border-bottom: 1px solid rgba(90, 42, 130, 0.3);
+}
+
+/* Footer styles */
+.footer-cosmic {
+  background: linear-gradient(135deg, var(--color-cosmic-black) 0%, var(--color-deep-purple) 100%);
+  border-bottom: 1px solid rgba(90, 42, 130, 0.3);
+}
+
+.footer-logo {
+  color: var(--color-starlight-yellow);
+}
+
+.footer-social-icon {
+  color: var(--color-milky-white);
+  transition: all 0.3s ease;
+}
+
+.footer-social-icon:hover {
+  color: var(--color-aurora-pink);
+  text-shadow: 0 0 10px var(--color-aurora-pink);
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -53,4 +81,60 @@ body {
 
 .cut-through {
     clip-path: polygon(56% 0, 78% 50%, 56% 100%, 31% 100%, 52% 50%, 28% 0);
+}
+
+
+/* Floating Astronaut Animation */
+.floating-astronaut {
+  animation: float 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(243, 239, 226, 0.3));
+  transition: all 0.3s ease;
+}
+
+.floating-astronaut:hover {
+  filter: drop-shadow(0 0 30px rgba(247, 245, 241, 0.6));
+  transform: scale(1.50);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-15px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-25px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-15px) rotate(-1deg);
+  }
+}
+
+
+/* Floating Spaceship Animation */
+.floating-spaceship {
+  animation: float-spaceship 6s ease-in-out infinite;
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.floating-spaceship:hover {
+  z-index: 10;
+}
+
+@keyframes float-spaceship {
+  0%   { transform: translate(0, 0) rotate(120deg); }
+  25%  { transform: translate(0,-250%) rotate(120deg); }
+  75%  { transform: translate(-100%,-250%) rotate(20deg); }
+  100% { transform: translate(-1000%,-250%) rotate(20deg); }
+}
+
+/* .alien {
+  --dist: 50%;
+  animation: bob 10s ease-in-out infinite alternate;
+} */
+@keyframes bob {
+  from { transform: translateY(0); }
+  to   { transform: translateY(var(--dist)); }
 }

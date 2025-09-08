@@ -2,7 +2,7 @@
 
 import { ChangeEvent, CSSProperties } from "react";
 import { iconServer } from "../../assets/icons";
-import { RawProc } from "../../service/browserScriptGen";
+import { Process } from "../../service/scriptService";
 
 const inputStyles: CSSProperties = {
   border: "1px solid white",
@@ -12,7 +12,7 @@ const inputStyles: CSSProperties = {
 };
 
 type ProcessLineProps = {
-  proc: RawProc;
+  proc: Process;
   index: number;
   removeProcessAction: () => void;
   handleSelectChange: (newVal: string) => void;
@@ -29,14 +29,8 @@ export default function ProcessLine(props: ProcessLineProps) {
   } = props;
 
   return (
-    <div
-      key={proc.type + proc.type + i}
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 7fr 1fr",
-      }}
-    >
-      <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+    <div className="grid grid-cols-12 gap-2 items-center w-full min-w-0">
+      <div className="col-span-2 flex justify-center">
         <select
           value={proc.type}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
@@ -46,6 +40,7 @@ export default function ProcessLine(props: ProcessLineProps) {
             ...inputStyles,
             padding: "7px",
           }}
+          className="w-full max-w-20"
         >
           <option className="text-black" value={"p"}>
             Path
@@ -57,24 +52,33 @@ export default function ProcessLine(props: ProcessLineProps) {
             Custom
           </option>
         </select>
+      </div>
+      
+      <div className="col-span-9 min-w-0">
         <input
+          id={`process-arg-${i}`}
           style={{ ...inputStyles }}
           value={proc.arg}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             handleInputChange(e.target.value)
           }
           type="text"
+          className="w-full"
         />
+      </div>
+      
+      <div className="col-span-1 flex justify-end">
         <button
           onClick={() => removeProcessAction()}
-          style={{
-            color: "#ff3911",
-          }}
+          className="flex-shrink-0 hover:text-aurora-pink hover:cursor-pointer rounded-full h-fit shadow-lg"
         >
-          {iconServer({ iconKey: "delete", size: 30 })}
+          {iconServer({ iconKey: "trashCan", size: 30 })}
         </button>
       </div>
-      <div className="flex justify-center items-center">{i + 1}</div>
+      
+      <div className="col-span-12 flex justify-center items-center text-sm text-muted-lavender">
+        {i + 1}
+      </div>
     </div>
   );
 }

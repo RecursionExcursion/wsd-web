@@ -1,29 +1,35 @@
-import MainAnimation from "../components/animations/MainAni";
-import LogoTitle from "../components/LogoTitle";
 import MainLayout from "../components/mainDisplay/MainLayout";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
+import Hero from "../components/Hero";
+import Accordion from "@/components/Accordion";
+// import Image from "next/image";
+
 
 export default async function Home() {
   return (
-    <main className="h-screen">
-      {/* <video
-        className="absolute top-0 left-0 w-full h-full object-cover"
-        src="/nebula.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-      /> */}
+    <div className="min-h-screen w-screen text-milky-white flex flex-col overflow-hidden">
+      <Header />
+      <main className="flex-1 overflow-hidden w-full relative">
+        {/* TODO rm */}
+        {/* Single continuous background gradient spanning all sections */}
+        {/* <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-cosmic-black/20 to-slate-900 pointer-events-none"></div> */}
 
-      <div className="flex flex-col h-screen w-full bg-cosmos">
-        <div className="flex w-full justify-between items-center px-4 py-8 lg:px-8 lg:py-16">
-          <LogoTitle text="Quick Script" />
-          <div className="px-10 w-full">
-            <MainAnimation />
-          </div>
+        <div className="relative z-10">
+          <Hero />
+          <Accordion />
         </div>
-        <div className="h-4 "></div>
         <MainLayout />
-      </div>
-    </main>
+        {/* <Image
+          id="spaceship"
+          src="/spaceship_graphic.svg"
+          alt="Spaceship"
+          width={200}
+          height={200}
+          className="floating-spaceship absolute bottom-0 right-0 max-w-full h-auto"
+        /> */}
+      </main>
+      <Footer />
+    </div>
   );
 }

@@ -53,11 +53,11 @@ export default function DeployableMenu(props: DeployableMenuProps) {
 
   return (
     <div className="flex flex-col justify-center text-center gap-2">
-      <span className="flex justify-center gap-2">
-        <h2>{title}</h2>
+      <span className="flex justify-between gap-2 items-center">
+        <h2 className="text-2xl font-bold">{title}</h2>
         <TrashCanButton onClick={deleteAllItems} />
       </span>
-      <div>
+      <div className="flex flex-col gap-2">
         {items?.map((item, i) => (
           <ItemDisplay key={item.timestamp + i} item={item} type={props.type} />
         ))}
@@ -79,29 +79,26 @@ const ItemDisplay = (props: ItemDisplayProps) => {
   const [showProcesses, setShowProccesses] = useState(false);
 
   return (
-    <div className="odd:bg-[var(--color-light-secondary)] even:bg-[var(--color-secondary)]">
-      <div className="flex items-center justify-center gap-3">
+    <div className="bg-nebula-purple hover:bg-aurora-pink rounded-md border-white border-1">
+      <div className="hover:cursor-pointer flex items-center justify-between gap-3">
         <button
-          className="underline"
+          className="text-lg ml-4 hover:text-starlight-yellow cursor-pointer hover:underline"
           onClick={() => {
             emitter.emit(eventKeys.updateDeployable, { content: item });
           }}
         >
-          Use
+          Use {item.name}
         </button>
-        <span>Created: {new Date(item.timestamp).toLocaleDateString()}</span>
-        <button onClick={() => setShowProccesses(!showProcesses)}>
+        <button className="hover:cursor-pointer flex items-center gap-2 flex-row flex-1 justify-end" onClick={() => setShowProccesses(!showProcesses)}>
+          <span>Created: {new Date(item.timestamp).toLocaleDateString()}</span>
           {showProcesses
             ? iconServer({ iconKey: "cheveronUp", size: iconSize })
             : iconServer({ iconKey: "cheveronDown", size: iconSize })}
         </button>
       </div>
       {showProcesses && (
-        <div className="bg-[var(--color-lightest-secondary)]">
-          <div className="flex flex-col px-2 text-start">
-            {item.name && (
-              <span className="font-semibold underline">Name: {item.name}</span>
-            )}
+        <div className="flex flex-col justify-between md:flex-row items-center bg-cosmic-black px-8">
+          <div className="flex flex-col text-start pb-4">
             <span>OS: {item.os}</span>
             {item.args.map((p, i) => {
               return (
@@ -131,9 +128,7 @@ type TrashCanProps = React.ComponentPropsWithoutRef<"button"> & {};
 const TrashCanButton = (props: TrashCanProps) => {
   return (
     <button
-      style={{
-        color: "#ee3939",
-      }}
+      className="hover:text-aurora-pink rounded-full h-fit px-4 py-2 shadow-lg"
       {...props}
     >
       {iconServer({ iconKey: "trashCan", size: 24 })}

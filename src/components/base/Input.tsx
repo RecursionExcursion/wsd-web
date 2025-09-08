@@ -9,7 +9,7 @@ export default function Input(props: InputProps) {
     <input
       {...attributes}
       className={
-        "border border-[var(--color-trim)] bg-[var(--color-tertiary)] p-1 rounded-lg " +
+        "border border-aurora-pink/80 bg-cosmic-black/50 text-milky-white p-2 rounded-lg focus:border-starlight-yellow focus:outline-none transition-colors " +
         attributes.className
       }
     />

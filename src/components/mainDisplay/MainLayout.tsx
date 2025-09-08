@@ -10,6 +10,7 @@ import { eventKeys } from "../../lib/events/events";
 import { download } from "../../service/downloadToBrowserService";
 import OsRadio from "../OsRadio";
 import { Script } from "../../service/scriptService";
+import SideBySide from "../SideBySide";
 
 export default function MainLayout() {
   const [script, setScript] = useState<Script>(new Script());
@@ -48,33 +49,45 @@ export default function MainLayout() {
     }
   }
 
+  const osOptions = ["win", "mac", "lin"];
+
   return (
-    <div className="relative flex-1 flex flex-col justify-between overflow-y-hidden px-4 py-8 lg:px-8 lg:py-16">
-      <div className="grid grid-cols-2 gap-4 flex-1">
-        <div className="flex flex-col gap-5">
-          <h2 className="text-xl font-semibold">Menu</h2>
-          <div
-            id="connection-status"
-            className="flex w-full h-10 items-center justify-center"
-          ></div>
-          <div className="flex-1 text-center flex flex-col gap-5">
-            <h3 className="text-3xl">Target Operating System</h3>
-            <OsRadio
-              setOs={(s: SUPPORTED_OS) => {
-                setScript(script.setTarget(s));
-              }}
-              curr={script.targetOs}
-            />
-          </div>
-          <div className="flex-1 text-center flex flex-col gap-5">
-            <h3 className="text-3xl">Previously Created</h3>
-            <DeployableMenu type="saved" />
-            <DeployableMenu type="last" />
-          </div>
+    <section className="relative overflow-hidden w-full">
+      <div className="max-w-7xl mx-auto px-4 lg:px-24 overflow-hidden w-full">
+        <div className="relative flex-1 flex flex-col justify-between overflow-hidden lg:px-8 lg:py-16">
+          <SideBySide
+            leftChild={
+              <div className="flex-1 text-center flex flex-col gap-5">
+                <h3 className="text-3xl">Previously Created</h3>
+                <DeployableMenu type="saved" />
+                <DeployableMenu type="last" />
+              </div>
+            }
+            rightChild={
+              <div className="flex flex-col gap-5 min-w-0 w-full">
+                {/* <h2 className="font-semibold text-4xl">Start Building</h2> */}
+                {/* <div
+                  id="connection-status"
+                  className="flex w-full h-10 items-center justify-center"
+                ></div> */}
+                <div className="flex-1 text-center flex flex-col gap-5">
+                  <h3 className="text-3xl">Create a New Deployable</h3>
+                  <h4 className="text-xl">Target Operating System</h4>
+                  <OsRadio
+                    options={osOptions}
+                    onSelect={(os: string) => {
+                      setScript(script.setTarget(os as SUPPORTED_OS));
+                    }}
+                    defaultSelected={script.targetOs}
+                  />
+                </div>
+                <MainDisplay script={script} setScript={setScript} />
+                <FooterControls create={create} save={save} />
+              </div>
+            }
+          ></SideBySide>
         </div>
-        <MainDisplay script={script} setScript={setScript} />
       </div>
-      <FooterControls create={create} save={save} />
-    </div>
+    </section>
   );
 }
