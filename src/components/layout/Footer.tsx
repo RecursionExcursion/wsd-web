@@ -8,10 +8,11 @@ type FooterProps = {
   className?: string;
 };
 
+// TODO: add a modal for links, and create legal shit
 export default function Footer({ className = "" }: FooterProps) {
   return (
     <footer
-      className={`relative footer-cosmic px-4 py-12 lg:px-8 lg:py-16 ${className}`}
+      className={`relative overflow-hidden footer-cosmic px-4 py-12 lg:px-8 lg:py-16 ${className}`}
     >
       <Image
         id="alien"

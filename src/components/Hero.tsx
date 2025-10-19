@@ -1,6 +1,7 @@
 import Image from "next/image";
 // import MainAnimation from "./animations/MainAni";
 import Button from "./base/Button";
+import CosmicLink from "./base/Link";
 
 type HeroProps = {
   className?: string;
@@ -30,12 +31,9 @@ export default function Hero({ className = "" }: HeroProps) {
               workflow. From simple automation to complex deployments, we've got
               you covered.`}
             </p>
-            {/* <div className="w-full max-w-md">
-              <MainAnimation />
-            </div> */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mt-4">
-              <Button variant="primary">Start Building</Button>
-              <Button variant="secondary">View Examples</Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start py-4">
+              <CosmicLink variant="button_primary" href="#builder">Start Building</CosmicLink>
+              <CosmicLink variant="button_secondary" href="#examples">View Examples</CosmicLink>
             </div>
           </div>
 

@@ -21,10 +21,10 @@ export default function Header({ className = "" }: HeaderProps) {
           <CosmicLink href="#about" variant="cosmic" size="lg">
             About
           </CosmicLink>
-          <CosmicLink href="/features" variant="cosmic" size="lg">
+          <CosmicLink href="#examples" variant="cosmic" size="lg">
             Examples
           </CosmicLink>
-          <CosmicLink href="/docs" variant="button_secondary">
+          <CosmicLink href="#builder" variant="button_secondary">
             Start Building
           </CosmicLink>
         </nav>

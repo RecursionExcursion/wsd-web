@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect } from "react";
+
 type DocumentationProps = {
   className?: string;
 };
@@ -11,6 +15,7 @@ export default function Documentation({ className = "" }: DocumentationProps) {
         Whether you're a solo developer or part of a large team, WSD Web scales with you.`,
       icon: "🚀",
       link: "#getting-started",
+      id: "about",
     },
     {
       title: "Script Creation",
@@ -18,8 +23,32 @@ export default function Documentation({ className = "" }: DocumentationProps) {
         "Learn the basics of WSD Web and create your first workspace script.",
       icon: "⚡",
       link: "#script-creation",
+      id: "examples",
     },
   ];
+
+  // this is stupid af but without it reloading the page will not scroll to the accordion
+  // TODO: find a better way to do this and to open the accordion. also fix positioning on menu click
+  useEffect(() => {
+    const handleInitialHash = () => {
+      const hash = window.location.hash.substring(1);
+      if (hash === 'about' || hash === 'examples') {
+        setTimeout(() => {
+          const targetElement = document.getElementById(hash);
+          if (targetElement) {
+            setTimeout(() => {
+              targetElement.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+              });
+            }, 50);
+          }
+        }, 300);
+      }
+    };
+
+    handleInitialHash();
+  }, []);
 
   return (
     <section className={className}>
@@ -29,6 +58,7 @@ export default function Documentation({ className = "" }: DocumentationProps) {
             className="group [&_summary::-webkit-details-marker]:hidden"
             open={false}
             key={section.title + index}
+            id={section.id}
           >
             <summary className="flex items-center justify-between gap-1.5 rounded-md border border-gray-100 bg-nebula-purple p-4 text-milky-white hover:bg-aurora-pink hover:cursor-pointer">
               <h2 className="text-lg font-medium">

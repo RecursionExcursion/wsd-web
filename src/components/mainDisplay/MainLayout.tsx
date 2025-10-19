@@ -52,7 +52,7 @@ export default function MainLayout() {
   const osOptions = ["win", "mac", "lin"];
 
   return (
-    <section className="relative overflow-hidden w-full">
+    <section id="builder" className="relative overflow-hidden w-full">
       <div className="max-w-7xl mx-auto px-4 lg:px-24 overflow-hidden w-full">
         <div className="relative flex-1 flex flex-col justify-between overflow-hidden lg:px-8 lg:py-16">
           <SideBySide
@@ -65,11 +65,6 @@ export default function MainLayout() {
             }
             rightChild={
               <div className="flex flex-col gap-5 min-w-0 w-full">
-                {/* <h2 className="font-semibold text-4xl">Start Building</h2> */}
-                {/* <div
-                  id="connection-status"
-                  className="flex w-full h-10 items-center justify-center"
-                ></div> */}
                 <div className="flex-1 text-center flex flex-col gap-5">
                   <h3 className="text-3xl">Create a New Deployable</h3>
                   <h4 className="text-xl">Target Operating System</h4>

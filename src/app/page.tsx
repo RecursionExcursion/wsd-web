@@ -8,26 +8,15 @@ import Accordion from "@/components/Accordion";
 
 export default async function Home() {
   return (
-    <div className="min-h-screen w-screen text-milky-white flex flex-col overflow-hidden">
+    <div className="min-h-screen w-screen text-milky-white flex flex-col">
       <Header />
-      <main className="flex-1 overflow-hidden w-full relative">
+      <main className="flex-1 w-full relative">
         {/* TODO rm */}
-        {/* Single continuous background gradient spanning all sections */}
-        {/* <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-cosmic-black/20 to-slate-900 pointer-events-none"></div> */}
-
         <div className="relative z-10">
           <Hero />
           <Accordion />
         </div>
         <MainLayout />
-        {/* <Image
-          id="spaceship"
-          src="/spaceship_graphic.svg"
-          alt="Spaceship"
-          width={200}
-          height={200}
-          className="floating-spaceship absolute bottom-0 right-0 max-w-full h-auto"
-        /> */}
       </main>
       <Footer />
     </div>
